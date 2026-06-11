@@ -23,6 +23,18 @@ window.onerror = function(message, source, lineno, colno, error) {
     return false;
 };
 
+// ดักจับ Unhandled Promise Rejections (เช่น ปัญหาของ Supabase หรือการโหลด Editor.js แบบ Async)
+window.onunhandledrejection = function(event) {
+    const reason = event.reason;
+    const errorDetails = `Promise Error: ${reason && reason.stack ? reason.stack : reason}`;
+    console.error(errorDetails);
+    if (typeof showAlert === 'function') {
+        showAlert("เกิดข้อผิดพลาดในการโหลดระบบ (Promise)", errorDetails);
+    } else {
+        alert("เกิดข้อผิดพลาดในการโหลดระบบ (Promise):\n" + errorDetails);
+    }
+};
+
 let currentUser = null;
 let wikiPages = [];      // เก็บรายการหน้าสารานุกรมทั้งหมด
 let activePageId = null;  // เก็บรหัสหน้าปัจจุบันที่แสดงอยู่
