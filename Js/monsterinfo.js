@@ -4,17 +4,30 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ==========================================
-// ระบบดักจับและแจ้งเตือนบั๊กอัตโนมัติ (Global Error Handler)
+// ระบบดักจับและแจ้งเตือนบั๊กอัตโนมัติพร้อมวิเคราะห์ตัวแปร (Global Error Handler & Diagnostics)
 // ==========================================
+function getDiagnostics() {
+    let diag = `\n\n--- Diagnostics ---\n`;
+    diag += `EditorJS: ${typeof EditorJS}\n`;
+    diag += `Header: ${typeof Header}\n`;
+    diag += `EditorjsList: ${typeof EditorjsList}\n`;
+    diag += `List: ${typeof List}\n`;
+    diag += `ImageTool: ${typeof ImageTool}\n`;
+    try {
+        diag += `Tools: ${JSON.stringify(Object.keys(getEditorTools()))}\n`;
+    } catch(e) {
+        diag += `Tools error: ${e.message}\n`;
+    }
+    return diag;
+}
+
 window.onerror = function(message, source, lineno, colno, error) {
-    // กรองข้อผิดพลาดจาก Extension ของบราวเซอร์ หรือ Script ภายนอกอื่นๆ ที่ไม่มีรายละเอียด
     if (message === 'Script error.' || lineno === 0) {
         console.warn('Ignored external script/extension error:', message, 'at line:', lineno, 'source:', source);
         return false;
     }
-    const errorDetails = `Error: ${message}\nLine: ${lineno}\nSource: ${source}`;
+    const errorDetails = `Error: ${message}\nLine: ${lineno}\nSource: ${source}${getDiagnostics()}`;
     console.error(errorDetails);
-    // แสดงป๊อปอัพบอกบั๊กทันที
     if (typeof showAlert === 'function') {
         showAlert("เกิดข้อผิดพลาดในการโหลดระบบ", errorDetails);
     } else {
@@ -23,10 +36,9 @@ window.onerror = function(message, source, lineno, colno, error) {
     return false;
 };
 
-// ดักจับ Unhandled Promise Rejections (เช่น ปัญหาของ Supabase หรือการโหลด Editor.js แบบ Async)
 window.onunhandledrejection = function(event) {
     const reason = event.reason;
-    const errorDetails = `Promise Error: ${reason && reason.stack ? reason.stack : reason}`;
+    const errorDetails = `Promise Error: ${reason && reason.stack ? reason.stack : reason}${getDiagnostics()}`;
     console.error(errorDetails);
     if (typeof showAlert === 'function') {
         showAlert("เกิดข้อผิดพลาดในการโหลดระบบ (Promise)", errorDetails);
