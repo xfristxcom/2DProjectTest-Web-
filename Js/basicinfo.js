@@ -785,11 +785,18 @@ class SupabaseImageAdapter {
 }
 
 function getEditorTools() {
+    const paragraphClass = typeof Paragraph === 'function' ? Paragraph : null;
     const headerClass = typeof Header === 'function' ? Header : null;
     const listClass = typeof EditorjsList === 'function' ? EditorjsList : (typeof List === 'function' ? List : null);
     const imageClass = typeof ImageTool === 'function' ? ImageTool : null;
 
     const tools = {};
+    if (paragraphClass) {
+        tools.paragraph = {
+            class: paragraphClass,
+            inlineToolbar: true
+        };
+    }
     if (headerClass) {
         tools.header = {
             class: headerClass,
@@ -806,7 +813,14 @@ function getEditorTools() {
         tools.image = {
             class: imageClass,
             config: {
-                uploader: new SupabaseImageAdapter({ supabaseClient: supabaseClient })
+                uploader: {
+                    uploadByFile(file) {
+                        return new SupabaseImageAdapter({ supabaseClient: supabaseClient }).uploadByFile(file);
+                    },
+                    uploadByUrl(url) {
+                        return new SupabaseImageAdapter({ supabaseClient: supabaseClient }).uploadByUrl(url);
+                    }
+                }
             }
         };
     }
