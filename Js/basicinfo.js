@@ -785,34 +785,7 @@ class SupabaseImageAdapter {
 }
 
 function getEditorTools() {
-    const headerClass = typeof Header === 'function' ? Header : null;
-    const listClass = typeof EditorjsList === 'function' ? EditorjsList : (typeof List === 'function' ? List : null);
-    const imageClass = typeof ImageTool === 'function' ? ImageTool : null;
-
-    const tools = {};
-    if (headerClass) {
-        tools.header = {
-            class: headerClass,
-            inlineToolbar: true,
-            config: { placeholder: 'พิมพ์หัวข้อตรงนี้...', levels: [2, 3, 4], defaultLevel: 2 }
-        };
-    }
-    if (listClass) {
-        tools.list = {
-            class: listClass,
-            inlineToolbar: true,
-            config: { defaultStyle: 'unordered' }
-        };
-    }
-    if (imageClass) {
-        tools.image = {
-            class: imageClass,
-            config: {
-                uploader: new SupabaseImageAdapter({ supabaseClient: supabaseClient })
-            }
-        };
-    }
-    return tools;
+    return {};
 }
 
 function initEditorJS() {
