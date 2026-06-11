@@ -16,6 +16,15 @@ const avatarMap = {
     'robot_alien': '👾' 
 };
 
+// ==========================================
+// ฟังก์ชันป้องกัน XSS
+// ==========================================
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.appendChild(document.createTextNode(text));
+    return div.innerHTML;
+}
+
 function showAlert(title, message) {
     document.getElementById('alertTitle').innerText = title;
     document.getElementById('alertMessage').innerText = message;
@@ -38,8 +47,7 @@ async function checkUser() {
         const userData = session.user.user_metadata;
         const displayName = userData.display_name || 'Player';
         const avatarId = userData.avatar_id || 'robot_default';
-        currentUser = session.user; // 👈 1. เพิ่มบรรทัดนี้: เก็บข้อมูลคนล็อกอินไว้ในตัวแปร
-        console.log("ยินดีต้อนรับ:", displayName);
+        currentUser = session.user;
         profileBtn.innerText = displayName; 
         dropdownMenu.style.display = ''; 
         profileBtn.onclick = null; 
@@ -55,7 +63,6 @@ async function checkUser() {
         if (notiDropdown) notiDropdown.style.display = 'inline-block'; // โชว์กระดิ่งเมื่อล็อกอิน
 
     } else {
-        console.log("ผู้ใช้ทั่วไป (ยังไม่ล็อกอิน)");
         profileBtn.innerText = 'Login'; 
         dropdownMenu.style.display = 'none'; 
         userAvatar.style.display = 'none'; 
@@ -119,7 +126,7 @@ async function loadNotifications() {
             <div class="noti-item" style="${bgClass}" onclick="readNotification(${noti.id}, ${noti.post_id})">
                 <div style="font-size: 24px;">${avatar}</div>
                 <div>
-                    <div style="font-weight: bold; color: #3a72b0;">${noti.actor_name}</div>
+                    <div style="font-weight: bold; color: #3a72b0;">${escapeHtml(noti.actor_name)}</div>
                     <div style="color: #e0e0e0; font-size: 13px;">${actionText}</div>
                 </div>
             </div>

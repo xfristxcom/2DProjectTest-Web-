@@ -2,7 +2,6 @@
 const SUPABASE_URL = 'https://pvnrztgtnsmyhixkawgo.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2bnJ6dGd0bnNteWhpeGthd2dvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyMDI0MjMsImV4cCI6MjA5NTc3ODQyM30.clc8OgLUlJ9nM7BKxf6oXIA8B6sWRotO1VId446FNnY';
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-console.log("เชื่อมต่อ Supabase สำเร็จ!", supabaseClient);
 
 // ฟังก์ชันสั่งให้ Popup โชว์
 function showAlert(title, message) {
