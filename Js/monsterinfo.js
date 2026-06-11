@@ -604,8 +604,14 @@ function openEditModal() {
         ];
     }
 
+    const editContainer = document.getElementById('editEditorContainer');
+    if (!editContainer) {
+        console.error("editEditorContainer element not found in DOM!");
+        return;
+    }
+
     editorEdit = new EditorJS({
-        holder: 'editEditorContainer',
+        holder: editContainer,
         data: { blocks: blocks },
         tools: getEditorTools()
     });
@@ -767,9 +773,9 @@ class SupabaseImageAdapter {
 }
 
 function getEditorTools() {
-    const headerClass = typeof Header !== 'undefined' ? Header : null;
-    const listClass = typeof EditorjsList !== 'undefined' ? EditorjsList : (typeof List !== 'undefined' ? List : null);
-    const imageClass = typeof ImageTool !== 'undefined' ? ImageTool : null;
+    const headerClass = typeof Header === 'function' ? Header : null;
+    const listClass = typeof EditorjsList === 'function' ? EditorjsList : (typeof List === 'function' ? List : null);
+    const imageClass = typeof ImageTool === 'function' ? ImageTool : null;
 
     const tools = {};
     if (headerClass) {
@@ -802,8 +808,13 @@ function initEditorJS() {
         console.error("EditorJS is not defined. Make sure CDN is loaded.");
         return;
     }
+    const addContainer = document.getElementById('addEditorContainer');
+    if (!addContainer) {
+        console.error("addEditorContainer element not found in DOM!");
+        return;
+    }
     editorAdd = new EditorJS({
-        holder: 'addEditorContainer',
+        holder: addContainer,
         placeholder: 'พิมพ์เนื้อหาหรือกด Tab เพื่อเลือกกล่องเครื่องมือ',
         tools: getEditorTools(),
         onChange: () => {
