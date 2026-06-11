@@ -650,6 +650,43 @@ function closeAlert() {
 // ส่วนที่ 7: ตั้งค่า Editor.js
 // ==========================================
 
+// ==========================================
+// บีบอัดและปรับขนาดรูปภาพก่อน Upload (800×600 max)
+// ==========================================
+function compressImage(file, maxWidth, maxHeight, quality) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+
+                // คำนวณสัดส่วนให้พอดีกับขนาดสูงสุด
+                if (width > maxWidth || height > maxHeight) {
+                    const ratio = Math.min(maxWidth / width, maxHeight / height);
+                    width = Math.round(width * ratio);
+                    height = Math.round(height * ratio);
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+
+                canvas.toBlob(
+                    (blob) => resolve(blob),
+                    'image/jpeg',
+                    quality
+                );
+            };
+        };
+    });
+}
+
 class SupabaseImageAdapter {
     constructor(config) {
         this.supabase = config.supabaseClient;

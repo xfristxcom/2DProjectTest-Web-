@@ -205,35 +205,6 @@ async function loadFeed() {
     });
 }
 
-// 2. ระบบส่งโพสต์ใหม่
-async function submitPost() {
-    if (!currentUser) {
-        alert("กรุณาล็อกอินก่อนโพสต์ครับ!");
-        return;
-    }
-    const inputField = document.getElementById('postInput');
-    const content = inputField.value.trim();
-    if (!content) return;
-
-    if (content.length > 1000) {
-        alert(`โพสต์ต้องไม่เกิน 1,000 ตัวอักษร (ปัจจุบัน: ${content.length} ตัวอักษร)`);
-        return;
-    }
-
-    const metadata = currentUser.user_metadata;
-    const { error } = await supabaseClient.from('posts').insert([{ 
-        user_id: currentUser.id, 
-        author_name: metadata.display_name || 'Player', 
-        author_avatar: metadata.avatar_id || 'robot_default', 
-        content: content 
-    }]);
-
-    if (!error) {
-        inputField.value = '';
-        inputField.style.height = '80px';
-        loadFeed(); 
-    }
-}
 
 // 3. ระบบดันโพสต์
 async function toggleUpvote(postId) {
@@ -544,6 +515,7 @@ async function submitPost() {
 
     if (!error) {
         inputField.value = '';
+        inputField.style.height = '80px'; // รีเซ็ตความสูงของกล่องพิมพ์ข้อความ
         loadFeed(); 
     } else {
         // 🔥 ถ้าบั๊กหรือโพสต์ไม่เข้า Database มันจะเด้งเตือนบอกสาเหตุตรงนี้เลย!
