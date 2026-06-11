@@ -545,3 +545,105 @@ body {
 .sort-dropdown-content button:hover {
     background-color: #383838;
 }
+
+/* ==========================================
+   Editor.js Dark Theme Overrides
+   ========================================== */
+
+/* กล่อง Editor */
+.editor-container {
+    background-color: #1e1e1e; /* สีพื้นหลังกล่องให้กลมกลืน */
+    color: #e0e0e0; /* สีตัวอักษรหลัก */
+    border: 1px solid #444; /* เส้นขอบกล่อง */
+    border-radius: 8px;
+    padding: 20px;
+    min-height: 200px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* ขยายความกว้างเนื้อหาข้างในกล่องให้เต็ม */
+.ce-block__content,
+.ce-toolbar__content {
+    max-width: 100% !important;
+}
+
+/* ป้องกันตัวหนังสือสีดำที่ Editor.js อาจแทรกเข้ามา */
+.codex-editor__redactor {
+    padding-bottom: 50px !important;
+    color: #e0e0e0 !important;
+}
+
+.ce-paragraph {
+    color: #e0e0e0 !important;
+}
+
+/* เปลี่ยนสี Placeholder (พิมพ์เนื้อหาหรือกด Tab...) */
+.ce-paragraph[data-placeholder]:empty::before {
+    color: #888888 !important;
+    opacity: 1;
+}
+
+/* สีของปุ่มกดบวก (+) และปุ่มตั้งค่า (หกเหลี่ยม) ทางซ้ายมือ */
+.ce-toolbar__plus, 
+.ce-toolbar__settings-btn {
+    background-color: transparent !important;
+    color: #e0e0e0 !important;
+}
+.ce-toolbar__plus:hover, 
+.ce-toolbar__settings-btn:hover {
+    background-color: #3a72b0 !important;
+    color: #fff !important;
+}
+
+/* --- สีของเมนูลอย (เมื่อกดบวก หรือเมื่อลากคลุมข้อความ) --- */
+.ce-popover, 
+.ce-inline-toolbar,
+.ce-conversion-toolbar,
+.ce-settings {
+    background-color: #252526 !important;
+    border: 1px solid #444 !important;
+    color: #e0e0e0 !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.8) !important;
+}
+
+/* ปุ่มแต่ละอันในเมนูลอย */
+.ce-popover__item, 
+.ce-inline-tool,
+.ce-conversion-tool {
+    color: #e0e0e0 !important;
+}
+
+/* ไอคอนในเมนูลอย */
+.ce-popover__item-icon,
+.ce-settings__button {
+    background-color: #333 !important;
+    color: #e0e0e0 !important;
+    border-color: #444 !important;
+}
+
+/* เมื่อเอาเมาส์ชี้ปุ่มในเมนูลอย */
+.ce-popover__item:hover, 
+.ce-inline-toolbar__buttons .ce-inline-tool:hover,
+.ce-conversion-tool:hover,
+.ce-settings__button:hover {
+    background-color: #383838 !important;
+    color: #fff !important;
+}
+
+/* สีพื้นหลังเวลาเลือก Block (ลากคลุม) */
+.ce-block--selected .ce-block__content {
+    background-color: #383838 !important;
+    border-radius: 4px;
+}
+
+/* สีเส้นขอบเวลาใส่ลิงก์หรือ Input อื่นๆ ของ Editor.js */
+.cdx-input {
+    background-color: #1e1e1e !important;
+    border: 1px solid #444 !important;
+    color: #e0e0e0 !important;
+}
+.cdx-input::placeholder {
+    color: #888 !important;
+}
