@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>เข้าสู่ระบบ | 2dProjectTest Wiki</title>
+    <link rel="stylesheet" href="../Css/login.css">
+</head>
+<body>
+
+    <div class="login-container">
+        <h1>2DProjectTest Wiki</h1>
+        <form>
+            <input type="text" id="emailInput" placeholder="Email หรือ ชื่อในเว็บ">
+            <input type="password" id="passwordInput" placeholder="Password">
+
+            <button type="button" class="login-btn" onclick="loginUser()">Login</button>
+            
+            <a href="register.html" class="text-link">สมัครสมาชิกที่นี่</a>
+        </form>
+    </div>
+
+    <div id="customAlert" class="alert-overlay">
+        <div class="alert-box">
+            <h3 id="alertTitle">แจ้งเตือน</h3>
+            <p id="alertMessage">ข้อความจะแสดงตรงนี้</p>
+            <button onclick="closeAlert()" class="alert-btn" style="width: auto;">ตกลง</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../Js/login.js"></script>
+</body>
+</html>

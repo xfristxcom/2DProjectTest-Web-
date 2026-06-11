@@ -1,0 +1,37 @@
+name: Keep Supabase Alive & Auto-Delete Old Posts
+
+on:
+  schedule:
+    # รันทุกวัน เวลา 00:00 UTC (07:00 น. ไทย)
+    - cron: '0 0 * * *'
+  # รันด้วยตนเองได้จาก GitHub Actions tab
+  workflow_dispatch:
+
+jobs:
+  maintenance:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Keep Supabase Alive (Ping DB)
+        run: |
+          curl -s "${{ secrets.SUPABASE_URL }}/rest/v1/posts?select=id&limit=1" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
+            > /dev/null
+          echo "✅ Supabase pinged successfully"
+
+      - name: Auto-Delete Old Posts
+        run: |
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X POST "${{ secrets.SUPABASE_URL }}/rest/v1/rpc/delete_old_posts" \
+            -H "apikey: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{}')
+          
+          echo "Auto-delete response: $RESPONSE"
+          if [ "$RESPONSE" = "200" ] || [ "$RESPONSE" = "204" ]; then
+            echo "✅ Old posts cleaned up successfully"
+          else
+            echo "⚠️ Auto-delete returned status: $RESPONSE"
+          fi

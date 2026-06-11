@@ -1,0 +1,547 @@
+/* โหลดฟอนต์ */
+@font-face {
+    font-family: 'Germania';
+    src: url('../Front/GermaniaOne-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'ChakraPetch';
+    src: url('../Front/ChakraPetch-Bold.ttf') format('truetype');
+}
+
+body {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    font-family: 'Germania', 'ChakraPetch', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* ==========================================
+   ปรับแต่ง Scrollbar ทั้งเว็บไซต์ (Dark Theme)
+   ========================================== */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1e1e1e; 
+}
+
+::-webkit-scrollbar-thumb {
+    background: #444444; 
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555555; 
+}
+
+/* 1. แถบนำทางด้านบน (Navbar) */
+.navbar {
+    background-color: #252526;
+    border-bottom: 1px solid #111111;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky; /* สั่งให้มันแปะติดหนึบกับหน้าจอ */
+    top: 0;           /* ให้ติดอยู่ที่ตำแหน่งบนสุดเสมอ (ระยะห่างจากขอบบน = 0) */
+    z-index: 1000;    /* สั่งให้อยู่เลเยอร์หน้าสุด! เวลาเลื่อนลงมาจะได้ไม่โดนกล่องโพสต์ทับ */
+    
+    /* (แถม) เพิ่มเงาตกกระทบนิดนึง เวลาเลื่อนลงมาจะดูมีมิติสวยงามขึ้นครับ */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+.navbar-logo {
+    font-family: 'Germania', 'ChakraPetch', sans-serif;
+    font-size: 28px;
+    color: #ffffff;
+    letter-spacing: 2px;
+}
+
+.navbar-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.profile-avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #383838;
+    border-radius: 50%;
+    border: 2px solid #3a72b0;
+}
+
+.profile-btn {
+    background-color: transparent;
+    color: #e0e0e0;
+    border: 1px solid #e0e0e0;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: 'Germania', 'ChakraPetch', sans-serif;
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+.profile-btn:hover {
+    background-color: #e0e0e0;
+    color: #1e1e1e;
+}
+
+/* พื้นที่เนื้อหาหลัก */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+/* 2. กล่องแบนเนอร์ตรงกลาง (Hero Section) */
+.hero-banner {
+    background-color: #383838;
+    border: 1px solid #222222;
+    border-radius: 12px;
+    padding: 80px 20px;
+    text-align: center;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+.hero-banner h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #ffffff;
+}
+
+/* 3. กล่องปุ่มหมวดหมู่ด้านล่าง */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.category-card {
+    background-color: #2a2a2a;
+    border: 2px solid #222222;
+    border-radius: 12px;
+    padding: 30px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100px;
+}
+
+.category-card:hover {
+    background-color: #333333;
+    border: 2px solid #3a72b0;
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.category-card h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #e0e0e0;
+}
+
+/* สไตล์สำหรับกล่อง Popup แจ้งเตือน */
+.alert-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+}
+
+.alert-box {
+    background-color: #383838;
+    padding: 20px 30px;
+    border-radius: 8px;
+    border: 1px solid #222222;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.9);
+    animation: popIn 0.3s ease;
+}
+
+@keyframes popIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.alert-box h3 {
+    margin-top: 0;
+    color: #ffffff;
+    font-family: 'Germania', 'ChakraPetch', sans-serif;
+    letter-spacing: 1px;
+}
+
+.alert-box p {
+    color: #d0d0d0;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.alert-btn {
+    background-color: #3a72b0;
+    width: auto;
+    padding: 8px 30px;
+    margin-top: 0;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.alert-btn:hover {
+    background-color: #4b86c8;
+}
+
+/* --- ระบบ Dropdown สำหรับปุ่ม Profile --- */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none; /* ซ่อนไว้ก่อน */
+    position: absolute;
+    top: 100%; /* บังคับให้อยู่ใต้ปุ่มหลักพอดี */
+    right: 0; /* บังคับให้ชิดขวา ตรงกับขอบขวาของปุ่มหลัก */
+    
+    /* ทริคสะพานล่องหน: ใช้ padding ผลักกล่องให้ห่างออกมา 
+       แต่พื้นที่ตรงนี้เมาส์ยังมองเห็นว่าชี้อยู่ เมนูจะไม่หายไป! */
+    padding-top: 15px; 
+    z-index: 100;
+}
+
+/* เมื่อเมาส์ชี้ที่กล่อง .dropdown ให้โชว์เมนู */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* กรอบใหญ่คลุมปุ่มย่อย (ตรงตามรูปวาดเป๊ะ) */
+.dropdown-panel {
+    background-color: #252526; /* สีพื้นหลังกลืนกับ Navbar */
+    border: 1px solid #444444; /* สีกรอบใหญ่ */
+    border-radius: 12px; /* ความโค้งมนของกล่อง */
+    padding: 15px;
+    display: flex;
+    flex-direction: column; /* บังคับให้ปุ่มเรียงจากบนลงล่าง */
+    gap: 12px; /* ระยะห่างระหว่างปุ่ม Profile และ Logout */
+    box-shadow: 0px 10px 25px rgba(0,0,0,0.8);
+}
+
+/* ทำให้ปุ่มเมนูย่อย หน้าตาเหมือนปุ่ม Profile ด้านบนเป๊ะๆ */
+.dropdown-panel a {
+    background-color: transparent;
+    color: #e0e0e0;
+    border: 1px solid #e0e0e0;
+    padding: 8px 25px; /* ความอ้วนของปุ่ม */
+    border-radius: 20px;
+    font-family: 'Germania', 'ChakraPetch', sans-serif;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    transition: 0.2s;
+    min-width: 80px; /* บังคับให้ปุ่มกว้างเท่าๆ กัน */
+}
+
+/* เอฟเฟกต์ตอนเอาเมาส์ชี้ปุ่มย่อย */
+.dropdown-panel a:hover {
+    background-color: #e0e0e0;
+    color: #1e1e1e;
+}
+
+/* แยกสีปุ่ม Logout ให้เป็นสีแดงจะได้ดูโดดเด่น */
+.dropdown-panel a.logout-btn {
+    border-color: #ff5252;
+    color: #ff5252;
+}
+
+.dropdown-panel a.logout-btn:hover {
+    background-color: #ff5252;
+    color: #ffffff; /* ตัวอักษรสีขาว */
+}
+
+/* =========================================
+   ระบบกระดิ่งแจ้งเตือน (โหมด Hover สมบูรณ์แบบ)
+   ========================================= */
+
+.noti-dropdown {
+    position: relative;
+    display: inline-block;
+    margin-left: -5px; /* ดึงกระดิ่งให้ชิดชื่อ */
+}
+
+/* 1. ปุ่มกระดิ่ง */
+.noti-btn {
+    background-color: transparent;
+    border: 1px solid #e0e0e0; 
+    color: #e0e0e0;
+    font-size: 18px;
+    width: 34px; 
+    height: 34px; 
+    border-radius: 50%; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    padding: 0;
+    transition: 0.2s;
+}
+
+/* ตอนเอาเมาส์ชี้ปุ่มกระดิ่ง */
+.noti-btn:hover {
+    background-color: #e0e0e0;
+    transform: scale(1.05);
+}
+
+/* จุดสีแดงแจ้งเตือน */
+.noti-badge {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    background-color: #ff4444;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+/* 2. กล่องเมนูแจ้งเตือน (ซ่อนไว้ก่อน) */
+.noti-dropdown-content {
+    display: none; /* ซ่อนตอนยังไม่ชี้ */
+    position: absolute;
+    top: calc(100% + 15px); /* ห่างจากใต้ปุ่ม 15px */
+    right: 0;
+    background-color: #252526;
+    min-width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    box-shadow: 0px 10px 25px rgba(0,0,0,0.9);
+    border: 1px solid #444;
+    border-radius: 12px;
+    z-index: 1000;
+}
+
+/* 3. 🔥 หัวใจสำคัญ: สั่งให้กล่องกางออกตอนชี้กระดิ่ง! */
+.noti-dropdown:hover .noti-dropdown-content {
+    display: block;
+}
+
+/* 4. สะพานล่องหน (ใหญ่พิเศษ กันเมาส์ตกหลุม 100%) */
+.noti-dropdown::after {
+    content: "";
+    position: absolute;
+    top: 100%;       /* เริ่มกางสะพานจากก้นปุ่มกระดิ่ง */
+    left: -40px;     /* กางปีกออกซ้าย */
+    right: -20px;    /* กางปีกออกขวา */
+    height: 30px;    /* ความหนาคลุมช่องว่าง 15px มิดแน่นอน */
+    background-color: transparent; 
+    z-index: 999;
+}
+
+/* หัวข้อกล่อง */
+.noti-header {
+    padding: 15px;
+    font-family: 'Germania', 'ChakraPetch', sans-serif;
+    font-size: 18px;
+    border-bottom: 1px solid #444;
+    background-color: #1e1e1e;
+    color: white;
+    border-radius: 12px 12px 0 0;
+}
+
+/* --- สไตล์ของแต่ละรายการแจ้งเตือน --- */
+.noti-item {
+    padding: 12px 15px;
+    border-bottom: 1px solid #333;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-family: 'Germania', 'ChakraPetch', 'Segoe UI', sans-serif;
+}
+
+.noti-item:hover { background-color: #383838 !important; }
+
+/* --- โครงสร้างกล่องและอินพุตในโซนคอมเมนต์ --- */
+.comments-box-container {
+    display: none; 
+    margin-top: 15px; 
+    background-color: #1e1e1e; 
+    padding: 15px; 
+    border-radius: 8px;
+}
+
+.comment-input-wrapper {
+    display: flex; 
+    gap: 10px; 
+    margin-bottom: 15px;
+}
+
+.comment-styled-input {
+    flex: 1; 
+    background-color: #2a2a2a; 
+    border: 1px solid #444; 
+    color: white; 
+    padding: 10px; 
+    border-radius: 20px;
+    outline: none;
+}
+
+/* --- ชิ้นส่วนปุ่มแบบผสม (Utility/Modifier Class) --- */
+.btn-comment-submit {
+    background-color: #3a72b0; 
+    color: white; 
+    border: none; 
+    padding: 0 20px; 
+    border-radius: 20px; 
+    cursor: pointer; 
+    font-family: 'Germania', 'ChakraPetch', sans-serif;
+    transition: 0.2s;
+}
+.btn-comment-submit:hover {
+    background-color: #4b86c8;
+}
+
+/* คลาสความสวยงามปุ่ม ดันโพสต์ และ ปุ่มคอมเมนต์ */
+.btn-post-action {
+    background: transparent; 
+    border: none; 
+    cursor: pointer; 
+    font-size: 16px; 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    padding: 0;
+    transition: 0.2s;
+}
+.btn-post-action.action-upvoted {
+    color: #ff9800 !important; 
+    font-weight: bold;
+}
+.btn-post-action.action-normal {
+    color: #a0a0b5;
+}
+.btn-post-action:hover {
+    color: #ffffff;
+}
+
+/* ==========================================
+   กล่องสำหรับแก้ไขโพสต์ (Edit Post)
+   ========================================== */
+.edit-post-container { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px; width: 100%;
+
+    margin-top: -45px;      /* ดึงกล่องข้อความขึ้นไปชิดเส้นข้างบน */
+    margin-bottom: -55px;  /* ดึงปุ่มดันโพสต์ข้างล่าง ให้ขยับขึ้นมาใกล้ปุ่มบันทึก */
+}
+.edit-textarea {
+    width: 100%; background-color: #1e1e1e; color: #e0e0e0; border: 1px solid #444444;
+    border-radius: 8px; font-size: 16px; font-family: 'Segoe UI', sans-serif;
+    min-height: 80px; resize: vertical; box-sizing: border-box;
+    /* 🔥 เพิ่ม 2 บรรทัดนี้ เพื่อความเป็นโปร! */
+    resize: none;      /* ห้ามผู้ใช้ดึงขยายกล่องเล่น */
+    overflow: hidden;  /* ซ่อนแถบ Scrollbar ตอนข้อความยาวๆ */
+}
+.edit-textarea:focus { outline: none; border-color: #3a72b0; }
+.edit-actions { display: flex; justify-content: flex-end; gap: 10px; }
+
+.save-edit-btn, .cancel-edit-btn { padding: 8px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; transition: 0.2s; font-family: 'Germania', 'ChakraPetch', sans-serif; }
+.save-edit-btn { background-color: #3a72b0; color: white; border: none; }
+.save-edit-btn:hover { background-color: #4b86c8; }
+.cancel-edit-btn { background-color: transparent; color: #a0a0b5; border: 1px solid #444; }
+.cancel-edit-btn:hover { background-color: #333; color: #fff; }
+
+/* ==========================================
+   ระบบจัดเรียงแบบ Custom Hover (สำหรับหน้า Community)
+   ========================================== */
+.custom-sort-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.sort-btn {
+    background-color: transparent;
+    color: #e0e0e0;
+    border: 1px solid #e0e0e0;
+    padding: 0 15px;
+    height: 38px;
+    box-sizing: border-box; /* บังคับนับรวมเส้นขอบในความสูง 38px */
+    border-radius: 20px;
+    font-family: 'Germania', 'ChakraPetch', 'Segoe UI', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.sort-btn:hover { background-color: #383838; }
+
+.sort-dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px); /* เว้นระยะลงมาจากปุ่มหลัก 8px */
+    background-color: #252526;
+    min-width: 140px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.7);
+    border: 1px solid #444;
+    border-radius: 12px;
+    z-index: 20;
+    overflow: hidden;
+}
+
+/* สั่งกางออกเมื่อเมาส์ชี้กล่องแม่ */
+.custom-sort-dropdown:hover .sort-dropdown-content {
+    display: block;
+}
+
+/* สะพานล่องหนกันเมาส์ตกหลุม */
+.custom-sort-dropdown::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 15px;
+    background: transparent;
+}
+
+.sort-dropdown-content button {
+    color: #e0e0e0;
+    padding: 12px 15px;
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Germania', 'ChakraPetch', sans-serif;
+    font-size: 14px;
+    transition: 0.2s;
+    white-space: nowrap;
+}
+.sort-dropdown-content button:hover {
+    background-color: #383838;
+}

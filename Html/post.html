@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <title>รายละเอียดโพสต์ | 2dProjectTest Wiki</title>
+    <link rel="stylesheet" href="../Css/main.css">
+    <link rel="stylesheet" href="../Css/community.css">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <div class="navbar-logo">2DProjectTest : Post</div>
+        <div class="navbar-profile">
+            <div class="profile-avatar" id="userAvatar" style="display: none;"></div>
+
+            <div class="dropdown">
+                <button class="profile-btn" id="mainProfileBtn">Login</button>
+                <div class="dropdown-content" id="dropdownMenu" style="display: none;">
+                    <div class="dropdown-panel">
+                        <a href="profile.html">Profile</a>
+                        <a href="#" onclick="logoutUser()" class="logout-btn">Logout</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="noti-dropdown">
+                <button class="noti-btn">
+                    🔔<span class="noti-badge" id="notiCount" style="display:none;">0</span>
+                </button>
+                <div class="noti-dropdown-content" id="notiMenu">
+                    <div class="noti-header">การแจ้งเตือน</div>
+                    <div id="notiList">
+                        <div style="padding: 15px; text-align: center; color: #888; font-size: 14px;">
+                            ไม่มีการแจ้งเตือนใหม่</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container community-page">
+        <div id="singlePostContainer">
+            <div class="post-card" style="text-align: center; color: #888;">กำลังโหลดโพสต์...</div>
+        </div>
+    </div>
+
+    <button class="floating-back-btn" onclick="window.location.href='community.html'">◀ Back</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../Js/post.js"></script>
+</body>
+
+</html>

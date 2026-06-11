@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <title>กระดานสนทนา | 2dProjectTest Wiki</title>
+    <link rel="stylesheet" href="../Css/main.css">
+    <link rel="stylesheet" href="../Css/community.css">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <div class="navbar-logo">2DProjectTest : Community</div>
+
+        <div class="navbar-profile">
+
+            <div class="profile-avatar" id="userAvatar"></div>
+
+            <div class="dropdown">
+                <button class="profile-btn" id="mainProfileBtn">Login</button>
+                <div class="dropdown-content" id="dropdownMenu">
+                    <div class="dropdown-panel">
+                        <a href="profile.html">Profile</a>
+                        <a href="#" onclick="logoutUser()" class="logout-btn">Logout</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="noti-dropdown">
+
+                <button class="noti-btn">
+                    🔔<span class="noti-badge" id="notiCount" style="display:none;">0</span>
+                </button>
+
+                <div class="noti-dropdown-content" id="notiMenu">
+                    <div class="noti-header">การแจ้งเตือน</div>
+                    <div id="notiList">
+                        <div style="padding: 15px; text-align: center; color: #888; font-size: 14px;">
+                            ไม่มีการแจ้งเตือนใหม่</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container community-page">
+
+        <div class="create-post-box">
+            <textarea id="postInput" placeholder="มีอะไรอยากแชร์กับนักเดินทางคนอื่นไหม?" 
+                oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px'; updatePostCounter(this.value.length)"
+                maxlength="1000"></textarea>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+                <span id="postCharCounter" style="font-size: 12px; color: #777;">0 / 1,000</span>
+                <button class="post-submit-btn" onclick="submitPost()">โพสต์เลย</button>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 class="post-header"
+                style="margin: 0 !important; background-color: #e0e0e0 !important;font-family: 'Germania'; color: #1e1e1e !important; display: inline-block; padding: 5px 30px !important; border-radius: 20px !important;">
+                Feed</h2>
+
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div
+                    style="background-color: #e0e0e0; color: #1e1e1e; font-weight: bold; font-family: 'Germania', 'ChakraPetch', sans-serif; padding: 0 15px; border-radius: 20px; height: 38px; display: flex; align-items: center; box-sizing: border-box;">
+                    Sort by :
+                </div>
+
+                <div class="custom-sort-dropdown" style="position: relative; display: inline-block;">
+                    <button class="sort-btn" id="sortDisplayBtn">🕒 Latest</button>
+
+                    <div class="sort-dropdown-content" id="sortDropdownMenu">
+                        <button onclick="selectSort('latest', '🕒 Latest')">🕒 Latest</button>
+                        <button onclick="selectSort('top', '🔥 Popular')">🔥 Popular</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Panel: ปุ่มล้างข้อมูลเก่า (แสดงเฉพาะ Admin) -->
+        <div id="adminCleanPanel" style="display:none; margin-bottom: 15px;">
+            <button onclick="adminCleanOldPosts()" style="background-color: #3a3a3a; color: #ff9800; border: 1px solid #ff9800; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-family: 'Germania', sans-serif; font-size: 14px; transition: 0.2s;" onmouseover="this.style.backgroundColor='rgba(255,152,0,0.15)'" onmouseout="this.style.backgroundColor='#3a3a3a'">
+                🗑️ ล้างโพสต์เก่า (Admin)
+            </button>
+        </div>
+
+        <div id="feedContainer">
+            <div class="post-card" style="text-align: center; color: #888;">กำลังโหลดกระดานสนทนา...</div>
+        </div>
+
+    </div>
+
+    <button class="floating-back-btn" onclick="window.location.href='main.html'">◀ Back</button>
+
+    <div id="customAlert" class="alert-overlay">
+        <div class="alert-box">
+            <h3 id="alertTitle">แจ้งเตือน</h3>
+            <p id="alertMessage">ข้อความ</p>
+            <button onclick="document.getElementById('customAlert').style.display='none'" class="alert-btn"
+                style="width: auto;">ตกลง</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../Js/community.js"></script>
+</body>
+
+</html>

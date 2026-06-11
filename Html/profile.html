@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>ข้อมูลส่วนตัว | 2dProjectTest Wiki</title>
+    <link rel="stylesheet" href="../Css/profile.css">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <div class="navbar-logo">2DProjectTest</div>
+    </div>
+
+    <div class="container profile-page">
+        
+        <div class="profile-header">
+            
+            <div class="avatar-section">
+                <div class="big-avatar" id="displayAvatar">🤖</div>
+                <button class="change-btn" onclick="openAvatarModal()">Change</button>
+            </div>
+
+            <div class="info-section">
+                
+                <div class="info-row">
+                    <label>Name</label>
+                    <input type="text" id="nameInput" disabled>
+                    <button class="action-btn" id="editNameBtn" onclick="toggleEditName()">Change</button>
+                </div>
+
+                <div class="info-row">
+                    <label>Email</label>
+                    <input type="email" id="emailInput" disabled>
+                    <button class="action-btn" onclick="alert('ระบบเปลี่ยนอีเมลกำลังอยู่ในช่วงพัฒนาครับ!')">Change</button>
+                </div>
+
+                <div class="info-row date-row">
+                    <div class="date-label">Created on</div>
+                    <div class="date-value" id="createdDateDisplay">dd/mm/yyyy</div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="posts-section">
+           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 class="post-header" style="margin: 0 !important;">Post</h2>
+                
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="background-color: #e0e0e0; color: #1e1e1e; font-weight: bold; font-family: 'Germania', 'ChakraPetch', sans-serif; padding: 0 15px; border-radius: 20px; height: 38px; display: flex; align-items: center; box-sizing: border-box;">
+                        Sort by :
+                    </div>
+                    
+                    <div class="custom-sort-dropdown" style="position: relative; display: inline-block;">
+                        <button class="sort-btn" id="sortDisplayBtn">🕒 Latest</button>
+                        
+                        <div class="sort-dropdown-content" id="sortDropdownMenu">
+                            <button onclick="selectSort('latest', '🕒 Latest')">🕒 Latest</button>
+                            <button onclick="selectSort('top', '🔥 Popular')">🔥 Popular</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="postContainer">
+                <div class="post-card" style="text-align: center; color: #888;">Loading posts...</div>
+            </div>
+
+            <div class="pagination">
+                <button class="page-btn" id="prevBtnProfile" onclick="prevPageProfile()">◀</button>
+                <div class="page-number" id="pageInfoProfile">Page 1</div>
+                <button class="page-btn" id="nextBtnProfile" onclick="nextPageProfile()">▶</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="avatarModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3 style="margin-top: 0; font-family: 'Germania', sans-serif; letter-spacing: 1px;">Select Avatar</h3>
+            
+            <div class="modal-preview-container">
+                <div id="modalPreviewAvatar" class="big-modal-avatar">🤖</div>
+            </div>
+
+            <div class="avatar-grid">
+                <div class="avatar-option" data-avatar="robot_default" title="หุ่นยนต์รุ่นมาตรฐาน">🤖</div>
+                <div class="avatar-option" data-avatar="robot_worker" title="หุ่นยนต์สายซ่อมบำรุง">🔧</div>
+                <div class="avatar-option" data-avatar="robot_combat" title="หุ่นยนต์สายต่อสู้">⚔️</div>
+                <div class="avatar-option" data-avatar="robot_ancient" title="หุ่นยนต์โบราณ">🗿</div>
+                
+                <div class="avatar-option" data-avatar="robot_medic" title="หุ่นยนต์สายแพทย์">💉</div>
+                <div class="avatar-option" data-avatar="robot_scout" title="หุ่นยนต์ลาดตระเวน">👁️</div>
+                <div class="avatar-option" data-avatar="robot_heavy" title="หุ่นยนต์เกราะหนัก">🛡️</div>
+                <div class="avatar-option" data-avatar="robot_alien" title="หุ่นยนต์เอเลี่ยน">👾</div>
+            </div>
+            
+            <button class="close-modal-btn" onclick="closeAvatarModal()">Cancel</button>
+        </div>
+    </div>
+    
+    <button class="floating-back-btn" onclick="window.location.href='main.html'">◀ Back</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../Js/profile.js"></script>
+</body>
+</html>

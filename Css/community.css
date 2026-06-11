@@ -1,0 +1,181 @@
+.community-page {
+    max-width: 800px;
+    margin: 40px auto;
+}
+
+/* กล่องพิมพ์โพสต์ */
+.create-post-box {
+    background-color: #252526;
+    border: 1px solid #333333;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+
+
+}
+
+.create-post-box textarea {
+    width: 100%;
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    border: 1px solid #444444;
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 16px;
+    min-height: 80px;
+    box-sizing: border-box;
+    font-family: 'Germania', 'ChakraPetch', 'Segoe UI', sans-serif;
+    resize: none;      
+    overflow: hidden; 
+}
+
+.post-submit-btn {
+    align-self: flex-end;
+    background-color: #3a72b0;
+    color: white;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Germania', 'ChakraPetch', sans-serif;
+    letter-spacing: 1px;
+}
+
+/* ดีไซน์กล่องโพสต์ */
+.post-card {
+    background-color: #252526;
+    border: 1px solid #333333;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+
+}
+
+.post-header-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+
+    padding-bottom: 10px; 
+    border-bottom: 1px solid #333333;
+}
+
+/* แถบเครื่องมือใต้โพสต์ (ดันโพสต์ & คอมเมนต์) */
+.post-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #333333;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: #a0a0b5;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+.action-btn:hover { color: #ffffff; }
+.action-btn.upvoted { color: #ff9800; font-weight: bold; }
+
+/* โซนคอมเมนต์ */
+.comments-section {
+    margin-top: 15px;
+    background-color: #1e1e1e;
+    padding: 15px;
+    border-radius: 8px;
+    display: none; 
+}
+
+.comment-input-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.comment-input-box input {
+    flex: 1;
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    color: white;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.comment-input-box button {
+    background-color: #3a72b0;
+    color: white;
+    border: none;
+    padding: 0 20px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.comment-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #333;
+    font-size: 14px;
+}
+.comment-item:last-child { border-bottom: none; }
+
+/* --- สไตล์ปุ่ม Back ลอยซ้ายล่าง --- */
+.floating-back-btn {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    background-color: #252526;
+    color: #e0e0e0;
+    border: 2px solid #444444;
+    padding: 10px 25px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: 'Germania', 'ChakraPetch', sans-serif;
+    font-size: 18px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.8);
+    transition: 0.2s ease-in-out;
+    z-index: 1000;
+}
+
+.floating-back-btn:hover {
+    background-color: #383838;
+    border-color: #e0e0e0;
+    transform: scale(1.05); 
+}
+
+/* --- ระบบ Dropdown เมนู 3 จุด --- */
+.action-dropdown { position: relative; display: inline-block; margin-left: auto; }
+.dots-btn {
+    background: transparent; border: none; color: #a0a0b5;
+    font-size: 24px; font-weight: bold; cursor: pointer;
+    padding: 0 10px; transition: 0.2s; line-height: 1;
+}
+.dots-btn:hover { color: #ffffff; }
+
+.action-dropdown-content {
+    display: none; position: absolute; right: 0; top: 100%;
+    background-color: #252526; min-width: 150px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.7);
+    border: 1px solid #444; border-radius: 8px; z-index: 10; overflow: hidden;
+}
+.action-dropdown:hover .action-dropdown-content { display: block; }
+.action-dropdown-content button {
+    color: #e0e0e0; padding: 12px 15px; display: block; width: 100%;
+    text-align: left; background: none; border: none; cursor: pointer;
+    font-family: 'Germania', 'ChakraPetch', 'Segoe UI', sans-serif; font-size: 14px; transition: 0.2s; white-space: nowrap;
+}
+.action-dropdown-content button:hover { background-color: #383838; }
+.action-dropdown-content button.delete-btn { color: #ff4444; }
+.action-dropdown-content button.delete-btn:hover { background-color: #4a1919; }

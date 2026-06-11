@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ข้อมูลพื้นฐาน | 2dProjectTest Wiki</title>
+    <!-- โหลดสไตล์หลักก่อน เพื่อให้ได้ฟอนต์และสไตล์องค์ประกอบพื้นฐานที่เหมือนหน้าอื่น -->
+    <link rel="stylesheet" href="../Css/main.css">
+    <!-- โหลดสไตล์หลักสำหรับหน้าวิกิโดยเฉพาะ -->
+    <link rel="stylesheet" href="../Css/basicinfo.css">
+    <!-- โหลด Quill.js (Rich Text Editor) -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <!-- โหลด Image Resize Module -->
+    <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
+</head>
+<body>
+
+    <!-- 1. แถบนำทางด้านบนสุด (Navbar) -->
+    <div class="navbar">
+        <div class="navbar-logo">2DProjectTest : Wiki</div>
+
+        <div class="navbar-profile">
+            <!-- รูปโปรไฟล์ Avatar -->
+            <div class="profile-avatar" id="userAvatar"></div>
+
+            <!-- ดร็อปดาวน์ข้อมูลโปรไฟล์ -->
+            <div class="dropdown">
+                <button class="profile-btn" id="mainProfileBtn">Login</button>
+                <div class="dropdown-content" id="dropdownMenu">
+                    <div class="dropdown-panel">
+                        <a href="profile.html">Profile</a>
+                        <a href="#" onclick="logoutUser()" class="logout-btn">Logout</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ดร็อปดาวน์การแจ้งเตือน -->
+            <div class="noti-dropdown">
+                <button class="noti-btn">
+                    🔔<span class="noti-badge" id="notiCount" style="display:none;">0</span>
+                </button>
+                <div class="noti-dropdown-content" id="notiMenu">
+                    <div class="noti-header">การแจ้งเตือน</div>
+                    <div id="notiList">
+                        <div style="padding: 15px; text-align: center; color: #888; font-size: 14px;">ไม่มีการแจ้งเตือนใหม่</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. ส่วนแสดงข้อมูล 2 คอลัมน์ (Two-Column Layout) -->
+    <div class="basicinfo-container">
+        
+        <!-- Sidebar ฝั่งซ้าย -->
+        <div class="sidebar">
+            <!-- ตัวเลือกจัดเรียง (Sort Dropdown) -->
+            <div class="sort-container" style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                <div class="sort-label" style="background-color: #e0e0e0; color: #1e1e1e; padding: 0 15px; height: 38px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border-radius: 20px; font-family: 'Germania', 'ChakraPetch', sans-serif; font-size: 16px; font-weight: bold;">
+                    Sort by :
+                </div>
+                <div class="custom-sort-dropdown">
+                    <button class="sort-btn" id="sortWikiBtn">
+                        ⭐ Admin ▼
+                    </button>
+                    <div class="sort-dropdown-content">
+                        <button onclick="changeWikiSort('admin')">⭐ Admin</button>
+                        <button onclick="changeWikiSort('top')">🔥 Top Voted</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-box">
+                <!-- พื้นที่เลื่อนแสดงรายการหัวข้อเนื้อหา -->
+                <div class="sidebar-menu" id="sidebarMenu">
+                    <div style="color: #888; font-size: 14px; text-align: center; padding: 20px;">กำลังโหลด...</div>
+                </div>
+            </div>
+            
+            <!-- ปุ่มเพิ่มหน้าจะถูกซ่อนไว้เริ่มต้น และจะแสดงผ่าน JS เฉพาะเมื่อเป็นแอดมิน -->
+            <button class="sidebar-admin-btn" id="adminSidebarBtn" onclick="openAddModal()" style="display: none;">
+                ปุ่มเพิ่มหน้า(สำหรับแอดมิน)
+            </button>
+        </div>
+
+        <!-- Main Content ฝั่งขวา (ใช้พื้นที่ที่เหลือทั้งหมด) -->
+        <div class="main-content">
+            
+            <!-- กล่องแสดงหัวเรื่อง (Title) -->
+            <div class="content-title-card">
+                <h2 class="content-title-text" id="contentTitleText">หัวเรื่อง</h2>
+                <!-- ปุ่มจัดการของแอดมิน (แก้ไข/ลบ) ซึ่งจะโชว์เฉพาะแอดมิน -->
+                <div class="admin-action-group" id="adminActionGroup" style="display: none;">
+                    <button class="admin-edit-btn" onclick="openEditModal()">✏️ แก้ไขหน้า</button>
+                    <button class="admin-delete-btn" onclick="deleteActiveWiki()">🗑️ ลบหน้า</button>
+                </div>
+            </div>
+
+            <!-- กล่องขนาดใหญ่สำหรับแสดงเนื้อหา (Content) -->
+            <div class="content-body-card" id="contentBodyText">
+                กรุณารอสักครู่ กำลังดึงข้อมูลสารานุกรม...
+            </div>
+            
+            <!-- ส่วนปฏิสัมพันธ์ (อัพโหวต & คอมเมนต์) จะถูกซ่อนไว้ถ้ายังไม่มีหน้าแสดงผล -->
+            <div id="wikiInteractionSection" style="display: none; margin-top: 20px;">
+                <div class="post-actions" style="margin-top: 0; border-top: none; padding-top: 0;">
+                    <!-- ปุ่มดันโพสต์ (Upvote) -->
+                    <button class="action-btn" id="wikiUpvoteBtn" onclick="toggleWikiUpvote()">
+                        ⬆️ ดันโพสต์ (<span id="wikiUpvoteCount">0</span>)
+                    </button>
+                    <!-- ปุ่มคอมเมนต์ -->
+                    <button class="action-btn" id="wikiCommentBtn" onclick="toggleWikiCommentSection()">
+                        💬 คอมเมนต์ (<span id="wikiCommentCount">0</span>)
+                    </button>
+                </div>
+
+                <!-- โซนคอมเมนต์ (เปิด/ปิด ได้) -->
+                <div class="comments-section" id="wikiCommentSection" style="display: none; background-color: #252526; border: 1px solid #333333; margin-top: 15px;">
+                    <div class="comment-input-box">
+                        <input type="text" id="wikiCommentInput" placeholder="แสดงความคิดเห็นเกี่ยวกับหน้านี้..." onkeypress="if(event.key === 'Enter') submitWikiComment()">
+                        <button onclick="submitWikiComment()">ส่ง</button>
+                    </div>
+                    <div id="wikiCommentList">
+                        <!-- รายการคอมเมนต์จะถูกดึงมาโชว์ที่นี่ -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 3. ปุ่มย้อนกลับลอยด้านล่างซ้าย (Floating Back Button) -->
+    <button class="floating-back-btn" onclick="window.location.href='main.html'">◀ Back</button>
+
+    <!-- ====================================================
+       หน้าต่าง Modal สำหรับแอดมินจัดการข้อมูล (Modals)
+       ==================================================== -->
+    
+    <!-- Modal: เพิ่มหน้าใหม่ -->
+    <div class="modal-overlay" id="addWikiModal">
+        <div class="modal-box">
+            <h3>➕ เพิ่มหน้าสารานุกรมใหม่</h3>
+            
+            <div class="form-group">
+                <label for="addTitleInput">ชื่อหัวข้อ (Title)</label>
+                <input type="text" id="addTitleInput" class="form-input" placeholder="กรอกชื่อหัวข้อข้อมูล เช่น ข้อมูลตัวละคร">
+            </div>
+            
+            <div class="form-group">
+                <label for="addOrderInput">ลำดับการแสดงผล (Order Number)</label>
+                <input type="number" id="addOrderInput" class="form-input" min="1" placeholder="ลำดับ เช่น 1, 2, 3">
+            </div>
+            
+            <div class="form-group">
+                <label>เนื้อหาของหน้า (Content)</label>
+                <!-- กล่องสำหรับ Quill Editor -->
+                <div id="addEditorContainer"></div>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeAddModal()">ยกเลิก</button>
+                <button class="btn-save" onclick="submitAddWiki()">บันทึกข้อมูล</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: แก้ไขหน้าเดิม -->
+    <div class="modal-overlay" id="editWikiModal">
+        <div class="modal-box">
+            <h3>✏️ แก้ไขหน้าสารานุกรม</h3>
+            
+            <div class="form-group">
+                <label for="editTitleInput">ชื่อหัวข้อ (Title)</label>
+                <input type="text" id="editTitleInput" class="form-input" placeholder="กรอกชื่อหัวข้อข้อมูล">
+            </div>
+            
+            <div class="form-group">
+                <label for="editOrderInput">ลำดับการแสดงผล (Order Number)</label>
+                <input type="number" id="editOrderInput" class="form-input" min="1" placeholder="ลำดับ">
+            </div>
+            
+            <div class="form-group">
+                <label>เนื้อหาของหน้า (Content)</label>
+                <!-- กล่องสำหรับ Quill Editor -->
+                <div id="editEditorContainer"></div>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeEditModal()">ยกเลิก</button>
+                <button class="btn-save" onclick="submitEditWiki()">บันทึกข้อมูล</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- กล่องแจ้งเตือนรวม (Custom Alert Overlay) -->
+    <div id="customAlert" class="alert-overlay">
+        <div class="alert-box">
+            <h3 id="alertTitle">แจ้งเตือน</h3>
+            <p id="alertMessage">ข้อความจะแสดงตรงนี้</p>
+            <button onclick="closeAlert()" class="alert-btn" style="width: auto;">ตกลง</button>
+        </div>
+    </div>
+
+    <!-- ====================================================
+       โหลดสคริปต์ Supabase และไฟล์การทำงาน
+       ==================================================== -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../Js/basicinfo.js"></script>
+</body>
+</html>

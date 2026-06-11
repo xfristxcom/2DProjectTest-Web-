@@ -1,0 +1,422 @@
+@font-face {
+    font-family: 'Germania';
+    src: url('../Front/GermaniaOne-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'ChakraPetch';
+    src: url('../Front/ChakraPetch-Bold.ttf') format('truetype');
+}
+
+body {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    font-family: 'Germania', 'ChakraPetch', 'Segoe UI', Tahoma, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* --- 1. บังคับเปลี่ยนฟอนต์ Germania รวมไว้จุดเดียว --- */
+.profile-container, label, input, .navbar-logo, .post-header, 
+.floating-back-btn, .change-btn, .action-btn, .date-label, 
+.date-value, .post-submit-btn, .save-edit-btn, .cancel-edit-btn {
+    font-family: 'Germania', 'ChakraPetch', sans-serif !important;
+    letter-spacing: 0.5px;
+}
+
+/* --- 2. แถบ Navbar --- */
+.navbar {
+    background-color: #252526;
+    border-bottom: 1px solid #111111;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    min-height: 75px;         /* บังคับความสูงขั้นต่ำให้เท่ากับหน้าที่มีรูปโปรไฟล์ */
+    box-sizing: border-box;   /* สั่งให้การวัดขนาดรวมขอบและ Padding ไปด้วย */
+}
+.navbar-logo { font-size: 28px; color: #ffffff; letter-spacing: 2px; }
+
+/* --- 3. โครงสร้างหลักของหน้า (Layout) --- */
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* --- 4. โซนข้อมูลส่วนตัว (Profile Header) --- */
+.profile-header {
+    display: flex;
+    gap: 40px;
+    background-color: #252526;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid #333333;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    margin-bottom: 40px;
+}
+
+.avatar-section { display: flex; flex-direction: column; align-items: center; width: 250px; }
+.big-avatar {
+    width: 180px; height: 180px;
+    background-color: #383838;
+    border-radius: 50%;
+    border: 2px solid #555555;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 80px;
+    margin-bottom: 15px;
+}
+
+.info-section { flex: 1; display: flex; flex-direction: column; gap: 20px; justify-content: center; }
+.info-row { display: flex; align-items: center; gap: 15px; }
+.info-row label { width: 70px; text-align: right; font-weight: bold; color: #a0a0b5; }
+.info-row input {
+    flex: 1; padding: 8px 15px !important;
+    background-color: #1e1e1e !important; border: 1px solid #444444 !important;
+    border-radius: 8px !important; color: white !important; font-size: 16px;
+}
+.info-row input:disabled { color: #888888 !important; background-color: #2a2a2a !important; }
+
+.change-btn, .action-btn {
+    background-color: transparent; color: #e0e0e0;
+    border: 1px solid #e0e0e0; padding: 8px 20px;
+    border-radius: 20px; cursor: pointer; transition: 0.2s;
+
+}
+.change-btn:hover, .action-btn:hover { background-color: #383838; }
+
+.date-row { justify-content: center; margin-top: 10px; }
+.date-label, .date-value {
+    background-color: #1e1e1e; border: 1px solid #444444; padding: 8px 20px; border-radius: 20px;
+}
+.date-value { padding: 8px 30px; }
+
+/* --- 5. โซนการ์ดโพสต์และคอมเมนต์ --- */
+.post-header {
+    background-color: #e0e0e0 !important; color: #1e1e1e !important;
+    display: inline-block; padding: 5px 30px !important;
+    border-radius: 20px !important; margin-bottom: 20px !important;
+}
+
+.post-card {
+    background-color: #252526; border: 1px solid #333333;
+    border-radius: 12px; padding: 25px; margin-bottom: 15px; min-height: 80px;
+}
+
+.post-header-info {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 15px; position: relative;
+    padding-bottom: 10px; border-bottom: 1px solid #333333;
+}
+
+.post-actions {
+    display: flex; gap: 15px; margin-top: 20px;
+    padding-top: 15px; border-top: 1px solid #333333;
+}
+
+/* --- 6. เมนู 3 จุด (Dropdown) --- */
+.action-dropdown { position: relative; display: inline-block; margin-left: auto; }
+.dots-btn {
+    background: transparent; border: none; color: #a0a0b5;
+    font-size: 24px; font-weight: bold; cursor: pointer;
+    padding: 0 10px; transition: 0.2s; line-height: 1;
+}
+.dots-btn:hover { color: #ffffff; }
+
+.action-dropdown-content {
+    display: none; position: absolute; right: 0; top: 100%;
+    background-color: #252526; min-width: 150px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.7);
+    border: 1px solid #444; border-radius: 8px; z-index: 10; overflow: hidden;
+}
+.action-dropdown:hover .action-dropdown-content { display: block; }
+.action-dropdown-content button {
+    color: #e0e0e0; padding: 12px 15px; display: block; width: 100%;
+    text-align: left; background: none; border: none; cursor: pointer;
+    font-family: 'Germania', 'ChakraPetch', 'Segoe UI', sans-serif; font-size: 14px; transition: 0.2s; white-space: nowrap;
+}
+.action-dropdown-content button:hover { background-color: #383838; }
+.action-dropdown-content button.delete-btn { color: #ff4444; }
+.action-dropdown-content button.delete-btn:hover { background-color: #4a1919; }
+
+/* --- 7. กล่องแก้ไขโพสต์ --- */
+.edit-post-container { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px; width: 100%; 
+
+    margin-top: -45px;      /* ดึงกล่องข้อความขึ้นไปชิดเส้นข้างบน */
+    margin-bottom: -55px;  /* ดึงปุ่มดันโพสต์ข้างล่าง ให้ขยับขึ้นมาใกล้ปุ่มบันทึก */
+}
+.edit-textarea {
+    width: 100%; background-color: #1e1e1e; color: #e0e0e0; border: 1px solid #444444;
+    border-radius: 8px; font-size: 16px; font-family: 'Segoe UI', sans-serif;
+    min-height: 80px; resize: vertical; box-sizing: border-box;
+    /* 🔥 เพิ่ม 2 บรรทัดนี้ เพื่อความเป็นโปร! */
+    resize: none;      /* ห้ามผู้ใช้ดึงขยายกล่องเล่น */
+    overflow: hidden;  /* ซ่อนแถบ Scrollbar ตอนข้อความยาวๆ */
+}
+.edit-textarea:focus { outline: none; border-color: #3a72b0; }
+.edit-actions { display: flex; justify-content: flex-end; gap: 10px; }
+
+.save-edit-btn, .cancel-edit-btn { padding: 8px 20px; border-radius: 6px; cursor: pointer; font-size: 16px; transition: 0.2s; }
+.save-edit-btn { background-color: #3a72b0; color: white; border: none; }
+.save-edit-btn:hover { background-color: #4b86c8; }
+.cancel-edit-btn { background-color: transparent; color: #a0a0b5; border: 1px solid #444; }
+.cancel-edit-btn:hover { background-color: #333; color: #fff; }
+
+/* --- 8. Popup เปลี่ยนอวาตาร์ --- */
+.modal-overlay {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.85); justify-content: center; align-items: center; z-index: 1000;
+}
+.modal-box {
+    background-color: #252526; padding: 30px 40px; border-radius: 12px;
+    border: 1px solid #444444; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+    animation: popIn 0.2s ease;
+}
+@keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+.avatar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 20px 0; justify-items: center; }
+.avatar-option {
+    width: 60px; height: 60px; font-size: 35px; background-color: #383838;
+    border-radius: 50%; display: flex; justify-content: center; align-items: center;
+    cursor: pointer; border: 3px solid transparent; transition: 0.2s;
+}
+.avatar-option:hover { transform: scale(1.1); }
+.avatar-option.selected { border-color: #3a72b0; box-shadow: 0 0 15px rgba(58, 114, 176, 0.6); }
+
+.modal-preview-container { display: flex; justify-content: center; margin-bottom: 20px; }
+.big-modal-avatar {
+    width: 120px; height: 120px; background-color: #383838; border-radius: 50%;
+    border: 3px solid #555555; display: flex; justify-content: center; align-items: center;
+    font-size: 60px; transition: 0.2s ease-in-out;
+}
+
+.close-modal-btn {
+    background-color: transparent; color: #e0e0e0; border: 1px solid #e0e0e0;
+    padding: 8px 30px; border-radius: 20px; cursor: pointer; transition: 0.2s; margin-top: 10px;
+    font-family: 'Germania', 'ChakraPetch', sans-serif; font-size: 16px;
+}
+.close-modal-btn:hover { background-color: #383838; }
+
+/* --- 9. ปุ่มจิปาถะ (Pagination & Back Button) --- */
+.pagination { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 30px; }
+.page-btn { background-color: transparent; color: #e0e0e0; border: 1px solid #444444; border-radius: 8px; padding: 5px 15px; cursor: pointer; font-size: 18px; }
+.page-btn:hover { background-color: #383838; }
+.page-number { border: 1px solid #444444; padding: 5px 25px; border-radius: 8px; }
+
+.floating-back-btn {
+    position: fixed; bottom: 30px; left: 30px; background-color: #252526;
+    color: #e0e0e0; border: 2px solid #444444; padding: 10px 25px;
+    border-radius: 30px; cursor: pointer; font-size: 18px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.8); transition: 0.2s ease-in-out; z-index: 1000;
+}
+.floating-back-btn:hover { background-color: #383838; border-color: #e0e0e0; transform: scale(1.05); }
+
+/* --- โครงสร้างกล่องและอินพุตในโซนคอมเมนต์ --- */
+.comments-box-container {
+    display: none; 
+    margin-top: 15px; 
+    background-color: #1e1e1e; 
+    padding: 15px; 
+    border-radius: 8px;
+}
+
+.comment-input-wrapper {
+    display: flex; 
+    gap: 10px; 
+    margin-bottom: 15px;
+}
+
+.comment-styled-input {
+    flex: 1; 
+    background-color: #2a2a2a; 
+    border: 1px solid #444; 
+    color: white; 
+    padding: 10px; 
+    border-radius: 20px;
+    outline: none;
+}
+
+/* --- ชิ้นส่วนปุ่มแบบผสม (Utility/Modifier Class) --- */
+.btn-comment-submit {
+    background-color: #3a72b0; 
+    color: white; 
+    border: none; 
+    padding: 0 20px; 
+    border-radius: 20px; 
+    cursor: pointer; 
+    font-family: 'Germania', 'ChakraPetch', sans-serif;
+    transition: 0.2s;
+}
+.btn-comment-submit:hover {
+    background-color: #4b86c8;
+}
+
+/* คลาสความสวยงามปุ่ม ดันโพสต์ และ ปุ่มคอมเมนต์ */
+.btn-post-action {
+    background: transparent; 
+    border: none; 
+    cursor: pointer; 
+    font-size: 16px; 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    padding: 0;
+    transition: 0.2s;
+}
+.btn-post-action.action-upvoted {
+    color: #ff9800 !important; 
+    font-weight: bold;
+}
+.btn-post-action.action-normal {
+    color: #a0a0b5;
+}
+.btn-post-action:hover {
+    color: #ffffff;
+}
+
+/* ==========================================
+   ระบบจัดเรียง และ เปลี่ยนหน้า (เฉพาะหน้า Profile)
+   ========================================== */
+.sort-select {
+    background-color: transparent;
+    color: #e0e0e0;
+    border: 1px solid #e0e0e0;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-family: 'Germania', 'ChakraPetch', 'Segoe UI', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+    transition: 0.2s;
+    color-scheme: dark;
+    
+    /* 🔥 เพิ่มโค้ดชุดนี้เข้าไป เพื่อลบลูกศรเชยๆ และใส่ลูกศรมินิมอลแทน */
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e0e0e0'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 35px; /* เว้นระยะทางขวาไม่ให้ตัวหนังสือทับลูกศร */
+}
+
+.sort-select:hover { background-color: #383838; }
+.sort-select option {
+    background-color: #252526;
+    color: #e0e0e0;
+}
+
+.pagination { 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    gap: 15px; 
+    margin-top: 30px; 
+}
+.page-btn { 
+    background-color: transparent; 
+    color: #e0e0e0; 
+    border: 1px solid #e0e0e0; 
+    border-radius: 20px; 
+    padding: 8px 20px; 
+    cursor: pointer; 
+    font-family: 'Germania', 'ChakraPetch', sans-serif;
+    font-size: 16px; 
+    transition: 0.2s; 
+}
+.page-btn:hover:not(:disabled) { background-color: #383838; }
+.page-btn:disabled {
+    border-color: #444444;
+    color: #666666;
+    cursor: not-allowed;
+}
+.page-number { 
+    font-weight: bold;
+    color: #e0e0e0;
+    font-size: 16px;
+    background-color: transparent;
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: 1px solid #e0e0e0;
+    font-family: 'Germania', 'ChakraPetch', sans-serif;
+
+}
+/* ==========================================
+   ระบบจัดเรียง (Custom Dropdown)
+   ========================================== */
+.custom-sort-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.sort-btn {
+    background-color: transparent;
+    color: #e0e0e0;
+    border: 1px solid #e0e0e0;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-family: 'Germania', 'ChakraPetch', 'Segoe UI', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.sort-btn:hover { background-color: #383838; }
+
+/* กล่องเมนูที่กางออกมา (ดีไซน์เดียวกับเมนู 3 จุด) */
+/* 1. กล่องเมนู (ซ่อนไว้ก่อน) */
+.sort-dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px); /* ขยับลงมา 8px */
+    background-color: #252526;
+    min-width: 140px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.7);
+    border: 1px solid #444;
+    border-radius: 12px;
+    z-index: 20;
+    overflow: hidden;
+}
+
+/* 2. 🔥 เวทมนตร์เปิดกล่อง: เมื่อเมาส์ชี้ที่กล่องแม่ ให้โชว์กล่องลูก */
+.custom-sort-dropdown:hover .sort-dropdown-content {
+    display: block;
+}
+
+/* 3. 🔥 สะพานล่องหน: ป้องกันเมาส์ตกหลุมเวลาเลื่อนลงมาที่เมนู */
+.custom-sort-dropdown::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 15px; 
+    background: transparent;
+}
+
+.sort-dropdown-content button {
+    color: #e0e0e0;
+    padding: 12px 15px;
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Germania', 'ChakraPetch', sans-serif;
+    font-size: 14px;
+    transition: 0.2s;
+    white-space: nowrap;
+}
+.sort-dropdown-content button:hover {
+    background-color: #383838;
+}
