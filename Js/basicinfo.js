@@ -785,7 +785,26 @@ class SupabaseImageAdapter {
 }
 
 function getEditorTools() {
-    return {};
+    const headerClass = typeof Header === 'function' ? Header : null;
+    const imageClass = typeof ImageTool === 'function' ? ImageTool : null;
+
+    const tools = {};
+    if (headerClass) {
+        tools.header = {
+            class: headerClass,
+            inlineToolbar: true,
+            config: { placeholder: 'พิมพ์หัวข้อตรงนี้...', levels: [2, 3, 4], defaultLevel: 2 }
+        };
+    }
+    if (imageClass) {
+        tools.image = {
+            class: imageClass,
+            config: {
+                uploader: new SupabaseImageAdapter({ supabaseClient: supabaseClient })
+            }
+        };
+    }
+    return tools;
 }
 
 function initEditorJS() {
