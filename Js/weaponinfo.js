@@ -477,8 +477,8 @@ function openAddModal() {
     document.getElementById('addOrderInput').value = nextOrder;
     
     // เคลียร์เนื้อหาใน Editor.js
-    if (editorAdd) {
-        editorAdd.clear();
+    if (editorAdd && editorAdd.blocks) {
+        editorAdd.blocks.clear();
     }
     
     document.getElementById('addWikiModal').style.display = 'flex';
@@ -539,7 +539,12 @@ function openEditModal() {
     
     // นำเนื้อหาเก่าไปใส่ใน Editor.js
     if (editorEdit) {
-        editorEdit.destroy();
+        try {
+            editorEdit.destroy();
+        } catch(e) {
+            console.error(e);
+        }
+        editorEdit = null;
     }
     
     let blocks = [];
@@ -548,7 +553,14 @@ function openEditModal() {
             blocks = JSON.parse(page.content).blocks || [];
         } catch(e) {}
     } else if (page.content) {
-        blocks = [{ type: 'paragraph', data: { text: "⚠️ [เนื้อหาแบบเก่า - จะแสดงผลหน้าเว็บแบบเดิม แต่ถ้ากดเซฟหน้านี้ด้วย Editor ใหม่ ข้อมูลเก่าจะเปลี่ยนเป็น JSON แนะนำให้สร้างหน้าใหม่แทนหากต้องการใช้ Block]" } }];
+        // ดึงข้อความดิบๆ ออกมาจาก HTML เก่า เพื่อให้แก้ไขต่อได้
+        let tmpDiv = document.createElement('div');
+        tmpDiv.innerHTML = page.content;
+        let plainText = tmpDiv.innerText || tmpDiv.textContent || '';
+        blocks = [
+            { type: 'paragraph', data: { text: "⚠️ <i>(ระบบดึงข้อความเก่ามาให้บางส่วน กรุณาจัดหน้าใหม่ด้วย Block)</i>" } },
+            { type: 'paragraph', data: { text: plainText.replace(/\n/g, '<br>') } }
+        ];
     }
 
     editorEdit = new EditorJS({
