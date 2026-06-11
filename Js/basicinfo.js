@@ -7,6 +7,11 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // ระบบดักจับและแจ้งเตือนบั๊กอัตโนมัติ (Global Error Handler)
 // ==========================================
 window.onerror = function(message, source, lineno, colno, error) {
+    // กรองข้อผิดพลาดจาก Extension ของบราวเซอร์ หรือ Script ภายนอกอื่นๆ ที่ไม่มีรายละเอียด
+    if (message === 'Script error.' || lineno === 0) {
+        console.warn('Ignored external script/extension error:', message, 'at line:', lineno, 'source:', source);
+        return false;
+    }
     const errorDetails = `Error: ${message}\nLine: ${lineno}\nSource: ${source}`;
     console.error(errorDetails);
     // แสดงป๊อปอัพบอกบั๊กทันที
