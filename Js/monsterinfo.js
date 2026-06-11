@@ -496,12 +496,21 @@ function openAddModal() {
     document.getElementById('addTitleInput').value = '';
     document.getElementById('addOrderInput').value = nextOrder;
     
-    // เคลียร์เนื้อหาใน Editor.js
-    if (editorAdd && editorAdd.blocks) {
-        editorAdd.blocks.clear();
+    // ทำลาย Editor.js ตัวเดิมก่อน (ถ้ามี) เพื่อสร้างใหม่บน Modal ที่กำลังเปิด
+    if (editorAdd) {
+        try {
+            editorAdd.destroy();
+        } catch(e) {
+            console.error(e);
+        }
+        editorAdd = null;
     }
     
+    // แสดง Modal ก่อนเพื่อให้ Container มีมิติก่อนที่ Editor.js จะเรนเดอร์
     document.getElementById('addWikiModal').style.display = 'flex';
+    
+    // โดนเรียกให้สร้างใหม่เมื่อมีพื้นที่ให้เรนเดอร์
+    initEditorJS();
 }
 
 function closeAddModal() {
@@ -861,8 +870,8 @@ function renderList(items, style) {
     return html;
 }
 
-// สั่งให้เช็กสถานะการล็อกอินและเตรียม Editor เมื่อโหลดหน้า
+// สั่งให้เช็กสถานะการล็อกอินและโหลดข้อมูลเมื่อโหลดหน้าเว็บ
 document.addEventListener('DOMContentLoaded', () => {
-    initEditorJS();
+    // ไม่พรีโหลด Editor.js ตอนโหลดหน้าเว็บ (รอโหลดตอนเปิด Modal เท่านั้น เพื่อป้องกันการพังของขนาดกล่องแก้ไข)
 });
 checkAuth();
