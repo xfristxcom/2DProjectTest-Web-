@@ -793,14 +793,12 @@ function getEditorTools() {
     if (headerClass) {
         tools.header = {
             class: headerClass,
-            inlineToolbar: true,
             config: { placeholder: 'พิมพ์หัวข้อตรงนี้...', levels: [2, 3, 4], defaultLevel: 2 }
         };
     }
     if (listClass) {
         tools.list = {
             class: listClass,
-            inlineToolbar: true,
             config: { defaultStyle: 'unordered' }
         };
     }
