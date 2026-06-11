@@ -3,6 +3,21 @@ const SUPABASE_URL = 'https://pvnrztgtnsmyhixkawgo.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2bnJ6dGd0bnNteWhpeGthd2dvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyMDI0MjMsImV4cCI6MjA5NTc3ODQyM30.clc8OgLUlJ9nM7BKxf6oXIA8B6sWRotO1VId446FNnY';
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// ==========================================
+// ระบบดักจับและแจ้งเตือนบั๊กอัตโนมัติ (Global Error Handler)
+// ==========================================
+window.onerror = function(message, source, lineno, colno, error) {
+    const errorDetails = `Error: ${message}\nLine: ${lineno}\nSource: ${source}`;
+    console.error(errorDetails);
+    // แสดงป๊อปอัพบอกบั๊กทันที
+    if (typeof showAlert === 'function') {
+        showAlert("เกิดข้อผิดพลาดในการโหลดระบบ", errorDetails);
+    } else {
+        alert("เกิดข้อผิดพลาดในการโหลดระบบ:\n" + errorDetails);
+    }
+    return false;
+};
+
 let currentUser = null;
 let wikiPages = [];      // เก็บรายการหน้าสารานุกรมทั้งหมด
 let activePageId = null;  // เก็บรหัสหน้าปัจจุบันที่แสดงอยู่
@@ -726,35 +741,51 @@ class SupabaseImageAdapter {
 }
 
 function getEditorTools() {
-    return {
-        header: {
-            class: Header,
+    const headerClass = typeof Header !== 'undefined' ? Header : null;
+    const listClass = typeof EditorjsList !== 'undefined' ? EditorjsList : (typeof List !== 'undefined' ? List : null);
+    const imageClass = typeof ImageTool !== 'undefined' ? ImageTool : null;
+
+    const tools = {};
+    if (headerClass) {
+        tools.header = {
+            class: headerClass,
             inlineToolbar: true,
             config: { placeholder: 'พิมพ์หัวข้อตรงนี้...', levels: [2, 3, 4], defaultLevel: 2 }
-        },
-        list: {
-            class: EditorjsList,
+        };
+    }
+    if (listClass) {
+        tools.list = {
+            class: listClass,
             inlineToolbar: true,
             config: { defaultStyle: 'unordered' }
-        },
-        image: {
-            class: ImageTool,
+        };
+    }
+    if (imageClass) {
+        tools.image = {
+            class: imageClass,
             config: {
                 uploader: new SupabaseImageAdapter({ supabaseClient: supabaseClient })
             }
-        }
-    };
+        };
+    }
+    return tools;
 }
 
 function initEditorJS() {
+    if (typeof EditorJS === 'undefined') {
+        console.error("EditorJS is not defined. Make sure CDN is loaded.");
+        return;
+    }
     editorAdd = new EditorJS({
         holder: 'addEditorContainer',
         placeholder: 'พิมพ์เนื้อหาหรือกด Tab เพื่อเลือกกล่องเครื่องมือ',
         tools: getEditorTools(),
         onChange: () => {
-            editorAdd.save().then((outputData) => {
-                localStorage.setItem('editorjs_autosave_monsterinfo', JSON.stringify(outputData));
-            });
+            if (editorAdd && typeof editorAdd.save === 'function') {
+                editorAdd.save().then((outputData) => {
+                    localStorage.setItem('editorjs_autosave_monsterinfo', JSON.stringify(outputData));
+                }).catch(e => console.error(e));
+            }
         },
         onReady: () => {
             const savedData = localStorage.getItem('editorjs_autosave_monsterinfo');
