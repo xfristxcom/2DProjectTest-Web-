@@ -792,9 +792,7 @@ function parseEditorJsData(contentStr) {
                     html += `<p>${block.data.text}</p>`;
                     break;
                 case 'list':
-                    const listTag = block.data.style === 'ordered' ? 'ol' : 'ul';
-                    const itemsHtml = block.data.items.map(item => `<li>${item}</li>`).join('');
-                    html += `<${listTag}>${itemsHtml}</${listTag}>`;
+                    html += renderList(block.data.items, block.data.style);
                     break;
                 case 'image':
                     const caption = block.data.caption ? `<figcaption style="text-align:center; color:#888; font-size:12px;">${escapeHtml(block.data.caption)}</figcaption>` : '';
@@ -806,6 +804,25 @@ function parseEditorJsData(contentStr) {
     } catch (e) {
         return contentStr;
     }
+}
+
+// ฟังก์ชันช่วยเรนเดอร์รายการ List (รองรับทริค nested list และข้อมูลเก่าที่เป็น string)
+function renderList(items, style) {
+    if (!items || items.length === 0) return '';
+    const listTag = style === 'ordered' ? 'ol' : 'ul';
+    let html = `<${listTag}>`;
+    items.forEach(item => {
+        const content = typeof item === 'object' ? (item.content || '') : item;
+        const subItems = (typeof item === 'object' && item.items) ? item.items : [];
+        
+        html += `<li>${content}`;
+        if (subItems && subItems.length > 0) {
+            html += renderList(subItems, style);
+        }
+        html += `</li>`;
+    });
+    html += `</${listTag}>`;
+    return html;
 }
 
 // สั่งให้เช็กสถานะการล็อกอินและเตรียม Editor เมื่อโหลดหน้า
