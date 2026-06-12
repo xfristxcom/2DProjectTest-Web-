@@ -789,18 +789,55 @@ function getEditorTools() {
     const headerClass = typeof Header === 'function' ? Header : null;
     const listClass = typeof EditorjsList === 'function' ? EditorjsList : (typeof List === 'function' ? List : null);
     const imageClass = typeof ImageTool === 'function' ? ImageTool : null;
+    const alignmentClass = typeof AlignmentTuneTool === 'function' ? AlignmentTuneTool : (window.AlignmentTuneTool ? window.AlignmentTuneTool : null);
+    const colorClass = typeof ColorPlugin === 'function' ? ColorPlugin : (window.ColorPlugin ? window.ColorPlugin : null);
 
     const tools = {};
+    
+    if (alignmentClass) {
+        tools.alignmentTune = {
+            class: alignmentClass,
+            config: {
+                default: "left",
+                blocks: {
+                    header: 'left',
+                    list: 'left'
+                }
+            }
+        };
+    }
+    
+    if (colorClass) {
+        tools.Color = {
+            class: colorClass,
+            config: {
+                colorCollections: ['#ffffff', '#e0e0e0', '#ff4444', '#4caf50', '#2196f3', '#ffeb3b', '#ff9800', '#9c27b0', '#00bcd4', '#1e1e1e', '#383838'],
+                defaultColor: '#ff4444',
+                type: 'text',
+                customPicker: true
+            }
+        };
+        tools.Marker = {
+            class: colorClass,
+            config: {
+                defaultColor: '#ffff00',
+                type: 'marker'
+            }
+        };
+    }
+
     if (paragraphClass) {
         tools.paragraph = {
             class: paragraphClass,
-            inlineToolbar: true
+            inlineToolbar: true,
+            tunes: alignmentClass ? ['alignmentTune'] : []
         };
     }
     if (headerClass) {
         tools.header = {
             class: headerClass,
-            config: { placeholder: 'พิมพ์หัวข้อตรงนี้...', levels: [2, 3, 4], defaultLevel: 2 }
+            config: { placeholder: 'พิมพ์หัวข้อตรงนี้...', levels: [2, 3, 4], defaultLevel: 2 },
+            tunes: alignmentClass ? ['alignmentTune'] : []
         };
     }
     if (listClass) {
@@ -876,18 +913,23 @@ function parseEditorJsData(contentStr) {
         if (!data.blocks) return '';
         
         data.blocks.forEach(block => {
+            let alignStyle = '';
+            if (block.tunes && block.tunes.alignmentTune && block.tunes.alignmentTune.alignment) {
+                alignStyle = ` style="text-align: ${block.tunes.alignmentTune.alignment};"`;
+            }
+
             switch (block.type) {
                 case 'header':
-                    html += `<h${block.data.level}>${escapeHtml(block.data.text)}</h${block.data.level}>`;
+                    html += `<h${block.data.level}${alignStyle}>${block.data.text}</h${block.data.level}>`;
                     break;
                 case 'paragraph':
-                    html += `<p>${block.data.text}</p>`;
+                    html += `<p${alignStyle}>${block.data.text}</p>`;
                     break;
                 case 'list':
                     html += renderList(block.data.items, block.data.style);
                     break;
                 case 'image':
-                    const caption = block.data.caption ? `<figcaption style="text-align:center; color:#888; font-size:12px;">${escapeHtml(block.data.caption)}</figcaption>` : '';
+                    const caption = block.data.caption ? `<figcaption style="text-align:center; color:#888; font-size:12px;">${block.data.caption}</figcaption>` : '';
                     html += `<figure style="text-align: center;"><img src="${block.data.file.url}" style="max-width:100%; border-radius:8px;" alt="image" />${caption}</figure>`;
                     break;
             }

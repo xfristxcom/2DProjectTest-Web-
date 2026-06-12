@@ -632,3 +632,23 @@
     border: 1px solid #444444 !important;
 }
 
+/* ====================================================
+   ปรับแต่งสำหรับ Plugins ใหม่ (Alignment, Color, Image Resize)
+   ==================================================== */
+
+/* บังคับใช้ฟอนต์และสีธีมใน Editor */
+.ce-block__content, .codex-editor {
+    font-family: 'ChakraPetch', 'Germania', sans-serif !important;
+    color: #e0e0e0 !important;
+}
+
+/* ทำให้รูปภาพสามารถลากมุมปรับขนาดได้ */
+.image-tool__image-picture {
+    resize: both !important;
+    overflow: hidden !important;
+    max-width: 100% !important;
+    min-width: 100px !important;
+    display: block !important;
+    margin: 0 auto !important;
+}
+
