@@ -548,6 +548,16 @@ async function submitAddWiki() {
     let editorData;
     try {
         editorData = await editorAdd.save();
+        // HACK: Extract custom dragged sizes for images
+        editorData.blocks.forEach(block => {
+            if (block.type === 'image') {
+                const domBlock = document.querySelector(`#addEditorContainer .ce-block[data-id="${block.id}"] .image-tool__image`);
+                if (domBlock && domBlock.style.width) {
+                    block.data.customWidth = domBlock.style.width;
+                    block.data.customHeight = domBlock.style.height;
+                }
+            }
+        });
     } catch(e) {
         showAlert("เกิดข้อผิดพลาด", "ดึงข้อมูลจาก Editor ไม่สำเร็จ");
         return;
@@ -625,7 +635,20 @@ function openEditModal() {
     editorEdit = new EditorJS({
         holder: editContainer,
         data: { blocks: blocks },
-        tools: getEditorTools()
+        tools: getEditorTools(),
+        onReady: () => {
+            setTimeout(() => {
+                blocks.forEach(block => {
+                    if (block.type === 'image' && block.data.customWidth) {
+                        const domBlock = document.querySelector(`#editEditorContainer .ce-block[data-id="${block.id}"] .image-tool__image`);
+                        if (domBlock) {
+                            domBlock.style.width = block.data.customWidth;
+                            domBlock.style.height = block.data.customHeight;
+                        }
+                    }
+                });
+            }, 300);
+        }
     });
     
     document.getElementById('editWikiModal').style.display = 'flex';
@@ -642,6 +665,16 @@ async function submitEditWiki() {
     let editorData;
     try {
         editorData = await editorEdit.save();
+        // HACK: Extract custom dragged sizes for images
+        editorData.blocks.forEach(block => {
+            if (block.type === 'image') {
+                const domBlock = document.querySelector(`#editEditorContainer .ce-block[data-id="${block.id}"] .image-tool__image`);
+                if (domBlock && domBlock.style.width) {
+                    block.data.customWidth = domBlock.style.width;
+                    block.data.customHeight = domBlock.style.height;
+                }
+            }
+        });
     } catch(e) {
         return;
     }
@@ -932,7 +965,16 @@ function parseEditorJsData(contentStr) {
                 case 'image':
                     const caption = block.data.caption ? `<figcaption style="text-align:center; color:#888; font-size:12px;">${block.data.caption}</figcaption>` : '';
                     const figureAlign = alignStyle ? alignStyle : ' style="text-align: center;"';
-                    html += `<figure${figureAlign}><img src="${block.data.file.url}" style="max-width:100%; border-radius:8px;" alt="image" />${caption}</figure>`;
+                    let imgStyle = 'max-width:100%; border-radius:8px;';
+                    if (block.data.customWidth) {
+                        imgStyle += ` width:${block.data.customWidth};`;
+                    } else if (!block.data.stretched) {
+                        imgStyle += ` max-width:60%;`; // Default size if not stretched
+                    }
+                    if (block.data.customHeight) {
+                        imgStyle += ` height:${block.data.customHeight};`;
+                    }
+                    html += `<figure${figureAlign}><img src="${block.data.file.url}" style="${imgStyle}" alt="image" />${caption}</figure>`;
                     break;
             }
         });
