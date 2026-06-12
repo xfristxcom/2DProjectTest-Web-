@@ -858,7 +858,8 @@ function getEditorTools() {
                         return new SupabaseImageAdapter({ supabaseClient: supabaseClient }).uploadByUrl(url);
                     }
                 }
-            }
+            },
+            tunes: alignmentClass ? ['alignmentTune'] : []
         };
     }
     return tools;
@@ -930,7 +931,8 @@ function parseEditorJsData(contentStr) {
                     break;
                 case 'image':
                     const caption = block.data.caption ? `<figcaption style="text-align:center; color:#888; font-size:12px;">${block.data.caption}</figcaption>` : '';
-                    html += `<figure style="text-align: center;"><img src="${block.data.file.url}" style="max-width:100%; border-radius:8px;" alt="image" />${caption}</figure>`;
+                    const figureAlign = alignStyle ? alignStyle : ' style="text-align: center;"';
+                    html += `<figure${figureAlign}><img src="${block.data.file.url}" style="max-width:100%; border-radius:8px;" alt="image" />${caption}</figure>`;
                     break;
             }
         });
