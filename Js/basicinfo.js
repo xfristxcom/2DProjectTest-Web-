@@ -789,7 +789,7 @@ function getEditorTools() {
     const headerClass = typeof Header === 'function' ? Header : null;
     const listClass = typeof EditorjsList === 'function' ? EditorjsList : (typeof List === 'function' ? List : null);
     const imageClass = typeof ImageTool === 'function' ? ImageTool : null;
-    const alignmentClass = typeof AlignmentTuneTool === 'function' ? AlignmentTuneTool : (window.AlignmentTuneTool ? window.AlignmentTuneTool : null);
+    const alignmentClass = typeof AlignmentBlockTune === 'function' ? AlignmentBlockTune : (window.AlignmentBlockTune ? window.AlignmentBlockTune : null);
     const colorClass = typeof ColorPlugin === 'function' ? ColorPlugin : (window.ColorPlugin ? window.ColorPlugin : null);
 
     const tools = {};
