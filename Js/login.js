@@ -106,9 +106,15 @@ async function registerUser() {
     if (error) {
         showAlert("สมัครสมาชิกไม่สำเร็จ", error.message);
     } else {
-        // อัปเดตข้อความแจ้งเตือน เพื่อให้ผู้ใช้ไปกดลิงก์ยืนยันตัวตนในอีเมล
-        showAlert("สำเร็จ!", "กรุณาตรวจสอบอีเมลของคุณ และคลิกลิงก์ยืนยันตัวตน ก่อนเข้าสู่ระบบ");
-        setTimeout(() => { window.location.href = 'login.html'; }, 3000);
+        if (data.session) {
+            // ถ้าระบบไม่ได้บังคับยืนยันอีเมล จะได้ session กลับมาเลย
+            showAlert("สำเร็จ!", "สมัครสมาชิกเรียบร้อยแล้ว กำลังพากลับไปหน้าเข้าสู่ระบบ...");
+            setTimeout(() => { window.location.href = 'login.html'; }, 2000);
+        } else {
+            // ถ้าระบบบังคับยืนยันอีเมล session จะเป็น null
+            showAlert("สำเร็จ!", "กรุณาตรวจสอบอีเมลของคุณ และคลิกลิงก์ยืนยันตัวตน ก่อนเข้าสู่ระบบ (หากไม่พบให้ดูในจดหมายขยะ)");
+            setTimeout(() => { window.location.href = 'login.html'; }, 3000);
+        }
     }
 }
 
