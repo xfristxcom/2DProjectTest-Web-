@@ -15,8 +15,23 @@
 
             <button type="button" class="login-btn" onclick="loginUser()">Login</button>
             
-            <a href="register.html" class="text-link">สมัครสมาชิกที่นี่</a>
+            <div style="margin-top: 15px; display: flex; justify-content: space-between; padding: 0 10px;">
+                <a href="#" class="text-link" style="margin-top:0;" onclick="openForgotModal()">ลืมรหัสผ่าน?</a>
+                <a href="register.html" class="text-link" style="margin-top:0;">สมัครสมาชิกที่นี่</a>
+            </div>
         </form>
+    </div>
+
+    <div id="forgotModal" class="alert-overlay">
+        <div class="alert-box" style="width: 320px;">
+            <h3 style="margin-bottom:10px;">ลืมรหัสผ่าน</h3>
+            <p style="margin-bottom:15px; font-size:13px;">กรอกอีเมลของคุณเพื่อรับลิงก์ตั้งรหัสผ่านใหม่</p>
+            <input type="email" id="forgotEmailInput" placeholder="Email ของคุณ" style="width: 85%; margin-bottom: 20px;">
+            <div style="display:flex; justify-content:center; gap:10px;">
+                <button type="button" onclick="closeForgotModal()" class="alert-btn" style="background-color: transparent; border: 1px solid #444; width:auto; margin-top:0;">ยกเลิก</button>
+                <button type="button" onclick="sendPasswordReset()" class="alert-btn login-btn" style="width:auto; margin-top:0;">ส่งลิงก์</button>
+            </div>
+        </div>
     </div>
 
     <div id="customAlert" class="alert-overlay">
