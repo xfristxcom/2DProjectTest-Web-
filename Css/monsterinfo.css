@@ -200,8 +200,7 @@
     max-width: 100%;
     height: auto;
     border-radius: 8px;
-    display: block;
-    margin: 10px 0;
+    display: inline-block;
 }
 
 /* ปรับแต่งกล่อง Toolbar ของ Quill ให้เข้ากับธีม Dark Mode */
@@ -648,8 +647,7 @@
     overflow: hidden !important;
     max-width: 100% !important;
     min-width: 100px !important;
-    display: block !important;
-    margin: 0 auto !important;
+    display: inline-block !important;
 }
 .image-tool__image-picture {
     width: 100% !important;
