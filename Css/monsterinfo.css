@@ -195,6 +195,13 @@
     width: 100%;
 }
 
+/* กำหนดฟอนต์ให้เนื้อหาแสดงผลเหมือนตอนแก้ไข */
+.content-body-card {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
 /* ทำให้รูปภาพที่มาจาก Editor พอดีกับจอเสมอ */
 .content-body-card img {
     max-width: 100%;
