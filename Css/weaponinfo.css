@@ -196,8 +196,10 @@
 }
 
 /* กำหนดฟอนต์ให้เนื้อหาแสดงผลเหมือนตอนแก้ไข */
-.content-body-card {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+.content-body-card,
+.ce-block__content,
+.codex-editor__redactor {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
     font-size: 16px;
     line-height: 1.6;
 }
