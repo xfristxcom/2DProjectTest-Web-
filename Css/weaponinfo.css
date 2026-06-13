@@ -197,6 +197,7 @@
 
 /* กำหนดฟอนต์ให้เนื้อหาแสดงผลเหมือนตอนแก้ไข */
 .content-body-card,
+.content-body-card *,
 .ce-block__content,
 .codex-editor__redactor {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
