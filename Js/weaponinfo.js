@@ -92,6 +92,14 @@ async function checkAuth() {
         const displayName = userData.display_name || 'Player';
         const avatarId = userData.avatar_id || 'robot_default';
         
+        // ดึง Role จากตาราง user_roles แทนการใช้ user_metadata
+        const { data: roleData } = await supabaseClient
+            .from('user_roles')
+            .select('role')
+            .eq('user_id', currentUser.id)
+            .single();
+        
+        currentUser.custom_role = roleData ? roleData.role : 'user';
 
         profileBtn.innerText = displayName; 
         dropdownMenu.style.display = ''; 
@@ -127,11 +135,10 @@ async function checkAuth() {
     loadWikiPages();
 }
 
-// เช็กว่าผู้ใช้ล็อกอินอยู่ และมี metadata role === 'admin' (ตั้งค่าผ่าน Supabase Dashboard)
+// เช็กว่าผู้ใช้ล็อกอินอยู่ และมี custom_role === 'admin'
 function checkIsAdmin() {
     if (!currentUser) return false;
-    const metadata = currentUser.user_metadata;
-    return metadata && (metadata.role === 'admin' || metadata.is_admin === true);
+    return currentUser.custom_role === 'admin';
 }
 
 // แสดง/ซ่อน เมนูของแอดมิน
