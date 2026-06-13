@@ -93,13 +93,16 @@ async function checkAuth() {
         const avatarId = userData.avatar_id || 'robot_default';
         
         // ดึง Role จากตาราง user_roles แทนการใช้ user_metadata
-        const { data: roleData } = await supabaseClient
+        const { data: roleData, error: roleError } = await supabaseClient
             .from('user_roles')
             .select('role')
-            .eq('user_id', currentUser.id)
-            .single();
+            .eq('user_id', currentUser.id);
+            
+        if (roleError) console.error("Role Error:", roleError);
+        console.log("Fetched roleData:", roleData);
         
-        currentUser.custom_role = roleData ? roleData.role : 'user';
+        currentUser.custom_role = (roleData && roleData.length > 0) ? roleData[0].role : 'user';
+        console.log("Current custom_role:", currentUser.custom_role);
 
         profileBtn.innerText = displayName; 
         dropdownMenu.style.display = ''; 
