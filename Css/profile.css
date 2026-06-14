@@ -26,8 +26,8 @@ body {
 
 /* --- 2. แถบ Navbar --- */
 .navbar {
-    background-color: #252526;
-    border-bottom: 1px solid #111111;
+    background-color: var(--bg-card);
+    border-bottom: 1px solid var(--border-dark);
     padding: 15px 30px;
     display: flex;
     justify-content: space-between;
@@ -39,7 +39,7 @@ body {
     min-height: 75px;         /* บังคับความสูงขั้นต่ำให้เท่ากับหน้าที่มีรูปโปรไฟล์ */
     box-sizing: border-box;   /* สั่งให้การวัดขนาดรวมขอบและ Padding ไปด้วย */
 }
-.navbar-logo { font-size: 28px; color: #ffffff; letter-spacing: 2px; }
+.navbar-logo { font-size: 28px; color: var(--text-primary); letter-spacing: 2px; }
 
 /* --- 3. โครงสร้างหลักของหน้า (Layout) --- */
 .container {
@@ -52,10 +52,10 @@ body {
 .profile-header {
     display: flex;
     gap: 40px;
-    background-color: #252526;
+    background-color: var(--bg-card);
     padding: 30px;
     border-radius: 12px;
-    border: 1px solid #333333;
+    border: 1px solid var(--border-color);
     box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     margin-bottom: 40px;
 }
@@ -63,9 +63,9 @@ body {
 .avatar-section { display: flex; flex-direction: column; align-items: center; width: 250px; }
 .big-avatar {
     width: 180px; height: 180px;
-    background-color: #383838;
+    background-color: var(--bg-input);
     border-radius: 50%;
-    border: 2px solid #555555;
+    border: 2px solid var(--border-color);
     display: flex; justify-content: center; align-items: center;
     font-size: 80px;
     margin-bottom: 15px;
@@ -73,31 +73,31 @@ body {
 
 .info-section { flex: 1; display: flex; flex-direction: column; gap: 20px; justify-content: center; }
 .info-row { display: flex; align-items: center; gap: 15px; }
-.info-row label { width: 70px; text-align: right; font-weight: bold; color: #a0a0b5; }
+.info-row label { width: 70px; text-align: right; font-weight: bold; color: var(--text-muted); }
 .info-row input {
     flex: 1; padding: 8px 15px !important;
-    background-color: #1e1e1e !important; border: 1px solid #444444 !important;
+    background-color: var(--bg-main) !important; border: 1px solid var(--border-color) !important;
     border-radius: 8px !important; color: white !important; font-size: 16px;
 }
-.info-row input:disabled { color: #888888 !important; background-color: #2a2a2a !important; }
+.info-row input:disabled { color: var(--text-muted) !important; background-color: var(--bg-input) !important; }
 
 .change-btn, .action-btn {
-    background-color: transparent; color: #e0e0e0;
-    border: 1px solid #e0e0e0; padding: 8px 20px;
+    background-color: transparent; color: var(--text-primary);
+    border: 1px solid var(--text-primary); padding: 8px 20px;
     border-radius: 20px; cursor: pointer; transition: 0.2s;
 
 }
-.change-btn:hover, .action-btn:hover { background-color: #383838; }
+.change-btn:hover, .action-btn:hover { background-color: var(--bg-input); }
 
 .date-row { justify-content: center; margin-top: 10px; }
 .date-label, .date-value {
-    background-color: #1e1e1e; border: 1px solid #444444; padding: 8px 20px; border-radius: 20px;
+    background-color: var(--bg-main); border: 1px solid var(--border-color); padding: 8px 20px; border-radius: 20px;
 }
 .date-value { padding: 8px 30px; }
 
 /* --- 5. โซนการ์ดโพสต์และคอมเมนต์ --- */
 .post-header {
-    background-color: #e0e0e0 !important; color: #1e1e1e !important;
+    background-color: var(--text-primary) !important; color: var(--bg-main) !important;
     display: inline-block; padding: 5px 30px !important;
     border-radius: 20px !important; margin-bottom: 20px !important;
 }
