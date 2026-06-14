@@ -9,10 +9,29 @@
     src: url('../Front/ChakraPetch-Bold.ttf') format('truetype');
 }
 
+:root {
+    /* Color Palette */
+    --bg-main: #1e1e1e;
+    --bg-card: #252526;
+    --bg-card-hover: #2a2a2b;
+    --bg-input: #383838;
+    --text-primary: #e0e0e0;
+    --text-muted: #888888;
+    --border-color: #444444;
+    --border-dark: #111111;
+    --accent-blue: #3a72b0;
+    --accent-blue-hover: #4b86c8;
+    --danger: #d9534f;
+    --danger-hover: #c9302c;
+
+    /* Typography */
+    --font-game: 'Germania', 'ChakraPetch', sans-serif;
+}
+
 body {
-    background-color: #1e1e1e;
-    color: #e0e0e0;
-    font-family: 'Germania', 'ChakraPetch', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: var(--font-game);
     margin: 0;
     padding: 0;
 }
@@ -40,8 +59,8 @@ body {
 
 /* 1. แถบนำทางด้านบน (Navbar) */
 .navbar {
-    background-color: #252526;
-    border-bottom: 1px solid #111111;
+    background-color: var(--bg-card);
+    border-bottom: 1px solid var(--border-dark);
     padding: 15px 30px;
     display: flex;
     justify-content: space-between;
@@ -77,8 +96,8 @@ body {
 
 .profile-btn {
     background-color: transparent;
-    color: #e0e0e0;
-    border: 1px solid #e0e0e0;
+    color: var(--text-primary);
+    border: 1px solid var(--text-primary);
     padding: 8px 20px;
     border-radius: 20px;
     cursor: pointer;
@@ -88,8 +107,8 @@ body {
 }
 
 .profile-btn:hover {
-    background-color: #e0e0e0;
-    color: #1e1e1e;
+    background-color: var(--text-primary);
+    color: var(--bg-main);
 }
 
 /* พื้นที่เนื้อหาหลัก */
@@ -138,8 +157,8 @@ body {
 }
 
 .category-card:hover {
-    background-color: #333333;
-    border: 2px solid #3a72b0;
+    background-color: var(--bg-input);
+    border: 2px solid var(--accent-blue);
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.5);
 }
@@ -204,7 +223,7 @@ body {
 }
 
 .alert-btn:hover {
-    background-color: #4b86c8;
+    background-color: var(--accent-blue-hover);
 }
 
 /* --- ระบบ Dropdown สำหรับปุ่ม Profile --- */
@@ -245,8 +264,8 @@ body {
 /* ทำให้ปุ่มเมนูย่อย หน้าตาเหมือนปุ่ม Profile ด้านบนเป๊ะๆ */
 .dropdown-panel a {
     background-color: transparent;
-    color: #e0e0e0;
-    border: 1px solid #e0e0e0;
+    color: var(--text-primary);
+    border: 1px solid var(--text-primary);
     padding: 8px 25px; /* ความอ้วนของปุ่ม */
     border-radius: 20px;
     font-family: 'Germania', 'ChakraPetch', sans-serif;
@@ -259,8 +278,8 @@ body {
 
 /* เอฟเฟกต์ตอนเอาเมาส์ชี้ปุ่มย่อย */
 .dropdown-panel a:hover {
-    background-color: #e0e0e0;
-    color: #1e1e1e;
+    background-color: var(--text-primary);
+    color: var(--bg-main);
 }
 
 /* แยกสีปุ่ม Logout ให้เป็นสีแดงจะได้ดูโดดเด่น */
@@ -398,8 +417,8 @@ body {
 
 .comment-styled-input {
     flex: 1; 
-    background-color: #2a2a2a; 
-    border: 1px solid #444; 
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color); 
     color: white; 
     padding: 10px; 
     border-radius: 20px;
@@ -408,7 +427,7 @@ body {
 
 /* --- ชิ้นส่วนปุ่มแบบผสม (Utility/Modifier Class) --- */
 .btn-comment-submit {
-    background-color: #3a72b0; 
+    background-color: var(--accent-blue);
     color: white; 
     border: none; 
     padding: 0 20px; 
@@ -418,7 +437,7 @@ body {
     transition: 0.2s;
 }
 .btn-comment-submit:hover {
-    background-color: #4b86c8;
+    background-color: var(--accent-blue-hover);
 }
 
 /* คลาสความสวยงามปุ่ม ดันโพสต์ และ ปุ่มคอมเมนต์ */
@@ -463,7 +482,7 @@ body {
     resize: none;      /* ห้ามผู้ใช้ดึงขยายกล่องเล่น */
     overflow: hidden;  /* ซ่อนแถบ Scrollbar ตอนข้อความยาวๆ */
 }
-.edit-textarea:focus { outline: none; border-color: #3a72b0; }
+.edit-textarea:focus { outline: none; border-color: var(--accent-blue); }
 .edit-actions { display: flex; justify-content: flex-end; gap: 10px; }
 
 .save-edit-btn, .cancel-edit-btn { padding: 8px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; transition: 0.2s; font-family: 'Germania', 'ChakraPetch', sans-serif; }
@@ -482,8 +501,8 @@ body {
 
 .sort-btn {
     background-color: transparent;
-    color: #e0e0e0;
-    border: 1px solid #e0e0e0;
+    color: var(--text-primary);
+    border: 1px solid var(--text-primary);
     padding: 0 15px;
     height: 38px;
     box-sizing: border-box; /* บังคับนับรวมเส้นขอบในความสูง 38px */
@@ -581,7 +600,7 @@ body {
 
 /* เปลี่ยนสี Placeholder (พิมพ์เนื้อหาหรือกด Tab...) */
 .ce-paragraph[data-placeholder]:empty::before {
-    color: #888888 !important;
+    color: var(--text-muted) !important;
     opacity: 1;
 }
 

@@ -35,7 +35,7 @@
 
 .post-submit-btn {
     align-self: flex-end;
-    background-color: #3a72b0;
+    background-color: var(--accent-blue);
     color: white;
     padding: 10px 30px;
     border: none;
@@ -108,15 +108,15 @@
 
 .comment-input-box input {
     flex: 1;
-    background-color: #2a2a2a;
-    border: 1px solid #444;
-    color: white;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
     padding: 10px;
     border-radius: 20px;
 }
 
 .comment-input-box button {
-    background-color: #3a72b0;
+    background-color: var(--accent-blue);
     color: white;
     border: none;
     padding: 0 20px;
@@ -150,7 +150,7 @@
 }
 
 .floating-back-btn:hover {
-    background-color: #383838;
+    background-color: var(--accent-blue-hover);
     border-color: #e0e0e0;
     transform: scale(1.05); 
 }

@@ -39,7 +39,7 @@ input {
     margin: 10px 0;
     border: 1px solid #1e1e1e;
     border-radius: 4px;
-    background-color: #2a2a2a;
+    background-color: var(--accent-blue);
     color: white;
     outline: none;
     transition: 0.2s;
@@ -80,7 +80,7 @@ button {
 }
 
 .text-link:hover {
-    color: #3a72b0;
+    color: var(--accent-blue);
 }
 
 button:hover {
@@ -89,13 +89,13 @@ button:hover {
 }
 
 .login-btn {
-    background-color: #3a72b0;
-    border: 1px solid #285483;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
     color: white;
 }
 
 .login-btn:hover {
-    background-color: #4b86c8;
+    background-color: var(--accent-blue-hover);
 }
 
 /* สไตล์สำหรับกล่อง Popup แจ้งเตือน */
@@ -158,5 +158,5 @@ button:hover {
 }
 
 .alert-btn:hover {
-    background-color: #4b86c8;
+    background-color: var(--accent-blue-hover);
 }

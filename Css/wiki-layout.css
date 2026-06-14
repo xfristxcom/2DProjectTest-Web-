@@ -81,14 +81,15 @@
 }
 
 .sidebar-menu-btn:hover {
-    background-color: #333333;
-    border-color: #3a72b0;
+    background-color: var(--accent-blue);
+    border-color: var(--accent-blue);
+    color: white;
     padding-left: 18px; /* เลื่อนนิดนึงให้ดูมีลูกเล่นตอน Hover */
 }
 
 /* สถานะ Active (เปิดหน้าข้อมูลนี้อยู่) */
 .sidebar-menu-btn.active {
-    background-color: #3a72b0;
+    background-color: var(--accent-blue);
     color: #ffffff;
     border-color: #3a72b0;
     font-weight: bold;
@@ -140,7 +141,7 @@
 }
 
 .comment-input-box button {
-    background-color: #3a72b0;
+    background-color: var(--accent-blue);
     color: white;
     border: none;
     padding: 0 20px;
@@ -150,7 +151,7 @@
 }
 
 .comment-input-box button:hover {
-    background-color: #4b86c8;
+    background-color: var(--accent-blue-hover);
 }
 
 .comment-item {
@@ -344,8 +345,8 @@
 }
 
 .modal-box {
-    background-color: #252526;
-    border: 1px solid #444444;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 30px;
     width: 550px;
@@ -434,7 +435,7 @@
 }
 
 .btn-save {
-    background-color: #3a72b0;
+    background-color: var(--accent-blue);
     border: none;
     color: #ffffff;
     padding: 10px 25px;
@@ -447,7 +448,7 @@
 }
 
 .btn-save:hover {
-    background-color: #4b86c8;
+    background-color: var(--accent-blue-hover);
 }
 
 /* ====================================================
@@ -508,7 +509,7 @@
 }
 
 .floating-back-btn:hover {
-    background-color: #383838;
+    background-color: var(--bg-input);
     border-color: #e0e0e0;
     transform: scale(1.05); 
 }
