@@ -5,9 +5,9 @@
 }
 
 body {
-    background-color: #1e1e1e;
-    color: #e0e0e0;
-    font-family: 'Germania', 'ChakraPetch', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: var(--font-game);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,20 +16,20 @@ body {
 }
 
 .login-container {
-    background-color: #383838;
+    background-color: var(--bg-input);
     padding: 30px;
     border-radius: 6px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
     text-align: center;
     width: 300px;
-    border: 1px solid #222222;
+    border: 1px solid var(--border-dark);
 }
 
 h1 {
-    color: #ffffff;
+    color: white;
     margin-bottom: 5px;
     font-size: 32px;
-    font-family: 'Germania', 'ChakraPetch', sans-serif;
+    font-family: var(--font-game);
     letter-spacing: 2px;
 }
 
@@ -37,18 +37,18 @@ input {
     width: 85%;
     padding: 12px;
     margin: 10px 0;
-    border: 1px solid #1e1e1e;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
-    background-color: var(--accent-blue);
+    background-color: var(--bg-card);
     color: white;
     outline: none;
     transition: 0.2s;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: var(--font-game);
 }
 
 input:focus {
-    border: 1px solid #3a72b0;
-    background-color: #333333;
+    border: 1px solid var(--accent-blue);
+    background-color: var(--bg-input);
 }
 
 button {
@@ -57,12 +57,12 @@ button {
     padding: 10px;
     /* ลดความหนาของปุ่มลงจาก 12px เหลือ 10px */
     margin-top: 15px;
-    background-color: #4a4a4a;
-    color: #e0e0e0;
-    border: 1px solid #222222;
+    background-color: var(--bg-input);
+    color: var(--text-primary);
+    border: 1px solid var(--border-dark);
     border-radius: 4px;
     cursor: pointer;
-    font-family: 'Germania', 'ChakraPetch', sans-serif;
+    font-family: var(--font-game);
     font-size: 16px;
     /* ลดขนาดฟอนต์ปุ่มลงนิดนึง */
     letter-spacing: 1px;
@@ -73,7 +73,7 @@ button {
 .text-link {
     display: block;
     margin-top: 15px;
-    color: #a0a0b5;
+    color: var(--text-muted);
     font-size: 14px;
     text-decoration: none;
     transition: 0.2s;
@@ -84,13 +84,13 @@ button {
 }
 
 button:hover {
-    background-color: #5a5a5a;
-    color: #ffffff;
+    background-color: var(--border-color);
+    color: white;
 }
 
 .login-btn {
-    background-color: var(--bg-card);
-    border: 1px solid var(--border-color);
+    background-color: var(--accent-blue);
+    border: 1px solid var(--accent-blue);
     color: white;
 }
 
