@@ -555,91 +555,91 @@
 
 /* สีของข้อความใน Editor */
 .codex-editor {
-    color: #e0e0e0 !important;
+    color: var(--text-primary) !important;
 }
 
 /* สีของตัวอักษรและ Selection */
 .codex-editor ::selection {
-    background-color: #3a72b0 !important;
-    color: #ffffff !important;
+    background-color: var(--accent-blue) !important;
+    color: white !important;
 }
 
 /* ปรับแต่ง Toolbar ด้านข้าง (ปุ่ม + และ ปุ่ม 6 จุด) */
 .ce-toolbar__actions {
-    background-color: #2a2a2a !important;
+    background-color: var(--bg-input) !important;
     border-radius: 6px;
-    border: 1px solid #444444;
+    border: 1px solid var(--border-color);
 }
 
 .ce-toolbar__plus, .ce-toolbar__settings-btn {
-    color: #e0e0e0 !important;
+    color: var(--text-primary) !important;
     background-color: transparent !important;
 }
 
 .ce-toolbar__plus:hover, .ce-toolbar__settings-btn:hover {
-    background-color: #383838 !important;
-    color: #ffffff !important;
+    background-color: var(--bg-input) !important;
+    color: white !important;
 }
 
 /* ปรับแต่งป๊อปอัปเมนูเครื่องมือ (เช่น เมื่อกดปุ่ม + หรือ 6 จุด) */
 .ce-popover {
-    background-color: #252526 !important;
-    border: 1px solid #444444 !important;
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
     border-radius: 8px !important;
-    color: #e0e0e0 !important;
+    color: var(--text-primary) !important;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5) !important;
 }
 
 .ce-popover__item {
-    color: #e0e0e0 !important;
+    color: var(--text-primary) !important;
 }
 
 .ce-popover__item:hover {
-    background-color: #383838 !important;
+    background-color: var(--bg-input) !important;
 }
 
 .ce-popover__item-icon {
-    background-color: #1e1e1e !important;
-    color: #ffffff !important;
-    border: 1px solid #333333;
+    background-color: var(--bg-main) !important;
+    color: white !important;
+    border: 1px solid var(--border-color);
 }
 
 /* ปรับแต่ง Inline Toolbar (เมื่อเลือกข้อความเพื่อทำ หนา/เอียง/ลิงก์) */
 .ce-inline-toolbar {
-    background-color: #252526 !important;
-    border: 1px solid #444444 !important;
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
     border-radius: 6px !important;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5) !important;
 }
 
 .ce-inline-tool {
-    color: #e0e0e0 !important;
+    color: var(--text-primary) !important;
 }
 
 .ce-inline-tool:hover {
-    background-color: #383838 !important;
-    color: #ffffff !important;
+    background-color: var(--bg-input) !important;
+    color: white !important;
 }
 
 .ce-inline-toolbar__dropdown {
-    color: #e0e0e0 !important;
-    border-right: 1px solid #444444 !important;
+    color: var(--text-primary) !important;
+    border-right: 1px solid var(--border-color) !important;
 }
 
 .ce-inline-toolbar__dropdown:hover {
-    background-color: #383838 !important;
+    background-color: var(--bg-input) !important;
 }
 
 /* สี Placeholder */
 .codex-editor__placeholder {
-    color: #666666 !important;
+    color: var(--text-muted) !important;
 }
 
 /* กล่องอินพุตสำหรับลิ้งก์ ใน Inline Toolbar */
 .ce-inline-toolbar__input {
-    background-color: #1e1e1e !important;
-    color: #ffffff !important;
-    border: 1px solid #444444 !important;
+    background-color: var(--bg-main) !important;
+    color: white !important;
+    border: 1px solid var(--border-color) !important;
 }
 
 /* ====================================================
@@ -649,7 +649,7 @@
 /* บังคับใช้ฟอนต์และสีธีมใน Editor */
 .ce-block__content, .codex-editor {
     font-family: 'ChakraPetch', 'Germania', sans-serif !important;
-    color: #e0e0e0 !important;
+    color: var(--text-primary) !important;
 }
 
 /* ทำให้รูปภาพสามารถลากมุมปรับขนาดได้ */
