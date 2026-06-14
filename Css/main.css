@@ -45,16 +45,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-    background: #1e1e1e; 
+    background: var(--bg-main); 
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #444444; 
+    background: var(--border-color); 
     border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #555555; 
+    background: var(--text-muted); 
 }
 
 /* 1. แถบนำทางด้านบน (Navbar) */
@@ -76,7 +76,7 @@ body {
 .navbar-logo {
     font-family: 'Germania', 'ChakraPetch', sans-serif;
     font-size: 28px;
-    color: #ffffff;
+    color: white;
     letter-spacing: 2px;
 }
 
@@ -89,9 +89,9 @@ body {
 .profile-avatar {
     width: 40px;
     height: 40px;
-    background-color: #383838;
+    background-color: var(--bg-input);
     border-radius: 50%;
-    border: 2px solid #3a72b0;
+    border: 2px solid var(--accent-blue);
 }
 
 .profile-btn {
@@ -120,8 +120,8 @@ body {
 
 /* 2. กล่องแบนเนอร์ตรงกลาง (Hero Section) */
 .hero-banner {
-    background-color: #383838;
-    border: 1px solid #222222;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-dark);
     border-radius: 12px;
     padding: 80px 20px;
     text-align: center;
@@ -132,7 +132,7 @@ body {
 .hero-banner h2 {
     margin: 0;
     font-size: 24px;
-    color: #ffffff;
+    color: white;
 }
 
 /* 3. กล่องปุ่มหมวดหมู่ด้านล่าง */
@@ -143,8 +143,8 @@ body {
 }
 
 .category-card {
-    background-color: #2a2a2a;
-    border: 2px solid #222222;
+    background-color: var(--bg-card);
+    border: 2px solid var(--border-dark);
     border-radius: 12px;
     padding: 30px 20px;
     text-align: center;
@@ -166,7 +166,7 @@ body {
 .category-card h3 {
     margin: 0;
     font-size: 18px;
-    color: #e0e0e0;
+    color: var(--text-primary);
 }
 
 /* สไตล์สำหรับกล่อง Popup แจ้งเตือน */
@@ -181,10 +181,10 @@ body {
 }
 
 .alert-box {
-    background-color: #383838;
+    background-color: var(--bg-input);
     padding: 20px 30px;
     border-radius: 8px;
-    border: 1px solid #222222;
+    border: 1px solid var(--border-dark);
     text-align: center;
     width: 300px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.9);
@@ -198,19 +198,19 @@ body {
 
 .alert-box h3 {
     margin-top: 0;
-    color: #ffffff;
+    color: white;
     font-family: 'Germania', 'ChakraPetch', sans-serif;
     letter-spacing: 1px;
 }
 
 .alert-box p {
-    color: #d0d0d0;
+    color: var(--text-muted);
     font-size: 14px;
     margin-bottom: 20px;
 }
 
 .alert-btn {
-    background-color: #3a72b0;
+    background-color: var(--accent-blue);
     width: auto;
     padding: 8px 30px;
     margin-top: 0;
@@ -251,8 +251,8 @@ body {
 
 /* กรอบใหญ่คลุมปุ่มย่อย (ตรงตามรูปวาดเป๊ะ) */
 .dropdown-panel {
-    background-color: #252526; /* สีพื้นหลังกลืนกับ Navbar */
-    border: 1px solid #444444; /* สีกรอบใหญ่ */
+    background-color: var(--bg-card); /* สีพื้นหลังกลืนกับ Navbar */
+    border: 1px solid var(--border-color); /* สีกรอบใหญ่ */
     border-radius: 12px; /* ความโค้งมนของกล่อง */
     padding: 15px;
     display: flex;
@@ -284,13 +284,13 @@ body {
 
 /* แยกสีปุ่ม Logout ให้เป็นสีแดงจะได้ดูโดดเด่น */
 .dropdown-panel a.logout-btn {
-    border-color: #ff5252;
-    color: #ff5252;
+    border-color: var(--danger);
+    color: var(--danger);
 }
 
 .dropdown-panel a.logout-btn:hover {
-    background-color: #ff5252;
-    color: #ffffff; /* ตัวอักษรสีขาว */
+    background-color: var(--danger);
+    color: white; /* ตัวอักษรสีขาว */
 }
 
 /* =========================================
@@ -306,8 +306,8 @@ body {
 /* 1. ปุ่มกระดิ่ง */
 .noti-btn {
     background-color: transparent;
-    border: 1px solid #e0e0e0; 
-    color: #e0e0e0;
+    border: 1px solid var(--text-primary); 
+    color: var(--text-primary);
     font-size: 18px;
     width: 34px; 
     height: 34px; 
@@ -323,7 +323,7 @@ body {
 
 /* ตอนเอาเมาส์ชี้ปุ่มกระดิ่ง */
 .noti-btn:hover {
-    background-color: #e0e0e0;
+    background-color: var(--text-primary);
     transform: scale(1.05);
 }
 
@@ -332,7 +332,7 @@ body {
     position: absolute;
     top: -5px;
     right: -8px;
-    background-color: #ff4444;
+    background-color: var(--danger);
     color: white;
     border-radius: 50%;
     padding: 2px 6px;
@@ -348,12 +348,12 @@ body {
     position: absolute;
     top: calc(100% + 15px); /* ห่างจากใต้ปุ่ม 15px */
     right: 0;
-    background-color: #252526;
+    background-color: var(--bg-card);
     min-width: 300px;
     max-height: 400px;
     overflow-y: auto;
     box-shadow: 0px 10px 25px rgba(0,0,0,0.9);
-    border: 1px solid #444;
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     z-index: 1000;
 }
@@ -380,8 +380,8 @@ body {
     padding: 15px;
     font-family: 'Germania', 'ChakraPetch', sans-serif;
     font-size: 18px;
-    border-bottom: 1px solid #444;
-    background-color: #1e1e1e;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-main);
     color: white;
     border-radius: 12px 12px 0 0;
 }
@@ -389,7 +389,7 @@ body {
 /* --- สไตล์ของแต่ละรายการแจ้งเตือน --- */
 .noti-item {
     padding: 12px 15px;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     gap: 12px;
@@ -398,13 +398,13 @@ body {
     font-family: 'Germania', 'ChakraPetch', 'Segoe UI', sans-serif;
 }
 
-.noti-item:hover { background-color: #383838 !important; }
+.noti-item:hover { background-color: var(--bg-input) !important; }
 
 /* --- โครงสร้างกล่องและอินพุตในโซนคอมเมนต์ --- */
 .comments-box-container {
     display: none; 
     margin-top: 15px; 
-    background-color: #1e1e1e; 
+    background-color: var(--bg-input); 
     padding: 15px; 
     border-radius: 8px;
 }
@@ -457,10 +457,10 @@ body {
     font-weight: bold;
 }
 .btn-post-action.action-normal {
-    color: #a0a0b5;
+    color: var(--text-muted);
 }
 .btn-post-action:hover {
-    color: #ffffff;
+    color: white;
 }
 
 /* ==========================================
@@ -475,7 +475,7 @@ body {
     margin-bottom: -55px;  /* ดึงปุ่มดันโพสต์ข้างล่าง ให้ขยับขึ้นมาใกล้ปุ่มบันทึก */
 }
 .edit-textarea {
-    width: 100%; background-color: #1e1e1e; color: #e0e0e0; border: 1px solid #444444;
+    width: 100%; background-color: var(--bg-input); color: var(--text-primary); border: 1px solid var(--border-color);
     border-radius: 8px; font-size: 16px; font-family: 'Segoe UI', sans-serif;
     min-height: 80px; resize: vertical; box-sizing: border-box;
     /* 🔥 เพิ่ม 2 บรรทัดนี้ เพื่อความเป็นโปร! */
@@ -486,10 +486,10 @@ body {
 .edit-actions { display: flex; justify-content: flex-end; gap: 10px; }
 
 .save-edit-btn, .cancel-edit-btn { padding: 8px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; transition: 0.2s; font-family: 'Germania', 'ChakraPetch', sans-serif; }
-.save-edit-btn { background-color: #3a72b0; color: white; border: none; }
-.save-edit-btn:hover { background-color: #4b86c8; }
-.cancel-edit-btn { background-color: transparent; color: #a0a0b5; border: 1px solid #444; }
-.cancel-edit-btn:hover { background-color: #333; color: #fff; }
+.save-edit-btn { background-color: var(--accent-blue); color: white; border: none; }
+.save-edit-btn:hover { background-color: var(--accent-blue-hover); }
+.cancel-edit-btn { background-color: transparent; color: var(--text-muted); border: 1px solid var(--border-color); }
+.cancel-edit-btn:hover { background-color: var(--bg-input); color: white; }
 
 /* ==========================================
    ระบบจัดเรียงแบบ Custom Hover (สำหรับหน้า Community)
@@ -515,17 +515,17 @@ body {
     align-items: center;
     gap: 5px;
 }
-.sort-btn:hover { background-color: #383838; }
+.sort-btn:hover { background-color: var(--bg-input); }
 
 .sort-dropdown-content {
     display: none;
     position: absolute;
     right: 0;
     top: calc(100% + 8px); /* เว้นระยะลงมาจากปุ่มหลัก 8px */
-    background-color: #252526;
+    background-color: var(--bg-card);
     min-width: 140px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.7);
-    border: 1px solid #444;
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     z-index: 20;
     overflow: hidden;
@@ -548,7 +548,7 @@ body {
 }
 
 .sort-dropdown-content button {
-    color: #e0e0e0;
+    color: var(--text-primary);
     padding: 12px 15px;
     display: block;
     width: 100%;
@@ -562,7 +562,7 @@ body {
     white-space: nowrap;
 }
 .sort-dropdown-content button:hover {
-    background-color: #383838;
+    background-color: var(--bg-input);
 }
 
 /* ==========================================
@@ -571,9 +571,9 @@ body {
 
 /* กล่อง Editor */
 .editor-container {
-    background-color: #1e1e1e; /* สีพื้นหลังกล่องให้กลมกลืน */
-    color: #e0e0e0; /* สีตัวอักษรหลัก */
-    border: 1px solid #444; /* เส้นขอบกล่อง */
+    background-color: var(--bg-input); /* สีพื้นหลังกล่องให้กลมกลืน */
+    color: var(--text-primary); /* สีตัวอักษรหลัก */
+    border: 1px solid var(--border-color); /* เส้นขอบกล่อง */
     border-radius: 8px;
     padding: 20px;
     min-height: 200px;
@@ -591,11 +591,11 @@ body {
 /* ป้องกันตัวหนังสือสีดำที่ Editor.js อาจแทรกเข้ามา */
 .codex-editor__redactor {
     padding-bottom: 50px !important;
-    color: #e0e0e0 !important;
+    color: var(--text-primary) !important;
 }
 
 .ce-paragraph {
-    color: #e0e0e0 !important;
+    color: var(--text-primary) !important;
 }
 
 /* เปลี่ยนสี Placeholder (พิมพ์เนื้อหาหรือกด Tab...) */
@@ -608,12 +608,12 @@ body {
 .ce-toolbar__plus, 
 .ce-toolbar__settings-btn {
     background-color: transparent !important;
-    color: #e0e0e0 !important;
+    color: var(--text-primary) !important;
 }
 .ce-toolbar__plus:hover, 
 .ce-toolbar__settings-btn:hover {
-    background-color: #3a72b0 !important;
-    color: #fff !important;
+    background-color: var(--accent-blue) !important;
+    color: white !important;
 }
 
 /* --- สีของเมนูลอย (เมื่อกดบวก หรือเมื่อลากคลุมข้อความ) --- */
@@ -621,9 +621,9 @@ body {
 .ce-inline-toolbar,
 .ce-conversion-toolbar,
 .ce-settings {
-    background-color: #252526 !important;
-    border: 1px solid #444 !important;
-    color: #e0e0e0 !important;
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-primary) !important;
     box-shadow: 0 4px 15px rgba(0,0,0,0.8) !important;
 }
 
@@ -631,15 +631,15 @@ body {
 .ce-popover__item, 
 .ce-inline-tool,
 .ce-conversion-tool {
-    color: #e0e0e0 !important;
+    color: var(--text-primary) !important;
 }
 
 /* ไอคอนในเมนูลอย */
 .ce-popover__item-icon,
 .ce-settings__button {
-    background-color: #333 !important;
-    color: #e0e0e0 !important;
-    border-color: #444 !important;
+    background-color: var(--bg-input) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
 }
 
 /* เมื่อเอาเมาส์ชี้ปุ่มในเมนูลอย */
@@ -647,22 +647,22 @@ body {
 .ce-inline-toolbar__buttons .ce-inline-tool:hover,
 .ce-conversion-tool:hover,
 .ce-settings__button:hover {
-    background-color: #383838 !important;
-    color: #fff !important;
+    background-color: var(--bg-input) !important;
+    color: white !important;
 }
 
 /* สีพื้นหลังเวลาเลือก Block (ลากคลุม) */
 .ce-block--selected .ce-block__content {
-    background-color: #383838 !important;
+    background-color: var(--bg-input) !important;
     border-radius: 4px;
 }
 
 /* สีเส้นขอบเวลาใส่ลิงก์หรือ Input อื่นๆ ของ Editor.js */
 .cdx-input {
-    background-color: #1e1e1e !important;
-    border: 1px solid #444 !important;
-    color: #e0e0e0 !important;
+    background-color: var(--bg-main) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-primary) !important;
 }
 .cdx-input::placeholder {
-    color: #888 !important;
+    color: var(--text-muted) !important;
 }
