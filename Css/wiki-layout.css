@@ -26,8 +26,8 @@
 
 /* กล่องรอบรายการเมนู */
 .sidebar-box {
-    background-color: #252526;
-    border: 1px solid #333333;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     display: flex;
     flex-direction: column;
@@ -63,8 +63,8 @@
 /* สไตล์ปุ่มเมนูใน Sidebar */
 .sidebar-menu-btn {
     background-color: transparent;
-    color: #e0e0e0;
-    border: 1px solid #3a3a3c;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 10px 15px; /* ลด Padding บนล่างนิดนึง */
     cursor: pointer;
@@ -91,7 +91,7 @@
 .sidebar-menu-btn.active {
     background-color: var(--accent-blue);
     color: #ffffff;
-    border-color: #3a72b0;
+    border-color: var(--accent-blue);
     font-weight: bold;
 }
 
@@ -133,9 +133,9 @@
 
 .comment-input-box input {
     flex: 1;
-    background-color: #1e1e1e;
-    border: 1px solid #444;
-    color: white;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
     padding: 10px 15px;
     border-radius: 20px;
 }
@@ -156,7 +156,7 @@
 
 .comment-item {
     padding: 10px 0;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid var(--border-color);
     font-size: 14px;
 }
 .comment-item:last-child { border-bottom: none; }
@@ -164,8 +164,8 @@
 /* ปุ่มเพิ่มหน้าสำหรับแอดมิน */
 .sidebar-admin-btn {
     background-color: transparent;
-    color: #e0e0e0;
-    border: 1px solid #333333;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 15px;
     cursor: pointer;
@@ -179,8 +179,8 @@
 }
 
 .sidebar-admin-btn:hover {
-    background-color: #333333;
-    border-color: #e0e0e0;
+    background-color: var(--bg-card);
+    border-color: var(--border-color);
 }
 
 /* Main Content ฝั่งขวา */
@@ -216,24 +216,24 @@
 
 /* ปรับแต่งกล่อง Toolbar ของ Quill ให้เข้ากับธีม Dark Mode */
 .ql-toolbar.ql-snow {
-    background-color: #2a2a2a;
-    border: 1px solid #444444 !important; /* บังคับเส้นขอบให้มีทุกด้าน */
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color) !important; /* บังคับเส้นขอบให้มีทุกด้าน */
     border-bottom: 1px solid #111 !important; /* เส้นขอบล่างของ Toolbar ให้ดูมีมิติแยกระหว่างแถบเครื่องมือกับกระดาษ */
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
 }
 
 /* เปลี่ยนสีไอคอนใน Toolbar ให้สว่างขึ้น เพื่อให้เห็นชัดในพื้นหลังสีเทาเข้ม */
-.ql-snow .ql-stroke { stroke: #e0e0e0; }
-.ql-snow .ql-fill { fill: #e0e0e0; }
-.ql-snow .ql-picker { color: #e0e0e0; }
-.ql-snow .ql-picker-options { background-color: #2a2a2a; border-color: #444; }
+.ql-snow .ql-stroke { stroke: var(--text-primary); }
+.ql-snow .ql-fill { fill: var(--text-primary); }
+.ql-snow .ql-picker { color: var(--text-primary); }
+.ql-snow .ql-picker-options { background-color: var(--bg-card); border-color: var(--border-color); }
 
 /* ปรับกล่องเนื้อหาด้านล่าง */
 .ql-container.ql-snow {
-    background-color: #1e1e1e; /* สีเดียวกับกล่อง Input อื่นๆ */
-    color: #e0e0e0;
-    border: 1px solid #444444 !important; /* บังคับเส้นขอบให้มีทุกด้าน */
+    background-color: var(--bg-input); /* สีเดียวกับกล่อง Input อื่นๆ */
+    color: var(--text-primary);
+    border: 1px solid var(--border-color) !important; /* บังคับเส้นขอบให้มีทุกด้าน */
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
     min-height: 250px;
@@ -246,15 +246,15 @@
     width: 8px;
 }
 .ql-editor::-webkit-scrollbar-track {
-    background: #1e1e1e;
+    background: var(--bg-input);
     border-radius: 4px;
 }
 .ql-editor::-webkit-scrollbar-thumb {
-    background: #555555;
+    background: var(--border-color);
     border-radius: 4px;
 }
 .ql-editor::-webkit-scrollbar-thumb:hover {
-    background: #777777;
+    background: var(--text-muted);
 }
 
 /* CSS สำหรับ Rendering หน้าจอแสดงผล (เพื่อให้จัดซ้าย-กลาง-ขวา ได้ตรงกับที่สร้างใน Editor) */
@@ -264,8 +264,8 @@
 
 /* กล่องหัวเรื่องด้านบน */
 .content-title-card {
-    background-color: #252526;
-    border: 1px solid #333333;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 20px 30px;
     display: flex;
@@ -294,8 +294,8 @@
 
 .admin-edit-btn, .admin-delete-btn {
     background: transparent;
-    border: 1px solid #444444;
-    color: #e0e0e0;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
     padding: 8px 15px;
     border-radius: 6px;
     cursor: pointer;
@@ -305,8 +305,8 @@
 }
 
 .admin-edit-btn:hover {
-    border-color: #3a72b0;
-    color: #3a72b0;
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
     background-color: rgba(58, 114, 176, 0.1);
 }
 
@@ -370,7 +370,7 @@
     font-family: 'Germania', 'ChakraPetch', sans-serif;
     color: #ffffff;
     font-size: 24px;
-    border-bottom: 1px solid #333333;
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 12px;
     letter-spacing: 1px;
 }
@@ -465,7 +465,7 @@
         position: relative;
         top: 0;
         border-right: none;
-        border-bottom: 1px solid #333333;
+        border-bottom: 1px solid var(--border-color);
     }
     
     .sidebar-menu {
