@@ -388,11 +388,11 @@ body {
 
 /* --- สไตล์ของแต่ละรายการแจ้งเตือน --- */
 .noti-item {
-    padding: 12px 15px;
+    padding: 8px 12px;
     border-bottom: 1px solid var(--border-color);
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     cursor: pointer;
     transition: 0.2s;
     font-family: 'Germania', 'ChakraPetch', 'Segoe UI', sans-serif;

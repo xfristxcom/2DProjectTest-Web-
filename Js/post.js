@@ -228,7 +228,14 @@ async function deleteComment(commentId, postId) {
 // ==========================================
 async function loadNotifications() {
     if (!currentUser) return;
-    const { data: notis, error } = await supabaseClient.from('notifications').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false }).limit(10);
+
+    const { data: notis, error } = await supabaseClient
+        .from('notifications')
+        .select('*')
+        .eq('user_id', currentUser.id)
+        .order('created_at', { ascending: false })
+        .limit(10); // เอาแค่ 10 รายการล่าสุด
+
     if (error) return;
 
     const notiList = document.getElementById('notiList');
@@ -236,9 +243,11 @@ async function loadNotifications() {
 
     if (notis.length === 0) {
         notiList.innerHTML = '<div style="padding: 15px; text-align: center; color: #888; font-size: 14px;">ไม่มีการแจ้งเตือนใหม่</div>';
-        notiCount.style.display = 'none'; return;
+        notiCount.style.display = 'none';
+        return;
     }
 
+    // นับจำนวนที่ยังไม่ได้อ่าน
     const unreadCount = notis.filter(n => !n.is_read).length;
     if (unreadCount > 0) {
         notiCount.innerText = unreadCount;

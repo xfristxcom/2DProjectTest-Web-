@@ -95,7 +95,7 @@ async function loadNotifications() {
         .select('*')
         .eq('user_id', currentUser.id)
         .order('created_at', { ascending: false })
-        .limit(10);
+        .limit(10); // เอาแค่ 10 รายการล่าสุด
 
     if (error) return;
 
@@ -108,6 +108,7 @@ async function loadNotifications() {
         return;
     }
 
+    // นับจำนวนที่ยังไม่ได้อ่าน
     const unreadCount = notis.filter(n => !n.is_read).length;
     if (unreadCount > 0) {
         notiCount.innerText = unreadCount;
@@ -116,22 +117,42 @@ async function loadNotifications() {
         notiCount.style.display = 'none';
     }
 
+    // วาดรายการแจ้งเตือน
     notiList.innerHTML = '';
     notis.forEach(noti => {
         const avatar = avatarMap[noti.actor_avatar] || '🤖';
         const actionText = noti.action_type === 'comment' ? 'ได้คอมเมนต์ในโพสต์ของคุณ' : 'ได้ดันโพสต์ของคุณ';
-        const bgClass = noti.is_read ? '' : 'background-color: #2c3e50;';
+        const bgClass = noti.is_read ? '' : 'background-color: #2c3e50;'; // สีพื้นหลังถ้ายังไม่อ่านจะเป็นสีน้ำเงินเข้ม
 
         notiList.innerHTML += `
-            <div class="noti-item" style="${bgClass}" onclick="readNotification(${noti.id}, ${noti.post_id})">
-                <div style="font-size: 24px;">${avatar}</div>
-                <div>
-                    <div style="font-weight: bold; color: #3a72b0;">${escapeHtml(noti.actor_name)}</div>
-                    <div style="color: #e0e0e0; font-size: 13px;">${actionText}</div>
+            <div class="noti-item" style="${bgClass}; display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; gap: 10px; align-items: center; flex-grow: 1; cursor: pointer;" onclick="readNotification(${noti.id}, ${noti.post_id})">
+                    <div style="font-size: 20px;">${avatar}</div>
+                    <div>
+                        <div style="font-weight: bold; color: #3a72b0; font-size: 14px;">${escapeHtml(noti.actor_name)}</div>
+                        <div style="color: #e0e0e0; font-size: 12px;">${actionText}</div>
+                    </div>
                 </div>
+                <div title="ลบการแจ้งเตือน" onclick="deleteNotification(${noti.id}, event)" style="color: #888; font-size: 16px; padding: 0 5px; cursor: pointer; transition: 0.2s;" onmouseover="this.style.color='#ff4444'" onmouseout="this.style.color='#888'">✖</div>
             </div>
         `;
     });
+}
+
+// ลบแจ้งเตือนทีละอัน
+async function deleteNotification(notiId, event) {
+    if (event) event.stopPropagation();
+    await supabaseClient.from('notifications').delete().eq('id', notiId);
+    loadNotifications();
+}
+
+// ล้างแจ้งเตือนทั้งหมด
+async function clearAllNotifications() {
+    if (!currentUser) return;
+    if (confirm("ต้องการลบการแจ้งเตือนทั้งหมดใช่หรือไม่?")) {
+        await supabaseClient.from('notifications').delete().eq('user_id', currentUser.id);
+        loadNotifications();
+    }
 }
 
 async function readNotification(notiId, postId) {

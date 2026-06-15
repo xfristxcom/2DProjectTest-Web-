@@ -182,7 +182,7 @@ async function loadNotifications() {
         .select('*')
         .eq('user_id', currentUser.id)
         .order('created_at', { ascending: false })
-        .limit(10);
+        .limit(10); // เอาแค่ 10 รายการล่าสุด
 
     if (error) return;
 
@@ -195,6 +195,7 @@ async function loadNotifications() {
         return;
     }
 
+    // นับจำนวนที่ยังไม่ได้อ่าน
     const unreadCount = notis.filter(n => !n.is_read).length;
     if (unreadCount > 0) {
         notiCount.innerText = unreadCount;
