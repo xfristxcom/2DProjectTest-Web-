@@ -122,7 +122,7 @@ async function loadNotifications() {
     notis.forEach(noti => {
         const avatar = avatarMap[noti.actor_avatar] || '🤖';
         const actionText = noti.action_type === 'comment' ? 'ได้คอมเมนต์ในโพสต์ของคุณ' : 'ได้ดันโพสต์ของคุณ';
-        const bgClass = noti.is_read ? '' : 'background-color: #2c3e50;'; // สีพื้นหลังถ้ายังไม่อ่านจะเป็นสีน้ำเงินเข้ม
+        const bgClass = noti.is_read ? '' : 'background-color: #2c3e50;';
 
         notiList.innerHTML += `
             <div class="noti-item" style="${bgClass}; display: flex; justify-content: space-between; align-items: center;">
@@ -133,7 +133,7 @@ async function loadNotifications() {
                         <div style="color: #e0e0e0; font-size: 12px;">${actionText}</div>
                     </div>
                 </div>
-                <div title="ลบการแจ้งเตือน" onclick="deleteNotification(${noti.id}, event)" style="color: #888; font-size: 16px; padding: 0 5px; cursor: pointer; transition: 0.2s;" onmouseover="this.style.color='#ff4444'" onmouseout="this.style.color='#888'">✖</div>
+                <div title="ลบการแจ้งเตือน" onclick="deleteNotification(${noti.id}, event)" style="color: #888; font-size: 12px; padding: 0 5px; cursor: pointer; transition: 0.2s;" onmouseover="this.style.color='#ff4444'" onmouseout="this.style.color='#888'">✖</div>
             </div>
         `;
     });

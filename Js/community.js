@@ -420,7 +420,7 @@ async function loadNotifications() {
                         <div style="color: #e0e0e0; font-size: 13px;">${actionText}</div>
                     </div>
                 </div>
-                <div title="ลบการแจ้งเตือน" onclick="deleteNotification(${noti.id}, event)" style="color: #888; font-size: 16px; padding: 0 5px; cursor: pointer; transition: 0.2s;" onmouseover="this.style.color='#ff4444'" onmouseout="this.style.color='#888'">✖</div>
+                <div title="ลบการแจ้งเตือน" onclick="deleteNotification(${noti.id}, event)" style="color: #888; font-size: 12px; padding: 0 5px; cursor: pointer; transition: 0.2s;" onmouseover="this.style.color='#ff4444'" onmouseout="this.style.color='#888'">✖</div>
             </div>
         `;
     });

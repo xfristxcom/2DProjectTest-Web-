@@ -45,6 +45,134 @@ async function loadUserData() {
     
     updateAvatarUI();
     loadPosts();
+
+    // ==========================================
+    // Navbar Profile Initialization
+    // ==========================================
+    const userAvatar = document.getElementById('userAvatar');
+    const profileBtn = document.getElementById('mainProfileBtn');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    const notiDropdownBlock = document.getElementById('notiDropdownBlock');
+
+    if (userAvatar) {
+        userAvatar.innerHTML = avatarMap[metadata.avatar_id] || '🤖';
+        userAvatar.style.display = 'flex';
+    }
+
+    if (profileBtn) {
+        profileBtn.innerText = metadata.display_name || 'Player';
+        dropdownMenu.style.display = 'none';
+
+        profileBtn.onclick = () => {
+            dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+        };
+    }
+
+    if (notiDropdownBlock) {
+        notiDropdownBlock.style.display = 'inline-block';
+        const notiBtn = document.querySelector('.noti-btn');
+        const notiDropdown = document.getElementById('notiMenu');
+
+        if (notiBtn && notiDropdown) {
+            notiBtn.onclick = (e) => {
+                e.stopPropagation();
+                notiDropdown.style.display = notiDropdown.style.display === 'block' ? 'none' : 'block';
+            };
+        }
+
+        document.addEventListener('click', (e) => {
+            if (profileBtn && dropdownMenu && !profileBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                dropdownMenu.style.display = 'none';
+            }
+            if (notiBtn && notiDropdown && !notiBtn.contains(e.target) && !notiDropdown.contains(e.target)) {
+                notiDropdown.style.display = 'none';
+            }
+        });
+    }
+
+    loadNotifications();
+}
+
+async function logoutUser() {
+    await supabaseClient.auth.signOut();
+    window.location.href = 'login.html';
+}
+
+// ==========================================
+// ระบบแจ้งเตือน (Notifications)
+// ==========================================
+
+async function loadNotifications() {
+    if (!currentUser) return;
+
+    const { data: notis, error } = await supabaseClient
+        .from('notifications')
+        .select('*')
+        .eq('user_id', currentUser.id)
+        .order('created_at', { ascending: false })
+        .limit(10); // เอาแค่ 10 รายการล่าสุด
+
+    if (error) return;
+
+    const notiList = document.getElementById('notiList');
+    const notiCount = document.getElementById('notiCount');
+
+    if (notis.length === 0) {
+        notiList.innerHTML = '<div style="padding: 15px; text-align: center; color: #888; font-size: 14px;">ไม่มีการแจ้งเตือนใหม่</div>';
+        notiCount.style.display = 'none';
+        return;
+    }
+
+    // นับจำนวนที่ยังไม่ได้อ่าน
+    const unreadCount = notis.filter(n => !n.is_read).length;
+    if (unreadCount > 0) {
+        notiCount.innerText = unreadCount;
+        notiCount.style.display = 'inline-block';
+    } else {
+        notiCount.style.display = 'none';
+    }
+
+    // วาดรายการแจ้งเตือน
+    notiList.innerHTML = '';
+    notis.forEach(noti => {
+        const avatar = avatarMap[noti.actor_avatar] || '🤖';
+        const actionText = noti.action_type === 'comment' ? 'ได้คอมเมนต์ในโพสต์ของคุณ' : 'ได้ดันโพสต์ของคุณ';
+        const bgClass = noti.is_read ? '' : 'background-color: #2c3e50;';
+
+        notiList.innerHTML += `
+            <div class="noti-item" style="${bgClass}; display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; gap: 10px; align-items: center; flex-grow: 1; cursor: pointer;" onclick="readNotification(${noti.id}, ${noti.post_id})">
+                    <div style="font-size: 20px;">${avatar}</div>
+                    <div>
+                        <div style="font-weight: bold; color: #3a72b0; font-size: 14px;">${escapeHtml(noti.actor_name)}</div>
+                        <div style="color: #e0e0e0; font-size: 12px;">${actionText}</div>
+                    </div>
+                </div>
+                <div title="ลบการแจ้งเตือน" onclick="deleteNotification(${noti.id}, event)" style="color: #888; font-size: 12px; padding: 0 5px; cursor: pointer; transition: 0.2s;" onmouseover="this.style.color='#ff4444'" onmouseout="this.style.color='#888'">✖</div>
+            </div>
+        `;
+    });
+}
+
+// ลบแจ้งเตือนทีละอัน
+async function deleteNotification(notiId, event) {
+    if (event) event.stopPropagation();
+    await supabaseClient.from('notifications').delete().eq('id', notiId);
+    loadNotifications();
+}
+
+// ล้างแจ้งเตือนทั้งหมด
+async function clearAllNotifications() {
+    if (!currentUser) return;
+    if (confirm("ต้องการลบการแจ้งเตือนทั้งหมดใช่หรือไม่?")) {
+        await supabaseClient.from('notifications').delete().eq('user_id', currentUser.id);
+        loadNotifications();
+    }
+}
+
+async function readNotification(notiId, postId) {
+    await supabaseClient.from('notifications').update({ is_read: true }).eq('id', notiId);
+    window.location.href = `post.html?id=${postId}`;
 }
 
 let isEditingName = false;
