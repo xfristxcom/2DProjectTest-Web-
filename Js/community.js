@@ -408,7 +408,7 @@ async function loadNotifications() {
     notiList.innerHTML = '';
     notis.forEach(noti => {
         const avatar = avatarMap[noti.actor_avatar] || '🤖';
-        const actionText = noti.action_type === 'comment' ? 'ได้คอมเมนต์ในโพสต์ของคุณ' : 'ได้ดันโพสต์ของคุณ';
+        const actionText = noti.action_type === 'comment' ? 'commented on your post' : 'upvoted your post';
         const bgClass = noti.is_read ? '' : 'background-color: #2c3e50;'; // สีพื้นหลังถ้ายังไม่อ่านจะเป็นสีน้ำเงินเข้ม
 
         notiList.innerHTML += `
