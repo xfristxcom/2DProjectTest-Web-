@@ -412,15 +412,34 @@ async function loadNotifications() {
         const bgClass = noti.is_read ? '' : 'background-color: #2c3e50;'; // สีพื้นหลังถ้ายังไม่อ่านจะเป็นสีน้ำเงินเข้ม
 
         notiList.innerHTML += `
-            <div class="noti-item" style="${bgClass}" onclick="readNotification(${noti.id}, ${noti.post_id})">
-                <div style="font-size: 24px;">${avatar}</div>
-                <div>
-                    <div style="font-weight: bold; color: #3a72b0;">${escapeHtml(noti.actor_name)}</div>
-                    <div style="color: #e0e0e0; font-size: 13px;">${actionText}</div>
+            <div class="noti-item" style="${bgClass}; display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; gap: 10px; align-items: center; flex-grow: 1; cursor: pointer;" onclick="readNotification(${noti.id}, ${noti.post_id})">
+                    <div style="font-size: 24px;">${avatar}</div>
+                    <div>
+                        <div style="font-weight: bold; color: #3a72b0;">${escapeHtml(noti.actor_name)}</div>
+                        <div style="color: #e0e0e0; font-size: 13px;">${actionText}</div>
+                    </div>
                 </div>
+                <div title="ลบการแจ้งเตือน" onclick="deleteNotification(${noti.id}, event)" style="color: #888; font-size: 16px; padding: 0 5px; cursor: pointer; transition: 0.2s;" onmouseover="this.style.color='#ff4444'" onmouseout="this.style.color='#888'">✖</div>
             </div>
         `;
     });
+}
+
+// ลบแจ้งเตือนทีละอัน
+async function deleteNotification(notiId, event) {
+    if (event) event.stopPropagation();
+    await supabaseClient.from('notifications').delete().eq('id', notiId);
+    loadNotifications();
+}
+
+// ล้างแจ้งเตือนทั้งหมด
+async function clearAllNotifications() {
+    if (!currentUser) return;
+    if (confirm("ต้องการลบการแจ้งเตือนทั้งหมดใช่หรือไม่?")) {
+        await supabaseClient.from('notifications').delete().eq('user_id', currentUser.id);
+        loadNotifications();
+    }
 }
 
 // 2. ฟังก์ชันกดอ่านแล้วไปที่หน้าโพสต์แยก
@@ -448,6 +467,19 @@ async function sendNotification(postId, actionType) {
         action_type: actionType,
         post_id: postId
     }]);
+
+    // จำกัดจำนวนการแจ้งเตือนในฐานข้อมูล ไม่ให้ล้นเกิน 30 รายการต่อคน
+    const { data: oldNotis } = await supabaseClient
+        .from('notifications')
+        .select('id')
+        .eq('user_id', post.user_id)
+        .order('created_at', { ascending: false })
+        .range(30, 1000); // ค้นหาตัวที่เก่าเกินอันดับ 30
+        
+    if (oldNotis && oldNotis.length > 0) {
+        const idsToDelete = oldNotis.map(n => n.id);
+        await supabaseClient.from('notifications').delete().in('id', idsToDelete);
+    }
 }
 
 // ==========================================
