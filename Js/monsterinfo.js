@@ -463,7 +463,7 @@ async function loadWikiComments() {
                 <div class="action-dropdown" style="margin-left: auto;">
                     <button class="dots-btn" style="font-size: 20px;">⋮</button>
                     <div class="action-dropdown-content">
-                        <button class="delete-btn" onclick="deleteWikiComment('${comment.id}')">🗑️ ลบคอมเมนต์</button>
+                        <button class="delete-btn" onclick="deleteWikiComment('${comment.id}')">🗑️ Delete</button>
                     </div>
                 </div>
             `;
