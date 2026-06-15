@@ -49,15 +49,9 @@ async function loadUserData() {
     // ==========================================
     // Navbar Profile Initialization
     // ==========================================
-    const userAvatar = document.getElementById('userAvatar');
     const profileBtn = document.getElementById('mainProfileBtn');
     const dropdownMenu = document.getElementById('dropdownMenu');
     const notiDropdownBlock = document.getElementById('notiDropdownBlock');
-
-    if (userAvatar) {
-        userAvatar.innerHTML = avatarMap[metadata.avatar_id] || '🤖';
-        userAvatar.style.display = 'flex';
-    }
 
     if (profileBtn) {
         profileBtn.innerText = metadata.display_name || 'Player';
