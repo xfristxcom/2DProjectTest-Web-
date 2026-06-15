@@ -95,11 +95,14 @@ async function registerUser() {
         return;
     }
 
+    const redirectUrl = window.location.origin + window.location.pathname.replace('register.html', 'login.html');
+
     const { data, error } = await supabaseClient.auth.signUp({
         email: email,
         password: password,
         options: {
-            data: { display_name: name, avatar_id: 'robot_default' }
+            data: { display_name: name, avatar_id: 'robot_default' },
+            emailRedirectTo: redirectUrl
         }
     });
 
