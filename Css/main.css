@@ -157,10 +157,14 @@ body {
 }
 
 .category-card:hover {
-    background-color: var(--bg-input);
-    border: 2px solid var(--accent-blue);
+    background-color: var(--accent-blue);
+    border: 2px solid var(--accent-blue-hover);
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.category-card:hover h3 {
+    color: white;
 }
 
 .category-card h3 {
