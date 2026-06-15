@@ -95,7 +95,7 @@ async function registerUser() {
         return;
     }
 
-    const redirectUrl = window.location.origin + window.location.pathname.replace('register.html', 'login.html');
+    const redirectUrl = window.location.origin + window.location.pathname.replace('register.html', 'verified.html');
 
     const { data, error } = await supabaseClient.auth.signUp({
         email: email,
