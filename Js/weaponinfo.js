@@ -899,7 +899,7 @@ function getEditorTools() {
     if (headerClass) {
         tools.header = {
             class: headerClass,
-            config: { placeholder: 'พิมพ์หัวข้อตรงนี้...', levels: [2, 3, 4], defaultLevel: 2 },
+            config: { placeholder: 'Type header here...', levels: [2, 3, 4], defaultLevel: 2 },
             tunes: alignmentClass ? ['alignmentTune'] : []
         };
     }
@@ -940,7 +940,7 @@ function initEditorJS() {
     }
     editorAdd = new EditorJS({
         holder: addContainer,
-        placeholder: 'พิมพ์เนื้อหาหรือกด Tab เพื่อเลือกกล่องเครื่องมือ',
+        placeholder: 'Type content or press Tab to select tools',
         tools: getEditorTools(),
         onChange: () => {
             if (editorAdd && typeof editorAdd.save === 'function') {
