@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>หน้าหลัก | 2dProjectTest Wiki</title>
+    <title>Main Page | 2dProjectTest Wiki</title>
     <link rel="stylesheet" href="../Css/main.css">
 </head>
 
@@ -39,7 +39,7 @@
                     <div class="noti-header" style="display: flex; justify-content: space-between; align-items: center; color: white; padding: 10px 15px;"><span style="font-family: 'Germania', sans-serif; font-size: 16px;">Notifications</span><span style="font-size: 12px; font-weight: normal; cursor: pointer; color: #e0e0e0; transition: 0.2s;" onmouseover="this.style.color='#ff9800'" onmouseout="this.style.color='#e0e0e0'" onclick="clearAllNotifications()">Clear All</span></div>
                     <div id="notiList">
                         <div style="padding: 15px; text-align: center; color: #888; font-size: 14px;">
-                            ไม่มีการแจ้งเตือนใหม่</div>
+                            No new notifications</div>
                     </div>
                 </div>
             </div>
@@ -63,16 +63,16 @@
 
         <div class="category-grid">
             <div class="category-card" onclick="window.location.href='basicinfo.html'">
-                <h3>ข้อมูลพื้นฐาน</h3>
+                <h3>Basic Info</h3>
             </div>
             <div class="category-card" onclick="window.location.href='monsterinfo.html'">
-                <h3>ข้อมูลมอนสเตอร์</h3>
+                <h3>Monsters</h3>
             </div>
             <div class="category-card" onclick="window.location.href='weaponinfo.html'">
-                <h3>ข้อมูลอาวุธ</h3>
+                <h3>Weapons</h3>
             </div>
             <div class="category-card" onclick="window.location.href='community.html'">
-                <h3>สำหรับผู้เล่น<br><span style="font-size: 14px; color: #a0a0b5;">(คำแนะนำจากผู้เล่นด้วยกัน)</span>
+                <h3>Community<br><span style="font-size: 14px; color: #a0a0b5;">(Tips from players)</span>
                 </h3>
             </div>
         </div>
@@ -81,9 +81,9 @@
 
     <div id="customAlert" class="alert-overlay">
         <div class="alert-box">
-            <h3 id="alertTitle">แจ้งเตือน</h3>
-            <p id="alertMessage">ข้อความจะแสดงตรงนี้</p>
-            <button onclick="closeAlert()" class="alert-btn">ตกลง</button>
+            <h3 id="alertTitle">Alert</h3>
+            <p id="alertMessage">Message will appear here</p>
+            <button onclick="closeAlert()" class="alert-btn">OK</button>
         </div>
     </div>
 

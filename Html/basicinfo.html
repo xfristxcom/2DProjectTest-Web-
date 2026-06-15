@@ -48,7 +48,7 @@
                 <div class="noti-dropdown-content" id="notiMenu">
                     <div class="noti-header" style="display: flex; justify-content: space-between; align-items: center; color: white; padding: 10px 15px;"><span style="font-family: 'Germania', sans-serif; font-size: 16px;">Notifications</span><span style="font-size: 12px; font-weight: normal; cursor: pointer; color: #e0e0e0; transition: 0.2s;" onmouseover="this.style.color='#ff9800'" onmouseout="this.style.color='#e0e0e0'" onclick="clearAllNotifications()">Clear All</span></div>
                     <div id="notiList">
-                        <div style="padding: 15px; text-align: center; color: #888; font-size: 14px;">ไม่มีการแจ้งเตือนใหม่</div>
+                        <div style="padding: 15px; text-align: center; color: #888; font-size: 14px;">No new notifications</div>
                     </div>
                 </div>
             </div>
@@ -58,9 +58,9 @@
     <!-- 2. ส่วนแสดงข้อมูล 2 คอลัมน์ (Two-Column Layout) -->
     <div class="basicinfo-container">
         
-        <!-- Sidebar ฝั่งซ้าย -->
+        <!-- Sidebar -->
         <div class="sidebar">
-            <!-- ตัวเลือกจัดเรียง (Sort Dropdown) -->
+            <!-- Sort Dropdown -->
             <div class="sort-container" style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
                 <div class="sort-label" style="background-color: #e0e0e0; color: #1e1e1e; padding: 0 15px; height: 38px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border-radius: 20px; font-family: 'Germania', 'ChakraPetch', sans-serif; font-size: 16px; font-weight: bold;">
                     Sort by :
@@ -77,60 +77,55 @@
             </div>
             
             <div class="sidebar-box">
-                <!-- พื้นที่เลื่อนแสดงรายการหัวข้อเนื้อหา -->
+                <!-- Content list -->
                 <div class="sidebar-menu" id="sidebarMenu">
-                    <div style="color: #888; font-size: 14px; text-align: center; padding: 20px;">กำลังโหลด...</div>
+                    <div style="color: #888; font-size: 14px; text-align: center; padding: 20px;">Loading...</div>
                 </div>
             </div>
             
-            <!-- ปุ่มเพิ่มหน้าจะถูกซ่อนไว้เริ่มต้น และจะแสดงผ่าน JS เฉพาะเมื่อเป็นแอดมิน -->
+            <!-- Admin button -->
             <button class="sidebar-admin-btn" id="adminSidebarBtn" onclick="openAddModal()" style="display: none;">
-                ปุ่มเพิ่มหน้า(สำหรับแอดมิน)
+                Add New Page (Admin)
             </button>
         </div>
 
-        <!-- Main Content ฝั่งขวา (ใช้พื้นที่ที่เหลือทั้งหมด) -->
+        <!-- Main Content -->
         <div class="main-content">
             
-            <!-- กล่องแสดงหัวเรื่อง (Title) -->
+            <!-- Title Card -->
             <div class="content-title-card">
-                <h2 class="content-title-text" id="contentTitleText">หัวเรื่อง</h2>
-                <!-- ปุ่มจัดการของแอดมิน (แก้ไข/ลบ) ซึ่งจะโชว์เฉพาะแอดมิน -->
+                <h2 class="content-title-text" id="contentTitleText">Title</h2>
+                <!-- Admin buttons -->
                 <div class="admin-action-group" id="adminActionGroup" style="display: none;">
-                    <button class="admin-edit-btn" onclick="openEditModal()">✏️ แก้ไขหน้า</button>
-                    <button class="admin-delete-btn" onclick="deleteActiveWiki()">🗑️ ลบหน้า</button>
+                    <button class="admin-edit-btn" onclick="openEditModal()">✏️ Edit Page</button>
+                    <button class="admin-delete-btn" onclick="deleteActiveWiki()">🗑️ Delete Page</button>
                 </div>
             </div>
 
-            <!-- กล่องขนาดใหญ่สำหรับแสดงเนื้อหา (Content) -->
+            <!-- Content body -->
             <div class="content-body-card" id="contentBodyText">
-                กรุณารอสักครู่ กำลังดึงข้อมูลสารานุกรม...
+                Please wait, loading encyclopedic data...
             </div>
             
-            <!-- ส่วนปฏิสัมพันธ์ (อัพโหวต & คอมเมนต์) จะถูกซ่อนไว้ถ้ายังไม่มีหน้าแสดงผล -->
+            <!-- Interaction Section -->
             <div id="wikiInteractionSection" style="display: none; margin-top: 20px;">
                 <div class="post-actions" style="margin-top: 0; border-top: none; padding-top: 0;">
-                    <!-- ปุ่มดันโพสต์ (Upvote) -->
+                    <!-- Upvote & Comment -->
                     <button class="action-btn" id="wikiUpvoteBtn" onclick="toggleWikiUpvote()">
-                        ⬆️ ดันโพสต์ (<span id="wikiUpvoteCount">0</span>)
+                        ⬆️ Upvote (<span id="wikiUpvoteCount">0</span>)
                     </button>
-                    <!-- ปุ่มคอมเมนต์ -->
                     <button class="action-btn" id="wikiCommentBtn" onclick="toggleWikiCommentSection()">
-                        💬 คอมเมนต์ (<span id="wikiCommentCount">0</span>)
+                        💬 Comment (<span id="wikiCommentCount">0</span>)
                     </button>
                 </div>
 
-                <!-- โซนคอมเมนต์ (เปิด/ปิด ได้) -->
+                <!-- Comment Section -->
                 <div class="comments-section" id="wikiCommentSection" style="display: none; background-color: #252526; border: 1px solid #333333; margin-top: 15px;">
                     <div class="comment-input-box">
-                        <input type="text" id="wikiCommentInput" placeholder="แสดงความคิดเห็นเกี่ยวกับหน้านี้..." onkeypress="if(event.key === 'Enter') submitWikiComment()">
-                        <button onclick="submitWikiComment()">ส่ง</button>
+                        <input type="text" id="wikiCommentInput" placeholder="Write a comment about this page..." onkeypress="if(event.key === 'Enter') submitWikiComment()">
+                        <button onclick="submitWikiComment()">Send</button>
                     </div>
                     <div id="wikiCommentList">
-                        <!-- รายการคอมเมนต์จะถูกดึงมาโชว์ที่นี่ -->
-                    </div>
-                </div>
-            </div>
 
         </div>
     </div>
@@ -145,27 +140,27 @@
     <!-- Modal: เพิ่มหน้าใหม่ -->
     <div class="modal-overlay" id="addWikiModal">
         <div class="modal-box">
-            <h3>➕ เพิ่มหน้าสารานุกรมใหม่</h3>
+            <h3>➕ Add New Wiki Page</h3>
             
             <div class="form-group">
-                <label for="addTitleInput">ชื่อหัวข้อ (Title)</label>
-                <input type="text" id="addTitleInput" class="form-input" placeholder="กรอกชื่อหัวข้อข้อมูล เช่น ข้อมูลตัวละคร">
+                <label for="addTitleInput">Title</label>
+                <input type="text" id="addTitleInput" class="form-input" placeholder="Enter title">
             </div>
             
             <div class="form-group">
-                <label for="addOrderInput">ลำดับการแสดงผล (Order Number)</label>
-                <input type="number" id="addOrderInput" class="form-input" min="1" placeholder="ลำดับ เช่น 1, 2, 3">
+                <label for="addOrderInput">Order Number</label>
+                <input type="number" id="addOrderInput" class="form-input" min="1" placeholder="Order e.g., 1, 2, 3">
             </div>
             
             <div class="form-group">
-                <label>เนื้อหาของหน้า (Content)</label>
+                <label>Content</label>
                 <!-- กล่องสำหรับ Editor.js -->
                 <div id="addEditorContainer" class="editor-container"></div>
             </div>
             
             <div class="modal-actions">
-                <button class="btn-cancel" onclick="closeAddModal()">ยกเลิก</button>
-                <button class="btn-save" onclick="submitAddWiki()">บันทึกข้อมูล</button>
+                <button class="btn-cancel" onclick="closeAddModal()">Cancel</button>
+                <button class="btn-save" onclick="submitAddWiki()">Save</button>
             </div>
         </div>
     </div>
@@ -173,27 +168,27 @@
     <!-- Modal: แก้ไขหน้าเดิม -->
     <div class="modal-overlay" id="editWikiModal">
         <div class="modal-box">
-            <h3>✏️ แก้ไขหน้าสารานุกรม</h3>
+            <h3>✏️ Edit Wiki Page</h3>
             
             <div class="form-group">
-                <label for="editTitleInput">ชื่อหัวข้อ (Title)</label>
-                <input type="text" id="editTitleInput" class="form-input" placeholder="กรอกชื่อหัวข้อข้อมูล">
+                <label for="editTitleInput">Title</label>
+                <input type="text" id="editTitleInput" class="form-input" placeholder="Enter title">
             </div>
             
             <div class="form-group">
-                <label for="editOrderInput">ลำดับการแสดงผล (Order Number)</label>
-                <input type="number" id="editOrderInput" class="form-input" min="1" placeholder="ลำดับ">
+                <label for="editOrderInput">Order Number</label>
+                <input type="number" id="editOrderInput" class="form-input" min="1" placeholder="Order">
             </div>
             
             <div class="form-group">
-                <label>เนื้อหาของหน้า (Content)</label>
+                <label>Content</label>
                 <!-- กล่องสำหรับ Editor.js -->
                 <div id="editEditorContainer" class="editor-container"></div>
             </div>
             
             <div class="modal-actions">
-                <button class="btn-cancel" onclick="closeEditModal()">ยกเลิก</button>
-                <button class="btn-save" onclick="submitEditWiki()">บันทึกข้อมูล</button>
+                <button class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+                <button class="btn-save" onclick="submitEditWiki()">Save</button>
             </div>
         </div>
     </div>
@@ -201,9 +196,9 @@
     <!-- กล่องแจ้งเตือนรวม (Custom Alert Overlay) -->
     <div id="customAlert" class="alert-overlay">
         <div class="alert-box">
-            <h3 id="alertTitle">แจ้งเตือน</h3>
-            <p id="alertMessage">ข้อความจะแสดงตรงนี้</p>
-            <button onclick="closeAlert()" class="alert-btn" style="width: auto;">ตกลง</button>
+            <h3 id="alertTitle">Alert</h3>
+            <p id="alertMessage">Message will appear here</p>
+            <button onclick="closeAlert()" class="alert-btn" style="width: auto;">OK</button>
         </div>
     </div>
 
