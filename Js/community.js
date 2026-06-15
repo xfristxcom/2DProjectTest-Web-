@@ -163,8 +163,8 @@ async function loadFeed() {
                 <div class="action-dropdown">
                     <button class="dots-btn">⋮</button>
                     <div class="action-dropdown-content">
-                        <button onclick="editPost('${post.id}')">✏️ แก้ไข</button>
-                        <button class="delete-btn" onclick="deletePost('${post.id}')">🗑️ ลบโพสต์</button>
+                        <button onclick="editPost('${post.id}')">✏️ Edit</button>
+                        <button class="delete-btn" onclick="deletePost('${post.id}')">🗑️ Delete</button>
                     </div>
                 </div>
             `;
@@ -185,17 +185,17 @@ async function loadFeed() {
 
                 <div class="post-actions">
                     <button onclick="toggleUpvote('${post.id}')" class="btn-post-action ${isUpvoted ? 'action-upvoted' : 'action-normal'}">
-                        ⬆️ ดันโพสต์ ( <span>${post.upvotes || 0}</span> )
+                        ⬆️ Upvote ( <span>${post.upvotes || 0}</span> )
                     </button>
                     <button onclick="toggleCommentSection('${post.id}')" class="btn-post-action action-normal">
-                        💬 คอมเมนต์ ( <span id="comment-count-${post.id}">${commentCount}</span> )
+                        💬 Comment ( <span id="comment-count-${post.id}">${commentCount}</span> )
                     </button>
                 </div>
 
                 <div class="comments-box-container" id="comment-section-${post.id}">
                     <div class="comment-input-wrapper">
-                        <input type="text" id="comment-input-${post.id}" class="comment-styled-input" placeholder="แสดงความคิดเห็น...">
-                        <button onclick="submitComment('${post.id}')" class="btn-comment-submit">ส่ง</button>
+                        <input type="text" id="comment-input-${post.id}" class="comment-styled-input" placeholder="Write a comment...">
+                        <button onclick="submitComment('${post.id}')" class="btn-comment-submit">Send</button>
                     </div>
                     <div id="comment-list-${post.id}"></div>
                 </div>

@@ -242,7 +242,7 @@ function updateAvatarUI() {
 
 async function loadPosts() {
     const container = document.getElementById('postContainer');
-    container.innerHTML = '<div class="post-card" style="text-align:center; color:#888;">กำลังโหลดโพสต์...</div>';
+    container.innerHTML = '<div class="post-card" style="text-align:center; color:#888;">Loading posts...</div>';
 
     // 1. ตั้งต้นคำสั่งดึงข้อมูล (ดึงเฉพาะโพสต์ของตัวเอง และนับจำนวนทั้งหมดด้วย {count: 'exact'})
     let query = supabaseClient
@@ -309,17 +309,17 @@ async function loadPosts() {
 
                 <div class="post-actions">
                     <button onclick="toggleUpvote('${post.id}')" class="btn-post-action ${isUpvoted ? 'action-upvoted' : 'action-normal'}">
-                        ⬆️ ดันโพสต์ ( <span>${post.upvotes || 0}</span> )
+                        ⬆️ Upvote ( <span>${post.upvotes || 0}</span> )
                     </button>
                     <button onclick="toggleCommentSection('${post.id}')" class="btn-post-action action-normal">
-                        💬 คอมเมนต์ ( <span id="comment-count-${post.id}">${commentCount}</span> )
+                        💬 Comment ( <span id="comment-count-${post.id}">${commentCount}</span> )
                     </button>
                 </div>
 
                 <div class="comments-box-container" id="comment-section-${post.id}">
                     <div class="comment-input-wrapper">
-                        <input type="text" id="comment-input-${post.id}" class="comment-styled-input" placeholder="แสดงความคิดเห็น...">
-                        <button onclick="submitComment('${post.id}')" class="btn-comment-submit">ส่ง</button>
+                        <input type="text" id="comment-input-${post.id}" class="comment-styled-input" placeholder="Write a comment...">
+                        <button onclick="submitComment('${post.id}')" class="btn-comment-submit">Send</button>
                     </div>
                     <div id="comment-list-${post.id}"></div>
                 </div>
@@ -335,8 +335,8 @@ function editPost(postId) {
         <div class="edit-post-container">
             <textarea id="editInput-${postId}" class="edit-textarea" oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px'">${currentText}</textarea>
             <div class="edit-actions">
-                <button class="cancel-edit-btn" onclick="loadPosts()">ยกเลิก</button>
-                <button class="save-edit-btn" onclick="saveEdit('${postId}')">บันทึก</button>
+                <button class="cancel-edit-btn" onclick="loadPosts()">Cancel</button>
+                <button class="save-edit-btn" onclick="saveEdit('${postId}')">Save</button>
             </div>
         </div>
     `;

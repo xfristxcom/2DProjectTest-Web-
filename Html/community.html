@@ -51,12 +51,12 @@
     <div class="container community-page">
 
         <div class="create-post-box">
-            <textarea id="postInput" placeholder="มีอะไรอยากแชร์กับนักเดินทางคนอื่นไหม?" 
+            <textarea id="postInput" placeholder="Share something with other travelers..." 
                 oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px'; updatePostCounter(this.value.length)"
                 maxlength="1000"></textarea>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
                 <span id="postCharCounter" style="font-size: 12px; color: #777;">0 / 1,000</span>
-                <button class="post-submit-btn" onclick="submitPost()">โพสต์เลย</button>
+                <button class="post-submit-btn" onclick="submitPost()">Post</button>
             </div>
         </div>
 
@@ -85,12 +85,12 @@
         <!-- Admin Panel: ปุ่มล้างข้อมูลเก่า (แสดงเฉพาะ Admin) -->
         <div id="adminCleanPanel" style="display:none; margin-bottom: 15px;">
             <button onclick="adminCleanOldPosts()" style="background-color: #3a3a3a; color: #ff9800; border: 1px solid #ff9800; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-family: 'Germania', sans-serif; font-size: 14px; transition: 0.2s;" onmouseover="this.style.backgroundColor='rgba(255,152,0,0.15)'" onmouseout="this.style.backgroundColor='#3a3a3a'">
-                🗑️ ล้างโพสต์เก่า (Admin)
+                🗑️ Clear Old Posts (Admin)
             </button>
         </div>
 
         <div id="feedContainer">
-            <div class="post-card" style="text-align: center; color: #888;">กำลังโหลดกระดานสนทนา...</div>
+            <div class="post-card" style="text-align: center; color: #888;">Loading discussions...</div>
         </div>
 
     </div>

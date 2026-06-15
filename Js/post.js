@@ -83,8 +83,8 @@ async function loadSinglePost() {
             <div class="action-dropdown">
                 <button class="dots-btn">⋮</button>
                 <div class="action-dropdown-content">
-                    <button onclick="editPost('${post.id}')">✏️ แก้ไข</button>
-                    <button class="delete-btn" onclick="deletePost('${post.id}')">🗑️ ลบโพสต์</button>
+                    <button onclick="editPost('${post.id}')">✏️ Edit</button>
+                    <button class="delete-btn" onclick="deletePost('${post.id}')">🗑️ Delete</button>
                 </div>
             </div>
         `;
@@ -105,17 +105,17 @@ async function loadSinglePost() {
 
                 <div class="post-actions">
                     <button onclick="toggleUpvote('${post.id}')" class="btn-post-action ${isUpvoted ? 'action-upvoted' : 'action-normal'}">
-                        ⬆️ <span>${post.upvotes || 0}</span> ดันโพสต์
+                        ⬆️ <span>${post.upvotes || 0}</span> Upvotes
                     </button>
                     <button onclick="toggleCommentSection('${post.id}')" class="btn-post-action action-normal">
-                        💬 <span id="comment-count-${post.id}">${commentCount}</span> คอมเมนต์
+                        💬 <span id="comment-count-${post.id}">${commentCount}</span> Comments
                     </button>
                 </div>
 
                 <div class="comments-box-container" id="comment-section-${post.id}" style="display: block;">
                     <div class="comment-input-wrapper">
-                        <input type="text" id="comment-input-${post.id}" class="comment-styled-input" placeholder="แสดงความคิดเห็น...">
-                        <button onclick="submitComment('${post.id}')" class="btn-comment-submit">ส่ง</button>
+                        <input type="text" id="comment-input-${post.id}" class="comment-styled-input" placeholder="Write a comment...">
+                        <button onclick="submitComment('${post.id}')" class="btn-comment-submit">Send</button>
                     </div>
                     <div id="comment-list-${post.id}"></div>
                 </div>
@@ -134,8 +134,8 @@ async function loadComments(postId) {
     const commentListDiv = document.getElementById(`comment-list-${postId}`);
     const { data: comments, error } = await supabaseClient.from('comments').select('*').eq('post_id', postId).order('created_at', { ascending: true });
 
-    if (error) { commentListDiv.innerHTML = '<div style="color: red; text-align: center;">โหลดคอมเมนต์ไม่สำเร็จ</div>'; return; }
-    if (comments.length === 0) { commentListDiv.innerHTML = '<div style="color: #777; text-align: center;">ยังไม่มีคอมเมนต์ เป็นคนแรกเลย!</div>'; return; }
+    if (error) { commentListDiv.innerHTML = '<div style="color: red; text-align: center;">Failed to load comments</div>'; return; }
+    if (comments.length === 0) { commentListDiv.innerHTML = '<div style="color: #777; text-align: center;">No comments yet. Be the first!</div>'; return; }
 
     commentListDiv.innerHTML = '';
     comments.forEach(comment => {
@@ -147,7 +147,7 @@ async function loadComments(postId) {
                 <div class="action-dropdown" style="margin-left: auto;">
                     <button class="dots-btn" style="font-size: 20px;">⋮</button>
                     <div class="action-dropdown-content">
-                        <button class="delete-btn" onclick="deleteComment('${comment.id}', '${postId}')">🗑️ ลบคอมเมนต์</button>
+                        <button class="delete-btn" onclick="deleteComment('${comment.id}', '${postId}')">🗑️ Delete</button>
                     </div>
                 </div>
             `;
