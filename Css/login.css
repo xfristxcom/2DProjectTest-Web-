@@ -145,6 +145,7 @@ button:hover {
 .alert-box p {
     color: #d0d0d0;
     font-size: 14px;
+    font-family: 'Germania', 'ChakraPetch', sans-serif;
     margin-bottom: 20px;
 }
 
@@ -153,7 +154,7 @@ button:hover {
     width: auto;
     padding: 8px 30px;
     margin-top: 0;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Germania', 'ChakraPetch', sans-serif;
     font-size: 14px;
 }
 
