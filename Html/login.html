@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <title>เข้าสู่ระบบ | 2dProjectTest Wiki</title>
+    <title>Login | 2DProjectTest Wiki</title>
     <link rel="stylesheet" href="../Css/main.css">
     <link rel="stylesheet" href="../Css/login.css">
 </head>
@@ -11,35 +11,35 @@
     <div class="login-container">
         <h1>2DProjectTest Wiki</h1>
         <form>
-            <input type="text" id="emailInput" placeholder="Email หรือ ชื่อในเว็บ">
+            <input type="text" id="emailInput" placeholder="Email or Display Name">
             <input type="password" id="passwordInput" placeholder="Password">
 
             <button type="button" class="login-btn" onclick="loginUser()">Login</button>
             
             <div style="margin-top: 15px; display: flex; justify-content: space-between; padding: 0 10px;">
-                <a href="#" class="text-link" style="margin-top:0;" onclick="openForgotModal()">ลืมรหัสผ่าน?</a>
-                <a href="register.html" class="text-link" style="margin-top:0;">สมัครสมาชิกที่นี่</a>
+                <a href="#" class="text-link" style="margin-top:0;" onclick="openForgotModal()">Forgot Password?</a>
+                <a href="register.html" class="text-link" style="margin-top:0;">Register Here</a>
             </div>
         </form>
     </div>
 
     <div id="forgotModal" class="alert-overlay">
         <div class="alert-box" style="width: 320px;">
-            <h3 style="margin-bottom:10px;">ลืมรหัสผ่าน</h3>
-            <p style="margin-bottom:15px; font-size:13px;">กรอกอีเมลของคุณเพื่อรับลิงก์ตั้งรหัสผ่านใหม่</p>
-            <input type="email" id="forgotEmailInput" placeholder="Email ของคุณ" style="width: 85%; margin-bottom: 20px;">
+            <h3 style="margin-bottom:10px;">Forgot Password</h3>
+            <p style="margin-bottom:15px; font-size:13px;">Enter your email to receive a password reset link.</p>
+            <input type="email" id="forgotEmailInput" placeholder="Your Email" style="width: 85%; margin-bottom: 20px;">
             <div style="display:flex; justify-content:center; gap:10px;">
-                <button type="button" onclick="closeForgotModal()" class="alert-btn" style="background-color: transparent; border: 1px solid #444; width:auto; margin-top:0;">ยกเลิก</button>
-                <button type="button" onclick="sendPasswordReset()" class="alert-btn login-btn" style="width:auto; margin-top:0;">ส่งลิงก์</button>
+                <button type="button" onclick="closeForgotModal()" class="alert-btn" style="background-color: transparent; border: 1px solid #444; width:auto; margin-top:0;">Cancel</button>
+                <button type="button" onclick="sendPasswordReset()" class="alert-btn login-btn" style="width:auto; margin-top:0;">Send Link</button>
             </div>
         </div>
     </div>
 
     <div id="customAlert" class="alert-overlay">
         <div class="alert-box">
-            <h3 id="alertTitle">แจ้งเตือน</h3>
-            <p id="alertMessage">ข้อความจะแสดงตรงนี้</p>
-            <button onclick="closeAlert()" class="alert-btn" style="width: auto;">ตกลง</button>
+            <h3 id="alertTitle">Alert</h3>
+            <p id="alertMessage">Message will appear here</p>
+            <button onclick="closeAlert()" class="alert-btn" style="width: auto;">OK</button>
         </div>
     </div>
 

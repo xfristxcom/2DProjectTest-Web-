@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <title>สมัครสมาชิก | 2dProjectTest Wiki</title>
+    <title>Register | 2DProjectTest Wiki</title>
     <link rel="stylesheet" href="../Css/main.css">
     <link rel="stylesheet" href="../Css/login.css">
 </head>
@@ -10,23 +10,23 @@
 
     <div class="login-container">
         <h1>Create Account</h1>
-        <p style="font-size:12px; color:#a0a0b5; margin-bottom:15px;">*กรุณาใช้อีเมลจริงสำหรับการยืนยันตัวตน</p>
+        <p style="font-size:12px; color:#a0a0b5; margin-bottom:15px;">*Please use a real email for verification</p>
         <form>
-            <input type="email" id="regEmailInput" placeholder="Email ของคุณ (ต้องเป็นอีเมลจริง)">
-            <input type="text" id="regNameInput" placeholder="ชื่อในเว็บ (Display Name)">
+            <input type="email" id="regEmailInput" placeholder="Your Email (Must be real)">
+            <input type="text" id="regNameInput" placeholder="Display Name">
             <input type="password" id="regPasswordInput" placeholder="Password">
 
             <button type="button" class="login-btn" onclick="registerUser()">Register</button>
             
-            <a href="login.html" class="text-link">เข้าสู่ระบบที่นี่</a>
+            <a href="login.html" class="text-link">Login Here</a>
         </form>
     </div>
 
     <div id="customAlert" class="alert-overlay">
         <div class="alert-box">
-            <h3 id="alertTitle">แจ้งเตือน</h3>
-            <p id="alertMessage">ข้อความจะแสดงตรงนี้</p>
-            <button onclick="closeAlert()" class="alert-btn" style="width: auto;">ตกลง</button>
+            <h3 id="alertTitle">Alert</h3>
+            <p id="alertMessage">Message will appear here</p>
+            <button onclick="closeAlert()" class="alert-btn" style="width: auto;">OK</button>
         </div>
     </div>
 
