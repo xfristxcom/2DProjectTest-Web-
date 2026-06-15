@@ -651,7 +651,7 @@ function openEditModal() {
         tmpDiv.innerHTML = page.content;
         let plainText = tmpDiv.innerText || tmpDiv.textContent || '';
         blocks = [
-            { type: 'paragraph', data: { text: "⚠️ <i>(ระบบดึงข้อความเก่ามาให้บางส่วน กรุณาจัดหน้าใหม่ด้วย Block)</i>" } },
+            { type: 'paragraph', data: { text: "⚠️ <i>(Old content loaded. Please format using Blocks)</i>" } },
             { type: 'paragraph', data: { text: plainText.replace(/\n/g, '<br>') } }
         ];
     }
