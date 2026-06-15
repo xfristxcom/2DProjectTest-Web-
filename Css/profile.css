@@ -194,12 +194,12 @@ body {
 .page-number { border: 1px solid var(--border-color); padding: 5px 25px; border-radius: 8px; }
 
 .floating-back-btn {
-    position: fixed; bottom: 30px; left: 30px; background-color: var(--bg-card);
-    color: var(--text-primary); border: 2px solid var(--border-color); padding: 10px 25px;
+    position: fixed; bottom: 30px; left: 30px; background-color: #252526;
+    color: #e0e0e0; border: 2px solid #444444; padding: 10px 25px;
     border-radius: 30px; cursor: pointer; font-size: 18px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.8); transition: 0.2s ease-in-out; z-index: 1000;
 }
-.floating-back-btn:hover { background-color: var(--accent-blue-hover); border-color: var(--text-primary); transform: scale(1.05); }
+.floating-back-btn:hover { background-color: var(--bg-input); border-color: #e0e0e0; transform: scale(1.05); }
 
 /* --- โครงสร้างกล่องและอินพุตในโซนคอมเมนต์ --- */
 .comments-box-container {

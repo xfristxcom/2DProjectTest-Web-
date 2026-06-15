@@ -136,9 +136,9 @@
     position: fixed;
     bottom: 30px;
     left: 30px;
-    background-color: var(--bg-card);
-    color: var(--text-primary);
-    border: 2px solid var(--border-color);
+    background-color: #252526;
+    color: #e0e0e0;
+    border: 2px solid #444444;
     padding: 10px 25px;
     border-radius: 30px;
     cursor: pointer;
@@ -150,8 +150,8 @@
 }
 
 .floating-back-btn:hover {
-    background-color: var(--accent-blue-hover);
-    border-color: var(--text-primary);
+    background-color: var(--bg-input);
+    border-color: #e0e0e0;
     transform: scale(1.05); 
 }
 
