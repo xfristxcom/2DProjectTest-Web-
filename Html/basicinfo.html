@@ -202,10 +202,25 @@
         </div>
     </div>
 
+    <!-- Modal: สำหรับหน้าต่างค้นหาและใส่ Wiki Link -->
+    <div class="modal-overlay" id="wikiLinkModal" style="display: none; align-items: center; justify-content: center; z-index: 10000;">
+        <div class="modal-box" style="width: 400px; padding: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 style="margin: 0; color: #fff;">🔗 ค้นหาหน้า Wiki</h3>
+                <button onclick="closeWikiLinkModal()" style="background: none; border: none; color: #888; font-size: 16px; cursor: pointer;">✖</button>
+            </div>
+            <input type="text" id="wikiLinkSearchInput" class="form-input" placeholder="พิมพ์ชื่อเพื่อค้นหา..." oninput="filterWikiLinkResults(event)" style="font-family: 'Germania', 'ChakraPetch', sans-serif; width: 100%; box-sizing: border-box;">
+            <div id="wikiLinkResultList" style="max-height: 250px; overflow-y: auto; margin-top: 15px; background: #1e1e1e; border: 1px solid #333; border-radius: 8px;">
+                <!-- Results will be rendered here -->
+            </div>
+        </div>
+    </div>
+
     <!-- ====================================================
        โหลดสคริปต์ Supabase และไฟล์การทำงาน
        ==================================================== -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../Js/wiki-tool.js"></script>
     <script src="../Js/basicinfo.js?v=4"></script>
 </body>
 </html>

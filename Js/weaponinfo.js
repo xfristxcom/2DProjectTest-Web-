@@ -942,8 +942,12 @@ function getEditorTools() {
             },
             tunes: alignmentClass ? ['alignmentTune'] : []
         };
+        if (typeof WikiLinkTool !== 'undefined') {
+            tools.wikiLink = WikiLinkTool;
+        }
+
+        return tools;
     }
-    return tools;
 }
 
 function initEditorJS() {

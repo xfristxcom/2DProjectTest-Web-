@@ -216,10 +216,10 @@
 
 /* --- กำหนดสไตล์ให้ลิงก์เชื่อมหน้า Wiki --- */
 .content-body-card a {
-    color: var(--accent-blue);
+    color: #ffffff;
     text-decoration: none;
     font-weight: bold;
-    border-bottom: 2px dashed var(--accent-blue);
+    border-bottom: 2px dashed #ffffff;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
 }
@@ -227,7 +227,7 @@
 .content-body-card a:hover {
     color: #ffffff;
     border-bottom: 2px solid #ffffff;
-    text-shadow: 0 0 8px var(--accent-blue);
+    text-shadow: 0 0 8px #ffffff;
 }
 
 /* ปรับแต่งกล่อง Toolbar ของ Quill ให้เข้ากับธีม Dark Mode */
