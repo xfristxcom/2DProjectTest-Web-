@@ -224,9 +224,8 @@
 }
 
 .content-body-card a:hover {
-    color: #ffffff;
-    border-bottom: 1px solid #ffffff;
-    text-shadow: 0 0 8px #ffffff;
+    color: inherit;
+    border-bottom: 1px solid currentColor;
 }
 
 /* ปรับแต่งกล่อง Toolbar ของ Quill ให้เข้ากับธีม Dark Mode */
@@ -691,39 +690,22 @@
 .content-body-card a[data-tooltip]::after {
     content: attr(data-tooltip);
     position: absolute;
-    bottom: 100%;
+    top: 100%;
     left: 50%;
-    transform: translateX(-50%) translateY(-8px);
-    background-color: #1e1e1e; /* สีพื้นหลังกลมกลืนกับเว็บ */
-    color: #e0e0e0;
-    padding: 6px 12px;
-    border-radius: 6px;
+    transform: translateX(-50%) translateY(8px);
+    background-color: #212121; /* สีพื้นหลังกลมกลืนกับปุ่ม dropdown */
+    color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 8px; /* ขอบโค้งมนแบบเดียวกับ dropdown */
     font-size: 14px;
     font-family: 'Germania', 'ChakraPetch', sans-serif;
     white-space: nowrap;
     opacity: 0;
     visibility: hidden;
     transition: all 0.2s ease;
-    border: 1px solid #333;
+    border: 1px solid #444;
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
     z-index: 1000;
-    pointer-events: none;
-}
-
-/* ลูกศรสามเหลี่ยมชี้ลง */
-.content-body-card a[data-tooltip]::before {
-    content: '';
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%) translateY(2px);
-    border-width: 6px;
-    border-style: solid;
-    border-color: #333 transparent transparent transparent;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.2s ease;
-    z-index: 1001;
     pointer-events: none;
 }
 
@@ -731,12 +713,6 @@
 .content-body-card a[data-tooltip]:hover::after {
     opacity: 1;
     visibility: visible;
-    transform: translateX(-50%) translateY(-10px);
-}
-
-.content-body-card a[data-tooltip]:hover::before {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%) translateY(0);
+    transform: translateX(-50%) translateY(4px);
 }
 
