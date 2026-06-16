@@ -350,7 +350,7 @@ function displayContent(page) {
             
             // เพิ่ม Tooltip แบบ Custom
             if (targetPage) {
-                link.setAttribute('data-tooltip', `Go to: ${targetPage.title}`);
+                link.setAttribute('data-tooltip', `: ${targetPage.title}`);
                 link.removeAttribute('title'); // ป้องกัน Tooltip ปกติของ Browser
             }
 
