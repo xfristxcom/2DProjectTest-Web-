@@ -348,9 +348,10 @@ function displayContent(page) {
             const targetId = href.replace('wiki://', '').trim();
             const targetPage = wikiPages.find(p => p.id === targetId);
             
-            // เพิ่ม Tooltip ตอนเอาเมาส์ชี้
+            // เพิ่ม Tooltip แบบ Custom
             if (targetPage) {
-                link.setAttribute('title', `วาร์ปไปหน้า: ${targetPage.title}`);
+                link.setAttribute('data-tooltip', `วาร์ปไปหน้า: ${targetPage.title}`);
+                link.removeAttribute('title'); // ป้องกัน Tooltip ปกติของ Browser
             }
 
             link.addEventListener('click', (e) => {
