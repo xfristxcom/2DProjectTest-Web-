@@ -339,15 +339,22 @@ function displayContent(page) {
     bodyText.innerHTML = displayHtml;
 
     // --- จัดการลิงก์ภายใน Wiki (Wiki Internal Linking) ---
+    // --- จัดการลิงก์ภายใน Wiki (Wiki Internal Linking) ---
     const links = bodyText.querySelectorAll('a');
     links.forEach(link => {
         const href = link.getAttribute('href');
         // ตรวจจับลิงก์ที่สร้างจาก WikiLinkTool (ขึ้นต้นด้วย wiki://)
         if (href && href.startsWith('wiki://')) {
+            const targetId = href.replace('wiki://', '').trim();
+            const targetPage = wikiPages.find(p => p.id === targetId);
+            
+            // เพิ่ม Tooltip ตอนเอาเมาส์ชี้
+            if (targetPage) {
+                link.setAttribute('title', `วาร์ปไปหน้า: ${targetPage.title}`);
+            }
+
             link.addEventListener('click', (e) => {
                 e.preventDefault();
-                const targetId = href.replace('wiki://', '').trim();
-                const targetPage = wikiPages.find(p => p.id === targetId);
                 if (targetPage) {
                     switchPage(targetPage.id);
                 } else {
