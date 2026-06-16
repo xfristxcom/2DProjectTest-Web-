@@ -342,15 +342,16 @@ function displayContent(page) {
     const links = bodyText.querySelectorAll('a');
     links.forEach(link => {
         const href = link.getAttribute('href');
-        if (href && !href.startsWith('http')) {
+        // ตรวจจับลิงก์ที่สร้างจาก WikiLinkTool (ขึ้นต้นด้วย wiki://)
+        if (href && href.startsWith('wiki://')) {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
-                const targetTitle = decodeURIComponent(href).trim();
-                const targetPage = wikiPages.find(p => p.title.toLowerCase() === targetTitle.toLowerCase());
+                const targetId = href.replace('wiki://', '').trim();
+                const targetPage = wikiPages.find(p => p.id === targetId);
                 if (targetPage) {
                     switchPage(targetPage.id);
                 } else {
-                    alert('Wiki Page not found: ' + targetTitle);
+                    alert('Wiki Page not found: ' + targetId);
                 }
             });
         }

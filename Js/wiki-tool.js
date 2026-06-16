@@ -77,7 +77,7 @@ function renderWikiLinkResults(pages) {
     list.innerHTML = '';
     
     if (pages.length === 0) {
-        list.innerHTML = '<div style="color: #888; text-align: center; padding: 10px;">ไม่พบหน้าเนื้อหา</div>';
+        list.innerHTML = '<div style="color: #888; text-align: center; padding: 10px;">No pages found</div>';
         return;
     }
 
