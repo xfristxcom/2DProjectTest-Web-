@@ -338,6 +338,24 @@ function displayContent(page) {
     let displayHtml = parseEditorJsData(page.content);
     bodyText.innerHTML = displayHtml;
 
+    // --- จัดการลิงก์ภายใน Wiki (Wiki Internal Linking) ---
+    const links = bodyText.querySelectorAll('a');
+    links.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href && !href.startsWith('http')) {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetTitle = decodeURIComponent(href).trim();
+                const targetPage = wikiPages.find(p => p.title.toLowerCase() === targetTitle.toLowerCase());
+                if (targetPage) {
+                    switchPage(targetPage.id);
+                } else {
+                    alert('Wiki Page not found: ' + targetTitle);
+                }
+            });
+        }
+    });
+
     // อัปเดตส่วน อัพโหวต และ คอมเมนต์
     if (interactionSection) {
         interactionSection.style.display = 'block';
