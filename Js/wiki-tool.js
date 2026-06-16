@@ -46,7 +46,8 @@ class WikiLinkTool {
             modal.style.display = 'flex';
             input.value = '';
             // Render all pages initially
-            renderWikiLinkResults(window.wikiPages || []);
+            const pages = typeof wikiPages !== 'undefined' ? wikiPages : [];
+            renderWikiLinkResults(pages);
             setTimeout(() => input.focus(), 100);
         } else {
             console.error('Wiki Link Modal not found in DOM.');
@@ -102,7 +103,7 @@ function renderWikiLinkResults(pages) {
 // Global function to filter results
 function filterWikiLinkResults(e) {
     const searchTerm = e.target.value.toLowerCase();
-    const pages = window.wikiPages || [];
+    const pages = typeof wikiPages !== 'undefined' ? wikiPages : [];
     const filtered = pages.filter(p => p.title.toLowerCase().includes(searchTerm));
     renderWikiLinkResults(filtered);
 }
