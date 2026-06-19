@@ -99,10 +99,8 @@ async function checkAuth() {
             .eq('user_id', currentUser.id);
             
         if (roleError) console.error("Role Error:", roleError);
-        console.log("Fetched roleData:", roleData);
         
         currentUser.custom_role = (roleData && roleData.length > 0) ? roleData[0].role : 'user';
-        console.log("Current custom_role:", currentUser.custom_role);
 
         profileBtn.innerText = displayName; 
         dropdownMenu.style.display = ''; 
@@ -215,7 +213,7 @@ async function loadNotifications() {
                 <div style="display: flex; gap: 10px; align-items: center; flex-grow: 1; cursor: pointer;" onclick="readNotification(${noti.id}, ${noti.post_id})">
                     <div style="font-size: 20px;">${avatar}</div>
                     <div>
-                        <div style="font-weight: bold; color: #3a72b0; font-size: 14px;">${noti.actor_name}</div>
+                        <div style="font-weight: bold; color: #3a72b0; font-size: 14px;">${escapeHtml(noti.actor_name)}</div>
                         <div style="color: #e0e0e0; font-size: 12px;">${actionText}</div>
                     </div>
                 </div>
@@ -413,12 +411,16 @@ function changeWikiSort(mode) {
     loadWikiPages(); // โหลดใหม่ด้วยเงื่อนไขใหม่
 }
 
+let isTogglingWikiUpvote = false;
 async function toggleWikiUpvote() {
+    if (isTogglingWikiUpvote) return;
     if (!currentUser) {
         showAlert("แจ้งเตือน", "กรุณาล็อกอินก่อนกดโหวตครับ!");
         return;
     }
     if (!activePageId) return;
+
+    isTogglingWikiUpvote = true;
 
     const page = wikiPages.find(p => p.id === activePageId);
     if (!page) return;
@@ -439,14 +441,16 @@ async function toggleWikiUpvote() {
     page.upvoted_by = upvotedByList;
     displayContent(page);
 
-    const { error } = await supabaseClient
-        .from('monster_pages')
-        .update({ upvotes: currentUpvotes, upvoted_by: upvotedByList })
-        .eq('id', activePageId);
+    const { error } = await supabaseClient.rpc('toggle_monster_upvote', {
+        p_page_id: activePageId,
+        p_user_id: currentUser.id
+    });
 
     if (error) {
         showAlert("ข้อผิดพลาด", "ไม่สามารถอัปเดตยอดโหวตได้");
     }
+    
+    setTimeout(() => { isTogglingWikiUpvote = false; }, 500); // 500ms debounce
 }
 
 function toggleWikiCommentSection() {
@@ -520,6 +524,11 @@ async function submitWikiComment() {
     const inputField = document.getElementById('wikiCommentInput');
     const content = inputField.value.trim();
     if (!content) return; 
+    
+    if (content.length > 300) {
+        showAlert("แจ้งเตือน", "คอมเมนต์ต้องไม่เกิน 300 ตัวอักษรครับ");
+        return;
+    }
 
     inputField.disabled = true;
     const metadata = currentUser.user_metadata;
@@ -555,7 +564,7 @@ async function deleteWikiComment(commentId) {
     const { error } = await supabaseClient.from('monster_comments').delete().eq('id', commentId);
     
     if (error) {
-        showAlert("ข้อผิดพลาด", "ลบไม่สำเร็จ: " + error.message);
+        showAlert("ข้อผิดพลาด", "ลบไม่สำเร็จ กรุณาลองใหม่");
     } else {
         // อัปเดตตัวเลขคอมเมนต์บนปุ่ม
         const commentCountText = document.getElementById('wikiCommentCount');
@@ -600,6 +609,8 @@ function closeAddModal() {
 
 // บันทึกหน้าใหม่ลงในฐานข้อมูล Supabase
 async function submitAddWiki() {
+    if (!checkIsAdmin()) { showAlert("ข้อผิดพลาด", "คุณไม่มีสิทธิ์ในการเพิ่มหน้าต่าง"); return; }
+    
     const title = document.getElementById('addTitleInput').value.trim();
     const orderNum = parseInt(document.getElementById('addOrderInput').value) || 1;
     let editorData;
@@ -715,8 +726,11 @@ function closeEditModal() {
     document.getElementById('editWikiModal').style.display = 'none';
 }
 
-// บันทึกการอัปเดตหน้าข้อมูลไปยังฐานข้อมูล
+// บันทึกการอัปเดตข้อมูลหน้าในฐานข้อมูล Supabase
 async function submitEditWiki() {
+    if (!checkIsAdmin()) { showAlert("ข้อผิดพลาด", "คุณไม่มีสิทธิ์ในการแก้ไขหน้าต่าง"); return; }
+    if (!activePageId) return;
+
     const title = document.getElementById('editTitleInput').value.trim();
     const orderNum = parseInt(document.getElementById('editOrderInput').value) || 1;
     let editorData;
@@ -762,6 +776,7 @@ async function submitEditWiki() {
 
 // ลบหน้าข้อมูลจากฐานข้อมูล Supabase
 async function deleteActiveWiki() {
+    if (!checkIsAdmin()) { showAlert("ข้อผิดพลาด", "คุณไม่มีสิทธิ์ในการลบหน้าต่าง"); return; }
     const page = wikiPages.find(p => p.id === activePageId);
     if (!page) return;
 
@@ -786,8 +801,16 @@ async function deleteActiveWiki() {
 // ==========================================
 
 function showAlert(title, message) {
+    // Obscure sensitive error messages
+    let safeMessage = message;
+    if (message && message.toString().toLowerCase().includes("duplicate key")) {
+        safeMessage = "ข้อมูลซ้ำซ้อน";
+    } else if (message && message.toString().toLowerCase().includes("database error")) {
+        safeMessage = "เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล";
+    }
+
     document.getElementById('alertTitle').innerText = title;
-    document.getElementById('alertMessage').innerText = message;
+    document.getElementById('alertMessage').innerText = safeMessage;
     document.getElementById('customAlert').style.display = 'flex';
 }
 
@@ -996,10 +1019,14 @@ function parseEditorJsData(contentStr) {
     if (!contentStr) return '';
     
     if (!contentStr.startsWith('{')) {
+        // Fallback for raw text/html
+        let rawHtml = '';
         if (!contentStr.includes('<') && !contentStr.includes('>')) {
-            return escapeHtml(contentStr).replace(/\n/g, '<br>');
+            rawHtml = escapeHtml(contentStr).replace(/\n/g, '<br>');
+        } else {
+            rawHtml = contentStr;
         }
-        return contentStr;
+        return typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(rawHtml) : escapeHtml(rawHtml);
     }
 
     try {
@@ -1010,38 +1037,46 @@ function parseEditorJsData(contentStr) {
         data.blocks.forEach(block => {
             let alignStyle = '';
             if (block.tunes && block.tunes.alignmentTune && block.tunes.alignmentTune.alignment) {
-                alignStyle = ` style="text-align: ${block.tunes.alignmentTune.alignment};"`;
+                alignStyle = ` style="text-align: ${escapeHtml(block.tunes.alignmentTune.alignment)};"`;
             }
 
             switch (block.type) {
                 case 'header':
-                    html += `<h${block.data.level}${alignStyle}>${block.data.text}</h${block.data.level}>`;
+                    html += `<h${escapeHtml(block.data.level)}${alignStyle}>${escapeHtml(block.data.text)}</h${escapeHtml(block.data.level)}>`;
                     break;
                 case 'paragraph':
-                    html += `<p${alignStyle}>${block.data.text}</p>`;
+                    html += `<p${alignStyle}>${block.data.text}</p>`; // Text is purified at the end
                     break;
                 case 'list':
                     html += renderList(block.data.items, block.data.style);
                     break;
                 case 'image':
-                    const caption = block.data.caption ? `<figcaption style="text-align:center; color:#888; font-size:12px;">${block.data.caption}</figcaption>` : '';
+                    const caption = block.data.caption ? `<figcaption style="text-align:center; color:#888; font-size:12px;">${escapeHtml(block.data.caption)}</figcaption>` : '';
                     const figureAlign = alignStyle ? alignStyle : ' style="text-align: center;"';
                     let imgStyle = 'max-width:100%; border-radius:8px;';
                     if (block.data.customWidth) {
-                        imgStyle += ` width:${block.data.customWidth};`;
+                        imgStyle += ` width:${escapeHtml(block.data.customWidth)};`;
                     } else if (!block.data.stretched) {
                         imgStyle += ` max-width:60%;`; // Default size if not stretched
                     }
                     if (block.data.customHeight) {
-                        imgStyle += ` height:${block.data.customHeight};`;
+                        imgStyle += ` height:${escapeHtml(block.data.customHeight)};`;
                     }
-                    html += `<figure${figureAlign}><img src="${block.data.file.url}" style="${imgStyle}" alt="image" />${caption}</figure>`;
+                    
+                    let safeUrl = block.data.file.url;
+                    if (safeUrl && !safeUrl.startsWith('http://') && !safeUrl.startsWith('https://')) { safeUrl = '#'; }
+                    
+                    html += `<figure${figureAlign}><img src="${escapeHtml(safeUrl)}" style="${imgStyle}" alt="image" />${caption}</figure>`;
                     break;
             }
         });
+        
+        if (typeof DOMPurify !== 'undefined') {
+            return DOMPurify.sanitize(html, { ADD_ATTR: ['target'] });
+        }
         return html;
     } catch (e) {
-        return contentStr;
+        return typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(contentStr) : escapeHtml(contentStr);
     }
 }
 

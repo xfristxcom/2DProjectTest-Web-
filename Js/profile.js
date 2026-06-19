@@ -333,7 +333,7 @@ function editPost(postId) {
     const currentText = contentDiv.innerText.trim();
     contentDiv.innerHTML = `
         <div class="edit-post-container">
-            <textarea id="editInput-${postId}" class="edit-textarea" oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px'">${currentText}</textarea>
+            <textarea id="editInput-${postId}" class="edit-textarea" oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px'"></textarea>
             <div class="edit-actions">
                 <button class="cancel-edit-btn" onclick="loadPosts()">Cancel</button>
                 <button class="save-edit-btn" onclick="saveEdit('${postId}')">Save</button>
@@ -341,12 +341,21 @@ function editPost(postId) {
         </div>
     `;
     const textarea = document.getElementById(`editInput-${postId}`);
+    textarea.value = currentText;
     textarea.style.height = 'auto';
     textarea.style.height = textarea.scrollHeight + 'px';
 }
 
 async function saveEdit(postId) {
-    const newContent = document.getElementById(`editInput-${postId}`).value;
+    const newContent = document.getElementById(`editInput-${postId}`).value.trim();
+    if (!newContent) return;
+    if (newContent.length > 1000) {
+        alert(`โพสต์ต้องไม่เกิน 1,000 ตัวอักษรครับ (ปัจจุบัน: ${newContent.length} ตัวอักษร)`);
+        return;
+    }
+    
+    document.querySelector(`#content-${postId} .save-edit-btn`).disabled = true;
+
     await supabaseClient.from('posts').update({ content: newContent }).eq('id', postId);
     loadPosts();
 }
@@ -357,24 +366,20 @@ async function deletePost(postId) {
     loadPosts();
 }
 
+let isTogglingUpvote = false;
 async function toggleUpvote(postId) {
+    if (isTogglingUpvote) return;
+    isTogglingUpvote = true;
+    
     const { data: post } = await supabaseClient.from('posts').select('upvotes, upvoted_by').eq('id', postId).single();
-    let currentUpvotes = post.upvotes || 0;
-    let upvotedByList = post.upvoted_by || [];
-
-    if (upvotedByList.includes(currentUser.id)) {
-        currentUpvotes -= 1;
-        upvotedByList = upvotedByList.filter(id => id !== currentUser.id);
-    } else {
-        currentUpvotes += 1;
-        upvotedByList.push(currentUser.id);
-    }
-    await supabaseClient.from('posts').update({ 
-        upvotes: currentUpvotes, 
-        upvoted_by: upvotedByList,
-        last_activity_at: new Date().toISOString()
-    }).eq('id', postId);
+    const { error: rpcError } = await supabaseClient.rpc('toggle_upvote', {
+        p_post_id: postId,
+        p_user_id: currentUser.id
+    });
+    if (rpcError) console.error(rpcError);
     loadPosts();
+    
+    setTimeout(() => { isTogglingUpvote = false; }, 500);
 }
 
 /* =======================================

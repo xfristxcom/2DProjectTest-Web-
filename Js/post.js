@@ -178,7 +178,9 @@ function toggleCommentSection(postId) {
     }
 }
 
+let isSubmittingComment = false;
 async function submitComment(postId) {
+    if (isSubmittingComment) return;
     if (!currentUser) { alert("กรุณาล็อกอินก่อนคอมเมนต์ครับ!"); return; }
 
     const inputField = document.getElementById(`comment-input-${postId}`);
@@ -189,6 +191,7 @@ async function submitComment(postId) {
         return;
     }
 
+    isSubmittingComment = true;
     inputField.disabled = true;
     const metadata = currentUser.user_metadata;
     const { error } = await supabaseClient.from('comments').insert([{
@@ -209,8 +212,9 @@ async function submitComment(postId) {
         // ส่งแจ้งเตือนด้วย!
         await sendNotification(postId, 'comment');
     } else {
-        alert("ส่งคอมเมนต์ไม่สำเร็จ: " + error.message);
+        alert("ส่งคอมเมนต์ไม่สำเร็จ");
     }
+    setTimeout(() => { isSubmittingComment = false; }, 500);
 }
 
 async function deleteComment(commentId, postId) {
@@ -313,36 +317,33 @@ async function sendNotification(postId, actionType) {
 // ==========================================
 // ระบบดันโพสต์ (Upvote)
 // ==========================================
+let isTogglingUpvote = false;
 async function toggleUpvote(postId) {
+    if (isTogglingUpvote) return;
     if (!currentUser) { alert("กรุณาล็อกอินก่อนดันโพสต์ครับ!"); return; }
 
+    isTogglingUpvote = true;
     // 1. ดึงข้อมูลโพสต์ปัจจุบันมาก่อน
     const { data: post, error: fetchError } = await supabaseClient.from('posts').select('upvotes, upvoted_by').eq('id', postId).single();
-    if (fetchError) return;
+    if (fetchError) { isTogglingUpvote = false; return; }
 
-    let currentUpvotes = post.upvotes || 0;
     let upvotedByList = post.upvoted_by || [];
     let isUpvoting = false;
-
-    // 2. เช็กว่าเคยกดหรือยัง
-    if (upvotedByList.includes(currentUser.id)) {
-        // ถ้าเคยกดแล้ว -> เอาออก (ลดแต้ม)
-        currentUpvotes -= 1;
-        upvotedByList = upvotedByList.filter(id => id !== currentUser.id);
-    } else {
-        // ถ้ายังไม่เคยกด -> เพิ่มแต้ม
-        currentUpvotes += 1;
-        upvotedByList.push(currentUser.id);
+    if (!upvotedByList.includes(currentUser.id)) {
         isUpvoting = true;
     }
 
-    // 3. อัปเดตขึ้นฐานข้อมูล
-    const { error: updateError } = await supabaseClient.from('posts').update({ 
-        upvotes: currentUpvotes, 
-        upvoted_by: upvotedByList,
-        last_activity_at: new Date().toISOString()
-    }).eq('id', postId);
-    if (updateError) { alert("อัปเดตไม่สำเร็จ!"); return; }
+    const { error: rpcError } = await supabaseClient.rpc('toggle_upvote', {
+        p_post_id: postId,
+        p_user_id: currentUser.id
+    });
+
+    if (rpcError) { 
+        console.error(rpcError);
+        alert("อัปเดตไม่สำเร็จ!"); 
+        isTogglingUpvote = false;
+        return; 
+    }
 
     // 4. ถ้านี่คือการกดดันโพสต์ (ไม่ได้กดยกเลิก) ให้ยิงแจ้งเตือนด้วย!
     if (isUpvoting) {
@@ -351,6 +352,7 @@ async function toggleUpvote(postId) {
 
     // 5. โหลดโพสต์ใหม่เพื่ออัปเดตตัวเลขและสีปุ่ม
     loadSinglePost();
+    setTimeout(() => { isTogglingUpvote = false; }, 500);
 }
 
 // ==========================================

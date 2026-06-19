@@ -61,8 +61,7 @@ async function checkAuth() {
 // เช็ค Admin role สำหรับ community
 function checkIsAdmin() {
     if (!currentUser) return false;
-    const metadata = currentUser.user_metadata;
-    return metadata && (metadata.role === 'admin' || metadata.is_admin === true);
+    return currentUser.custom_role === 'admin';
 }
 
 function updateCommunityAdminUI() {
@@ -207,31 +206,32 @@ async function loadFeed() {
 
 
 // 3. ระบบดันโพสต์
+let isTogglingUpvote = false; // ตัวแปรป้องกันการคลิกรัว
 async function toggleUpvote(postId) {
+    if (isTogglingUpvote) return;
     if (!currentUser) { alert("กรุณาล็อกอินก่อนดันโพสต์ครับ!"); return; }
 
+    isTogglingUpvote = true;
     const { data: post, error: fetchError } = await supabaseClient.from('posts').select('upvotes, upvoted_by').eq('id', postId).single();
     if (fetchError) return;
 
     let currentUpvotes = post.upvotes || 0;
     let upvotedByList = post.upvoted_by || [];
     let isUpvoting = false; // ตัวแปรเช็กว่ากำลังกดบวกใช่ไหม?
-
-    if (upvotedByList.includes(currentUser.id)) {
-        currentUpvotes -= 1;
-        upvotedByList = upvotedByList.filter(id => id !== currentUser.id);
-    } else {
-        currentUpvotes += 1;
-        upvotedByList.push(currentUser.id);
-        isUpvoting = true; // 👈 ถ้าไม่ได้กดลบ แปลว่ากดบวก
+    if (!upvotedByList.includes(currentUser.id)) {
+        isUpvoting = true;
     }
 
-    const { error: updateError } = await supabaseClient.from('posts').update({ 
-        upvotes: currentUpvotes, 
-        upvoted_by: upvotedByList,
-        last_activity_at: new Date().toISOString()
-    }).eq('id', postId);
-    if (updateError) { alert("อัปเดตไม่สำเร็จ!"); return; }
+    const { error: rpcError } = await supabaseClient.rpc('toggle_upvote', {
+        p_post_id: postId,
+        p_user_id: currentUser.id
+    });
+
+    if (rpcError) { 
+        console.error(rpcError);
+        alert("อัปเดตไม่สำเร็จ!"); 
+        return; 
+    }
 
     // 👈 ถ้านี่คือการกดบวก ให้ยิงแจ้งเตือนประเภท 'upvote'
     if (isUpvoting) {
@@ -239,6 +239,7 @@ async function toggleUpvote(postId) {
     }
 
     loadFeed();
+    setTimeout(() => { isTogglingUpvote = false; }, 500);
 }
 
 // --- ฟังก์ชันเปิด/ปิด โซนคอมเมนต์ ---
@@ -323,7 +324,9 @@ async function deleteComment(commentId, postId) {
     }
 }
 // --- ฟังก์ชันส่งคอมเมนต์ ---
+let isSubmittingComment = false;
 async function submitComment(postId) {
+    if (isSubmittingComment) return;
     if (!currentUser) {
         alert("กรุณาล็อกอินก่อนคอมเมนต์ครับ!");
         return;
@@ -335,10 +338,11 @@ async function submitComment(postId) {
     if (!content) return;
 
     if (content.length > 300) {
-        alert(`คอมเมนต์ต้องไม่เกิน 300 ตัวอักษร (ปัจจุบัน: ${content.length} ตัวอักษร)`);
+        alert("คอมเมนต์ต้องไม่เกิน 300 ตัวอักษรครับ");
         return;
     }
 
+    isSubmittingComment = true;
     inputField.disabled = true;
 
     const metadata = currentUser.user_metadata;
@@ -353,7 +357,7 @@ async function submitComment(postId) {
     inputField.disabled = false;
 
     if (error) {
-        alert("ส่งคอมเมนต์ไม่สำเร็จ: " + error.message);
+        alert("ส่งคอมเมนต์ไม่สำเร็จ");
     } else {
         inputField.value = ''; 
         loadComments(postId); 
@@ -367,6 +371,7 @@ async function submitComment(postId) {
         // อัปเดตเวลากิจกรรมล่าสุดของโพสต์
         await supabaseClient.from('posts').update({ last_activity_at: new Date().toISOString() }).eq('id', postId);
     }
+    setTimeout(() => { isSubmittingComment = false; }, 500);
 }
 
 // ==========================================
@@ -490,15 +495,16 @@ function editPost(postId) {
     const currentText = contentDiv.innerText.trim();
     contentDiv.innerHTML = `
         <div class="edit-post-container">
-            <textarea id="editInput-${postId}" class="edit-textarea" oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px'">${currentText}</textarea>
+            <textarea id="editInput-${postId}" class="edit-textarea" oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px'"></textarea>
             <div class="edit-actions">
                 <button class="cancel-edit-btn" onclick="loadFeed()">ยกเลิก</button>
                 <button class="save-edit-btn" onclick="saveEdit('${postId}')">บันทึก</button>
             </div>
         </div>
     `;
-    // สั่งให้กล่องขยายพอดีข้อความทันทีที่กด "แก้ไข"
+    // จองพื้นที่พอดีข้อความทันทีที่กด "แก้"
     const textarea = document.getElementById(`editInput-${postId}`);
+    textarea.value = currentText;
     textarea.style.height = 'auto';
     textarea.style.height = textarea.scrollHeight + 'px';
 }
@@ -507,9 +513,12 @@ async function saveEdit(postId) {
     const newContent = document.getElementById(`editInput-${postId}`).value.trim();
     if (!newContent) return;
     if (newContent.length > 1000) {
-        alert(`โพสต์ต้องไม่เกิน 1,000 ตัวอักษร (ปัจจุบัน: ${newContent.length} ตัวอักษร)`);
+        alert(`โพสต์ต้องไม่เกิน 1,000 ตัวอักษรครับ (ปัจจุบัน: ${newContent.length} ตัวอักษร)`);
         return;
     }
+    
+    document.querySelector(`#content-${postId} .save-edit-btn`).disabled = true;
+    
     const { error } = await supabaseClient.from('posts').update({ content: newContent }).eq('id', postId);
     if (error) alert("แก้ไขไม่สำเร็จ: " + error.message);
     loadFeed();
@@ -533,9 +542,13 @@ async function submitPost() {
     if (!content) return;
 
     if (content.length > 1000) {
-        alert(`โพสต์ต้องไม่เกิน 1,000 ตัวอักษร (ปัจจุบัน: ${content.length} ตัวอักษร)`);
+        alert(`โพสต์ต้องไม่เกิน 1,000 ตัวอักษรครับ (ปัจจุบัน: ${content.length} ตัวอักษร)`);
         return;
     }
+
+    inputField.disabled = true;
+    const submitBtn = document.querySelector('.post-input-box button');
+    if(submitBtn) submitBtn.disabled = true;
 
     const metadata = currentUser.user_metadata;
     const { error } = await supabaseClient.from('posts').insert([{ 
@@ -551,8 +564,11 @@ async function submitPost() {
         loadFeed(); 
     } else {
         // 🔥 ถ้าบั๊กหรือโพสต์ไม่เข้า Database มันจะเด้งเตือนบอกสาเหตุตรงนี้เลย!
-        alert("สร้างโพสต์ไม่สำเร็จ: " + error.message);
+        alert("โพสต์ไม่สำเร็จ กรุณาลองใหม่");
     }
+    
+    inputField.disabled = false;
+    if(submitBtn) submitBtn.disabled = false;
 }
 
 // ฟังก์ชันสำหรับระบบเลือกการจัดเรียงหน้าฟีด Community
