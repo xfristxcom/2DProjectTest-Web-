@@ -31,6 +31,17 @@ async function checkAuth() {
     if (session) {
         currentUser = session.user;
         const metadata = currentUser.user_metadata;
+
+        // ดึง Role จากตาราง user_roles แทนการใช้ user_metadata
+        const { data: roleData, error: roleError } = await supabaseClient
+            .from('user_roles')
+            .select('role')
+            .eq('user_id', currentUser.id);
+            
+        if (roleError) console.error("Role Error:", roleError);
+        
+        currentUser.custom_role = (roleData && roleData.length > 0) ? roleData[0].role : 'user';
+
         profileBtn.innerText = metadata.display_name || 'Player'; 
         dropdownMenu.style.display = ''; 
         profileBtn.onclick = null; 

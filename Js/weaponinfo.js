@@ -890,6 +890,9 @@ class SupabaseImageAdapter {
     }
     
     async uploadByUrl(url) {
+        if (!url || (!url.startsWith('http://') && !url.startsWith('https://'))) {
+            return { success: 0, message: "Invalid URL. Only HTTP and HTTPS are allowed." };
+        }
         return {
             success: 1,
             file: { url: url }
@@ -1091,7 +1094,7 @@ function renderList(items, style) {
         const content = typeof item === 'object' ? (item.content || '') : item;
         const subItems = (typeof item === 'object' && item.items) ? item.items : [];
         
-        html += `<li>${content}`;
+        html += `<li>${escapeHtml(content)}`;
         if (subItems && subItems.length > 0) {
             html += renderList(subItems, style);
         }

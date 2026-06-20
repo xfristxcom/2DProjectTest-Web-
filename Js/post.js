@@ -247,6 +247,201 @@ async function loadNotifications() {
 
     if (notis.length === 0) {
         notiList.innerHTML = '<div style="padding: 15px; text-align: center; color: #888; font-size: 14px;">ไม่มีการแจ้งเตือนใหม่</div>';
+async function loadSinglePost() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('id');
+
+    if (!postId) {
+        document.getElementById('singlePostContainer').innerHTML = '<div class="post-card" style="text-align:center; color:red;">ไม่พบโพสต์ที่คุณตามหา</div>';
+        return;
+    }
+
+    const { data: post, error } = await supabaseClient.from('posts').select('*, comments(count)').eq('id', postId).single();
+
+    if (error || !post) {
+        document.getElementById('singlePostContainer').innerHTML = '<div class="post-card" style="text-align:center; color:red;">โพสต์นี้ถูกลบไปแล้ว หรือเกิดข้อผิดพลาด</div>';
+        return;
+    }
+
+    const container = document.getElementById('singlePostContainer');
+    const postDate = new Date(post.created_at).toLocaleString('th-TH');
+    const avatarEmoji = avatarMap[post.author_avatar] || '🤖';
+    const commentCount = post.comments[0]?.count || 0;
+
+    const upvotedByList = post.upvoted_by || [];
+    const isUpvoted = currentUser && upvotedByList.includes(currentUser.id);
+    const upvoteBtnClass = isUpvoted ? "action-btn upvoted" : "action-btn";
+
+    let postActionHtml = '';
+    if (currentUser && post.user_id === currentUser.id) {
+        postActionHtml = `
+            <div class="action-dropdown">
+                <button class="dots-btn">⋮</button>
+                <div class="action-dropdown-content">
+                    <button onclick="editPost('${post.id}')">✏️ Edit</button>
+                    <button class="delete-btn" onclick="deletePost('${post.id}')">🗑️ Delete</button>
+                </div>
+            </div>
+        `;
+    }
+
+    const postHtml = `
+            <div class="post-card" id="post-${post.id}">
+                <div class="post-header-info">
+                    <div style="font-size: 30px;">${avatarEmoji}</div>
+                    <div style="flex-grow: 1;">
+                        <div style="font-weight: bold; color: #3a72b0; font-size: 16px;">${escapeHtml(post.author_name)}</div>
+                        <div style="font-size: 12px; color: #777;">${postDate}</div>
+                    </div>
+                    ${postActionHtml}
+                </div>
+
+                <div style="line-height: 1.6; font-size: 16px; white-space: pre-wrap; margin-bottom: 20px;" id="content-${post.id}">${escapeHtml(post.content)}</div>
+
+                <div class="post-actions">
+                    <button onclick="toggleUpvote('${post.id}')" class="btn-post-action ${isUpvoted ? 'action-upvoted' : 'action-normal'}">
+                        ⬆️ <span>${post.upvotes || 0}</span> Upvotes
+                    </button>
+                    <button onclick="toggleCommentSection('${post.id}')" class="btn-post-action action-normal">
+                        💬 <span id="comment-count-${post.id}">${commentCount}</span> Comments
+                    </button>
+                </div>
+
+                <div class="comments-box-container" id="comment-section-${post.id}" style="display: block;">
+                    <div class="comment-input-wrapper">
+                        <input type="text" id="comment-input-${post.id}" class="comment-styled-input" placeholder="Write a comment...">
+                        <button onclick="submitComment('${post.id}')" class="btn-comment-submit">Send</button>
+                    </div>
+                    <div id="comment-list-${post.id}"></div>
+                </div>
+            </div>
+        `;
+        
+    container.innerHTML = postHtml;
+
+    loadComments(postId);
+}
+
+// ==========================================
+// 3. ระบบคอมเมนต์ (โหลด, พิมพ์, ลบ)
+// ==========================================
+async function loadComments(postId) {
+    const commentListDiv = document.getElementById(`comment-list-${postId}`);
+    const { data: comments, error } = await supabaseClient.from('comments').select('*').eq('post_id', postId).order('created_at', { ascending: true });
+
+    if (error) { commentListDiv.innerHTML = '<div style="color: red; text-align: center;">Failed to load comments</div>'; return; }
+    if (comments.length === 0) { commentListDiv.innerHTML = '<div style="color: #777; text-align: center;">No comments yet. Be the first!</div>'; return; }
+
+    commentListDiv.innerHTML = '';
+    comments.forEach(comment => {
+        const commentAvatar = avatarMap[comment.author_avatar] || '🤖';
+
+        let commentActionHtml = '';
+        if (currentUser && comment.user_id === currentUser.id) {
+            commentActionHtml = `
+                <div class="action-dropdown" style="margin-left: auto;">
+                    <button class="dots-btn" style="font-size: 20px;">⋮</button>
+                    <div class="action-dropdown-content">
+                        <button class="delete-btn" onclick="deleteComment('${comment.id}', '${postId}')">🗑️ Delete</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        commentListDiv.innerHTML += `
+            <div style="padding: 10px 0; border-bottom: 1px solid #333; font-size: 14px; display: flex; align-items: flex-start;">
+                <span style="font-size: 18px; margin-right: 8px;">${commentAvatar}</span>
+                <div style="flex-grow: 1;">
+                    <span style="font-weight: bold; color: #3a72b0; margin-right: 8px;">${escapeHtml(comment.author_name)}</span>
+                    <span style="color: #e0e0e0;">${escapeHtml(comment.content)}</span>
+                </div>
+                ${commentActionHtml}
+            </div>
+        `;
+    });
+
+}
+function toggleCommentSection(postId) {
+    const section = document.getElementById(`comment-section-${postId}`);
+    // ถ้ามันซ่อนอยู่ ให้กางออกแล้วโหลดข้อมูล
+    if (section.style.display === 'none' || section.style.display === '') {
+        section.style.display = 'block';
+        loadComments(postId); 
+    } else {
+        // ถ้ามันกางอยู่ ให้พับเก็บ
+        section.style.display = 'none';
+    }
+}
+
+let isSubmittingComment = false;
+async function submitComment(postId) {
+    if (isSubmittingComment) return;
+    if (!currentUser) { showAlert("Notice", "Please login to comment!"); return; }
+
+    const inputField = document.getElementById(`comment-input-${postId}`);
+    const content = inputField.value.trim();
+    if (!content) return;
+    if (content.length > 300) {
+        showAlert("Notice", `Comment cannot exceed 300 characters (Current: ${content.length}).`);
+        return;
+    }
+
+    isSubmittingComment = true;
+    inputField.disabled = true;
+    const metadata = currentUser.user_metadata;
+    const { error } = await supabaseClient.from('comments').insert([{
+        post_id: postId, user_id: currentUser.id,
+        author_name: metadata.display_name || 'Player',
+        author_avatar: metadata.avatar_id || 'robot_default',
+        content: content
+    }]);
+
+    inputField.disabled = false;
+
+    if (!error) {
+        inputField.value = '';
+        loadComments(postId);
+        const countSpan = document.getElementById(`comment-count-${postId}`);
+        if (countSpan) countSpan.innerText = parseInt(countSpan.innerText) + 1;
+
+        // ส่งแจ้งเตือนด้วย!
+        await sendNotification(postId, 'comment');
+    } else {
+        showAlert("Error", "Failed to send comment.");
+    }
+    setTimeout(() => { isSubmittingComment = false; }, 500);
+}
+
+async function deleteComment(commentId, postId) {
+    if (!confirm("Are you sure you want to delete this comment?")) return;
+    const { error } = await supabaseClient.from('comments').delete().eq('id', commentId);
+    if (!error) {
+        loadComments(postId);
+        const countSpan = document.getElementById(`comment-count-${postId}`);
+        if (countSpan && parseInt(countSpan.innerText) > 0) countSpan.innerText = parseInt(countSpan.innerText) - 1;
+    }
+}
+
+// ==========================================
+// 4. ระบบกระดิ่งแจ้งเตือน
+// ==========================================
+async function loadNotifications() {
+    if (!currentUser) return;
+
+    const { data: notis, error } = await supabaseClient
+        .from('notifications')
+        .select('*')
+        .eq('user_id', currentUser.id)
+        .order('created_at', { ascending: false })
+        .limit(10); // เอาแค่ 10 รายการล่าสุด
+
+    if (error) return;
+
+    const notiList = document.getElementById('notiList');
+    const notiCount = document.getElementById('notiCount');
+
+    if (notis.length === 0) {
+        notiList.innerHTML = '<div style="padding: 15px; text-align: center; color: #888; font-size: 14px;">ไม่มีการแจ้งเตือนใหม่</div>';
         notiCount.style.display = 'none';
         return;
     }
@@ -269,7 +464,7 @@ async function loadNotifications() {
                 <div style="display: flex; gap: 10px; align-items: center; flex-grow: 1; cursor: pointer;" onclick="readNotification(${noti.id}, ${noti.post_id})">
                     <div style="font-size: 20px;">${avatar}</div>
                     <div>
-                        <div style="font-weight: bold; color: #3a72b0; font-size: 14px;">${noti.actor_name}</div>
+                        <div style="font-weight: bold; color: #3a72b0; font-size: 14px;">${escapeHtml(noti.actor_name)}</div>
                         <div style="color: #e0e0e0; font-size: 12px;">${actionText}</div>
                     </div>
                 </div>
@@ -363,7 +558,7 @@ function editPost(postId) {
     const currentText = contentDiv.innerText.trim();
     contentDiv.innerHTML = `
         <div class="edit-post-container">
-            <textarea id="editInput-${postId}" class="edit-textarea" oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px'">${currentText}</textarea>
+            <textarea id="editInput-${postId}" class="edit-textarea" oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px'"></textarea>
             <div class="edit-actions">
                 <button class="cancel-edit-btn" onclick="loadSinglePost()">ยกเลิก</button>
                 <button class="save-edit-btn" onclick="saveEdit('${postId}')">บันทึก</button>
@@ -371,6 +566,7 @@ function editPost(postId) {
         </div>
     `;
     const textarea = document.getElementById(`editInput-${postId}`);
+    textarea.value = currentText;
     textarea.style.height = 'auto';
     textarea.style.height = textarea.scrollHeight + 'px';
 }
@@ -378,6 +574,10 @@ function editPost(postId) {
 async function saveEdit(postId) {
     const newContent = document.getElementById(`editInput-${postId}`).value.trim();
     if (!newContent) return;
+    if (newContent.length > 1000) {
+        showAlert("Notice", `Post cannot exceed 1,000 characters (Current: ${newContent.length}).`);
+        return;
+    }
     const { error } = await supabaseClient.from('posts').update({ content: newContent }).eq('id', postId);
     if (error) showAlert("Error", "Failed to edit: " + error.message);
     loadSinglePost();
