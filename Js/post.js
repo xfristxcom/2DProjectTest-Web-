@@ -187,7 +187,7 @@ async function submitComment(postId) {
     const content = inputField.value.trim();
     if (!content) return;
     if (content.length > 300) {
-        alert(`คอมเมนต์ต้องไม่เกิน 300 ตัวอักษร (ปัจจุบัน: ${content.length} ตัวอักษร)`);
+        showAlert("Notice", `Comment cannot exceed 300 characters (Current: ${content.length}).`);
         return;
     }
 

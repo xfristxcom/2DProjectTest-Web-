@@ -191,7 +191,7 @@ async function toggleEditName() {
         editBtn.style.borderColor = '#e0e0e0';
         isEditingName = false;
 
-        if (error) alert("เปลี่ยนชื่อไม่สำเร็จ: " + error.message);
+        if (error) showAlert("Error", "Failed to change name: " + error.message);
     }
 }
 
@@ -438,7 +438,7 @@ async function submitComment(postId) {
     if (!content) return;
 
     if (content.length > 300) {
-        alert(`คอมเมนต์ต้องไม่เกิน 300 ตัวอักษร (ปัจจุบัน: ${content.length} ตัวอักษร)`);
+        showAlert("Notice", `Comment cannot exceed 300 characters (Current: ${content.length}).`);
         return;
     }
 
