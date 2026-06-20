@@ -1071,10 +1071,12 @@ function parseEditorJsData(contentStr) {
             }
         });
         
+        // Protect wiki:// links from DOMPurify
+        let safeHtml = html.replace(/href="wiki:\/\//g, 'href="http://WIKI_TEMP_LINK/');
         if (typeof DOMPurify !== 'undefined') {
-            return DOMPurify.sanitize(html, { ADD_ATTR: ['target'] });
+            safeHtml = DOMPurify.sanitize(safeHtml, { ADD_ATTR: ['target'] });
         }
-        return html;
+        return safeHtml.replace(/href="http:\/\/WIKI_TEMP_LINK\//g, 'href="wiki://');
     } catch (e) {
         return typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(contentStr) : escapeHtml(contentStr);
     }
