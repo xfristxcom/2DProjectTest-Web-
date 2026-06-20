@@ -158,7 +158,7 @@ async function deleteNotification(notiId, event) {
 // ล้างแจ้งเตือนทั้งหมด
 async function clearAllNotifications() {
     if (!currentUser) return;
-    if (confirm("ต้องการลบการแจ้งเตือนทั้งหมดใช่หรือไม่?")) {
+    if (confirm("Are you sure you want to clear all notifications?")) {
         await supabaseClient.from('notifications').delete().eq('user_id', currentUser.id);
         loadNotifications();
     }
@@ -350,7 +350,7 @@ async function saveEdit(postId) {
     const newContent = document.getElementById(`editInput-${postId}`).value.trim();
     if (!newContent) return;
     if (newContent.length > 1000) {
-        alert(`โพสต์ต้องไม่เกิน 1,000 ตัวอักษรครับ (ปัจจุบัน: ${newContent.length} ตัวอักษร)`);
+        showAlert("Notice", `Post cannot exceed 1,000 characters (Current: ${newContent.length}).`);
         return;
     }
     
@@ -456,15 +456,15 @@ async function submitComment(postId) {
         const countSpan = document.getElementById(`comment-count-${postId}`);
         if (countSpan) countSpan.innerText = parseInt(countSpan.innerText) + 1;
     } else {
-        alert("ส่งคอมเมนต์ไม่สำเร็จ: " + error.message);
+        showAlert("Error", "Failed to send comment: " + error.message);
     }
 }
 
 async function deleteComment(commentId, postId) {
-    if (!confirm("คุณแน่ใจหรือไม่ที่จะลบคอมเมนต์นี้?")) return;
+    if (!confirm("Are you sure you want to delete this comment?")) return;
     const { error } = await supabaseClient.from('comments').delete().eq('id', commentId);
     
-    if (error) alert("ลบไม่สำเร็จ: " + error.message);
+    if (error) showAlert("Error", "Failed to delete: " + error.message);
     else {
         loadComments(postId); 
         const countSpan = document.getElementById(`comment-count-${postId}`);
@@ -493,3 +493,17 @@ function prevPageProfile() {
 
 // สั่งทำงานเมื่อเปิดหน้าเว็บ
 loadUserData();
+
+function showAlert(title, message) {
+    const safeMessage = typeof escapeHtml === 'function' ? escapeHtml(message) : message;
+    const alertTitle = document.getElementById('alertTitle');
+    const alertMessage = document.getElementById('alertMessage');
+    const customAlert = document.getElementById('customAlert');
+    if(alertTitle) alertTitle.innerText = title;
+    if(alertMessage) alertMessage.innerHTML = safeMessage.replace(/\n/g, '<br>');
+    if(customAlert) customAlert.style.display = 'flex';
+}
+function closeAlert() {
+    const customAlert = document.getElementById('customAlert');
+    if(customAlert) customAlert.style.display = 'none';
+}

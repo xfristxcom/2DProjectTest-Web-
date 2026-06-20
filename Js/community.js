@@ -79,8 +79,8 @@ function updatePostCounter(length) {
 
 // Admin: ลบโพสต์เก่าด้วยตนเอง
 async function adminCleanOldPosts() {
-    if (!checkIsAdmin()) { alert('ไม่มีสิทธิ์'); return; }
-    if (!confirm('ต้องการล้างโพสต์เก่าตามเงื่อนไข (ไม่มี upvote > 60 วัน / มี upvote > 360 วัน) ใช่หรือไม่?')) return;
+    if (!checkIsAdmin()) { showAlert("Permission Denied", "You do not have permission."); return; }
+    if (!confirm("Are you sure you want to clean old posts? (No upvotes > 60 days / Has upvotes > 360 days)")) return;
 
     const now = new Date();
     const d60 = new Date(now - 60 * 24 * 60 * 60 * 1000).toISOString();
@@ -101,16 +101,16 @@ async function adminCleanOldPosts() {
         .lt('last_activity_at', d360);
 
     if (e1 || e2) {
-        alert('เกิดข้อผิดพลาด: ' + (e1?.message || e2?.message));
+        showAlert("Error", "An error occurred: " + (e1?.message || e2?.message));
     } else {
-        alert('✅ ล้างโพสต์เก่าเรียบร้อยแล้ว!');
+        showAlert("Success", "Old posts cleaned successfully!");
         loadFeed();
     }
 }
 
 async function logoutUser() {
     await supabaseClient.auth.signOut();
-    alert("ออกจากระบบเรียบร้อยแล้ว");
+    showAlert("Success", "Logged out successfully.");
     setTimeout(() => { window.location.reload(); }, 1500);
 }
 
@@ -209,7 +209,7 @@ async function loadFeed() {
 let isTogglingUpvote = false; // ตัวแปรป้องกันการคลิกรัว
 async function toggleUpvote(postId) {
     if (isTogglingUpvote) return;
-    if (!currentUser) { alert("กรุณาล็อกอินก่อนดันโพสต์ครับ!"); return; }
+    if (!currentUser) { showAlert("Notice", "Please login to upvote!"); return; }
 
     isTogglingUpvote = true;
     const { data: post, error: fetchError } = await supabaseClient.from('posts').select('upvotes, upvoted_by').eq('id', postId).single();
@@ -229,7 +229,7 @@ async function toggleUpvote(postId) {
 
     if (rpcError) { 
         console.error(rpcError);
-        alert("อัปเดตไม่สำเร็จ!"); 
+        showAlert("Error", "Failed to update upvote!"); 
         return; 
     }
 
@@ -306,12 +306,12 @@ async function loadComments(postId) {
 }
 // --- ฟังก์ชันลบคอมเมนต์ ---
 async function deleteComment(commentId, postId) {
-    if (!confirm("คุณแน่ใจหรือไม่ที่จะลบคอมเมนต์นี้?")) return;
+    if (!confirm("Are you sure you want to delete this comment?")) return;
     
     const { error } = await supabaseClient.from('comments').delete().eq('id', commentId);
     
     if (error) {
-        alert("ลบไม่สำเร็จ: " + error.message);
+        showAlert("Error", "Failed to delete: " + error.message);
     } else {
         loadComments(postId); // โหลดคอมเมนต์ใหม่มาแสดง (อันที่ลบจะหายไป)
         
@@ -328,7 +328,7 @@ let isSubmittingComment = false;
 async function submitComment(postId) {
     if (isSubmittingComment) return;
     if (!currentUser) {
-        alert("กรุณาล็อกอินก่อนคอมเมนต์ครับ!");
+        showAlert("Notice", "Please login to comment!");
         return;
     }
 
@@ -338,7 +338,7 @@ async function submitComment(postId) {
     if (!content) return;
 
     if (content.length > 300) {
-        alert("คอมเมนต์ต้องไม่เกิน 300 ตัวอักษรครับ");
+        showAlert("Notice", "Comment cannot exceed 300 characters.");
         return;
     }
 
@@ -357,7 +357,7 @@ async function submitComment(postId) {
     inputField.disabled = false;
 
     if (error) {
-        alert("ส่งคอมเมนต์ไม่สำเร็จ");
+        showAlert("Error", "Failed to send comment.");
     } else {
         inputField.value = ''; 
         loadComments(postId); 
@@ -441,7 +441,7 @@ async function deleteNotification(notiId, event) {
 // ล้างแจ้งเตือนทั้งหมด
 async function clearAllNotifications() {
     if (!currentUser) return;
-    if (confirm("ต้องการลบการแจ้งเตือนทั้งหมดใช่หรือไม่?")) {
+    if (confirm("Are you sure you want to clear all notifications?")) {
         await supabaseClient.from('notifications').delete().eq('user_id', currentUser.id);
         loadNotifications();
     }
@@ -513,28 +513,28 @@ async function saveEdit(postId) {
     const newContent = document.getElementById(`editInput-${postId}`).value.trim();
     if (!newContent) return;
     if (newContent.length > 1000) {
-        alert(`โพสต์ต้องไม่เกิน 1,000 ตัวอักษรครับ (ปัจจุบัน: ${newContent.length} ตัวอักษร)`);
+        showAlert("Notice", `Post cannot exceed 1,000 characters (Current: ${newContent.length}).`);
         return;
     }
     
     document.querySelector(`#content-${postId} .save-edit-btn`).disabled = true;
     
     const { error } = await supabaseClient.from('posts').update({ content: newContent }).eq('id', postId);
-    if (error) alert("แก้ไขไม่สำเร็จ: " + error.message);
+    if (error) showAlert("Error", "Failed to edit: " + error.message);
     loadFeed();
 }
 
 async function deletePost(postId) {
-    if (!confirm("คุณแน่ใจหรือไม่ที่จะลบโพสต์นี้? (คอมเมนต์ทั้งหมดจะหายไปด้วย)")) return;
+    if (!confirm("Are you sure you want to delete this post? All comments will be deleted too.")) return;
     const { error } = await supabaseClient.from('posts').delete().eq('id', postId);
-    if (error) alert("ลบโพสต์ไม่สำเร็จ: " + error.message);
+    if (error) showAlert("Error", "Failed to delete post: " + error.message);
     loadFeed();
 }
 
 // 2. ระบบส่งโพสต์ใหม่
 async function submitPost() {
     if (!currentUser) {
-        alert("กรุณาล็อกอินก่อนโพสต์ครับ!");
+        showAlert("Notice", "Please login to post!");
         return;
     }
     const inputField = document.getElementById('postInput');
@@ -542,7 +542,7 @@ async function submitPost() {
     if (!content) return;
 
     if (content.length > 1000) {
-        alert(`โพสต์ต้องไม่เกิน 1,000 ตัวอักษรครับ (ปัจจุบัน: ${content.length} ตัวอักษร)`);
+        showAlert("Notice", `Post cannot exceed 1,000 characters (Current: ${content.length}).`);
         return;
     }
 
@@ -564,7 +564,7 @@ async function submitPost() {
         loadFeed(); 
     } else {
         // 🔥 ถ้าบั๊กหรือโพสต์ไม่เข้า Database มันจะเด้งเตือนบอกสาเหตุตรงนี้เลย!
-        alert("โพสต์ไม่สำเร็จ กรุณาลองใหม่");
+        showAlert("Error", "Failed to post. Please try again.");
     }
     
     inputField.disabled = false;
@@ -579,3 +579,17 @@ function selectSort(value, text) {
 }
 
 checkAuth();
+
+function showAlert(title, message) {
+    const safeMessage = typeof escapeHtml === 'function' ? escapeHtml(message) : message;
+    const alertTitle = document.getElementById('alertTitle');
+    const alertMessage = document.getElementById('alertMessage');
+    const customAlert = document.getElementById('customAlert');
+    if(alertTitle) alertTitle.innerText = title;
+    if(alertMessage) alertMessage.innerHTML = safeMessage.replace(/\n/g, '<br>');
+    if(customAlert) customAlert.style.display = 'flex';
+}
+function closeAlert() {
+    const customAlert = document.getElementById('customAlert');
+    if(customAlert) customAlert.style.display = 'none';
+}

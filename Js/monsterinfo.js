@@ -415,7 +415,7 @@ let isTogglingWikiUpvote = false;
 async function toggleWikiUpvote() {
     if (isTogglingWikiUpvote) return;
     if (!currentUser) {
-        showAlert("แจ้งเตือน", "กรุณาล็อกอินก่อนกดโหวตครับ!");
+        showAlert("Notice", "กรุณาล็อกอินก่อนกดโหวตครับ!");
         return;
     }
     if (!activePageId) return;
@@ -447,7 +447,7 @@ async function toggleWikiUpvote() {
     });
 
     if (error) {
-        showAlert("ข้อผิดพลาด", "ไม่สามารถอัปเดตยอดโหวตได้");
+        showAlert("Error", "ไม่สามารถอัปเดตยอดโหวตได้");
     }
     
     setTimeout(() => { isTogglingWikiUpvote = false; }, 500); // 500ms debounce
@@ -516,7 +516,7 @@ async function loadWikiComments() {
 
 async function submitWikiComment() {
     if (!currentUser) {
-        showAlert("แจ้งเตือน", "กรุณาล็อกอินก่อนคอมเมนต์ครับ!");
+        showAlert("Notice", "กรุณาล็อกอินก่อนคอมเมนต์ครับ!");
         return;
     }
     if (!activePageId) return;
@@ -526,7 +526,7 @@ async function submitWikiComment() {
     if (!content) return; 
     
     if (content.length > 300) {
-        showAlert("แจ้งเตือน", "คอมเมนต์ต้องไม่เกิน 300 ตัวอักษรครับ");
+        showAlert("Notice", "คอมเมนต์ต้องไม่เกิน 300 ตัวอักษรครับ");
         return;
     }
 
@@ -544,7 +544,7 @@ async function submitWikiComment() {
     inputField.disabled = false;
 
     if (error) {
-        showAlert("ข้อผิดพลาด", "ส่งคอมเมนต์ไม่สำเร็จ");
+        showAlert("Error", "ส่งคอมเมนต์ไม่สำเร็จ");
     } else {
         inputField.value = '';
         
@@ -564,7 +564,7 @@ async function deleteWikiComment(commentId) {
     const { error } = await supabaseClient.from('monster_comments').delete().eq('id', commentId);
     
     if (error) {
-        showAlert("ข้อผิดพลาด", "ลบไม่สำเร็จ กรุณาลองใหม่");
+        showAlert("Error", "ลบไม่สำเร็จ กรุณาลองใหม่");
     } else {
         // อัปเดตตัวเลขคอมเมนต์บนปุ่ม
         const commentCountText = document.getElementById('wikiCommentCount');
@@ -609,7 +609,7 @@ function closeAddModal() {
 
 // บันทึกหน้าใหม่ลงในฐานข้อมูล Supabase
 async function submitAddWiki() {
-    if (!checkIsAdmin()) { showAlert("ข้อผิดพลาด", "คุณไม่มีสิทธิ์ในการเพิ่มหน้าต่าง"); return; }
+    if (!checkIsAdmin()) { showAlert("Error", "คุณไม่มีสิทธิ์ในการเพิ่มหน้าต่าง"); return; }
     
     const title = document.getElementById('addTitleInput').value.trim();
     const orderNum = parseInt(document.getElementById('addOrderInput').value) || 1;
@@ -728,7 +728,7 @@ function closeEditModal() {
 
 // บันทึกการอัปเดตข้อมูลหน้าในฐานข้อมูล Supabase
 async function submitEditWiki() {
-    if (!checkIsAdmin()) { showAlert("ข้อผิดพลาด", "คุณไม่มีสิทธิ์ในการแก้ไขหน้าต่าง"); return; }
+    if (!checkIsAdmin()) { showAlert("Error", "คุณไม่มีสิทธิ์ในการแก้ไขหน้าต่าง"); return; }
     if (!activePageId) return;
 
     const title = document.getElementById('editTitleInput').value.trim();
@@ -776,7 +776,7 @@ async function submitEditWiki() {
 
 // ลบหน้าข้อมูลจากฐานข้อมูล Supabase
 async function deleteActiveWiki() {
-    if (!checkIsAdmin()) { showAlert("ข้อผิดพลาด", "คุณไม่มีสิทธิ์ในการลบหน้าต่าง"); return; }
+    if (!checkIsAdmin()) { showAlert("Error", "คุณไม่มีสิทธิ์ในการลบหน้าต่าง"); return; }
     const page = wikiPages.find(p => p.id === activePageId);
     if (!page) return;
 

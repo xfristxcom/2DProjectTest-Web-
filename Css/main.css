@@ -671,3 +671,5 @@ body {
 .cdx-input::placeholder {
     color: var(--text-muted) !important;
 }
+
+textarea, input { font-family: 'Germania', 'ChakraPetch', sans-serif !important; }

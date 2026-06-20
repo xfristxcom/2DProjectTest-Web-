@@ -181,7 +181,7 @@ function toggleCommentSection(postId) {
 let isSubmittingComment = false;
 async function submitComment(postId) {
     if (isSubmittingComment) return;
-    if (!currentUser) { alert("กรุณาล็อกอินก่อนคอมเมนต์ครับ!"); return; }
+    if (!currentUser) { showAlert("Notice", "Please login to comment!"); return; }
 
     const inputField = document.getElementById(`comment-input-${postId}`);
     const content = inputField.value.trim();
@@ -212,13 +212,13 @@ async function submitComment(postId) {
         // ส่งแจ้งเตือนด้วย!
         await sendNotification(postId, 'comment');
     } else {
-        alert("ส่งคอมเมนต์ไม่สำเร็จ");
+        showAlert("Error", "Failed to send comment.");
     }
     setTimeout(() => { isSubmittingComment = false; }, 500);
 }
 
 async function deleteComment(commentId, postId) {
-    if (!confirm("คุณแน่ใจหรือไม่ที่จะลบคอมเมนต์นี้?")) return;
+    if (!confirm("Are you sure you want to delete this comment?")) return;
     const { error } = await supabaseClient.from('comments').delete().eq('id', commentId);
     if (!error) {
         loadComments(postId);
@@ -289,7 +289,7 @@ async function deleteNotification(notiId, event) {
 // ล้างแจ้งเตือนทั้งหมด
 async function clearAllNotifications() {
     if (!currentUser) return;
-    if (confirm("ต้องการลบการแจ้งเตือนทั้งหมดใช่หรือไม่?")) {
+    if (confirm("Are you sure you want to clear all notifications?")) {
         await supabaseClient.from('notifications').delete().eq('user_id', currentUser.id);
         loadNotifications();
     }
@@ -320,7 +320,7 @@ async function sendNotification(postId, actionType) {
 let isTogglingUpvote = false;
 async function toggleUpvote(postId) {
     if (isTogglingUpvote) return;
-    if (!currentUser) { alert("กรุณาล็อกอินก่อนดันโพสต์ครับ!"); return; }
+    if (!currentUser) { showAlert("Notice", "Please login to upvote!"); return; }
 
     isTogglingUpvote = true;
     // 1. ดึงข้อมูลโพสต์ปัจจุบันมาก่อน
@@ -340,7 +340,7 @@ async function toggleUpvote(postId) {
 
     if (rpcError) { 
         console.error(rpcError);
-        alert("อัปเดตไม่สำเร็จ!"); 
+        showAlert("Error", "Failed to update upvote!"); 
         isTogglingUpvote = false;
         return; 
     }
@@ -379,19 +379,33 @@ async function saveEdit(postId) {
     const newContent = document.getElementById(`editInput-${postId}`).value.trim();
     if (!newContent) return;
     const { error } = await supabaseClient.from('posts').update({ content: newContent }).eq('id', postId);
-    if (error) alert("แก้ไขไม่สำเร็จ: " + error.message);
+    if (error) showAlert("Error", "Failed to edit: " + error.message);
     loadSinglePost();
 }
 
 async function deletePost(postId) {
-    if (!confirm("คุณแน่ใจหรือไม่ที่จะลบโพสต์นี้? (คอมเมนต์ทั้งหมดจะหายไปด้วย)")) return;
+    if (!confirm("Are you sure you want to delete this post? All comments will be deleted too.")) return;
     const { error } = await supabaseClient.from('posts').delete().eq('id', postId);
     if (!error) {
         window.location.href = 'community.html'; // ลบเสร็จให้เด้งกลับหน้าหลัก เพราะโพสต์หายไปแล้ว!
     } else {
-        alert("ลบโพสต์ไม่สำเร็จ: " + error.message);
+        showAlert("Error", "Failed to delete post: " + error.message);
     }
 }
 
 // เริ่มทำงาน!
 checkAuth();
+
+function showAlert(title, message) {
+    const safeMessage = typeof escapeHtml === 'function' ? escapeHtml(message) : message;
+    const alertTitle = document.getElementById('alertTitle');
+    const alertMessage = document.getElementById('alertMessage');
+    const customAlert = document.getElementById('customAlert');
+    if(alertTitle) alertTitle.innerText = title;
+    if(alertMessage) alertMessage.innerHTML = safeMessage.replace(/\n/g, '<br>');
+    if(customAlert) customAlert.style.display = 'flex';
+}
+function closeAlert() {
+    const customAlert = document.getElementById('customAlert');
+    if(customAlert) customAlert.style.display = 'none';
+}
