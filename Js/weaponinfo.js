@@ -344,7 +344,7 @@ function displayContent(page) {
         // ตรวจจับลิงก์ที่สร้างจาก WikiLinkTool (ขึ้นต้นด้วย wiki://)
         if (href && href.startsWith('wiki://')) {
             const targetId = href.replace('wiki://', '').trim();
-            const targetPage = wikiPages.find(p => p.id === targetId);
+            const targetPage = wikiPages.find(p => p.id.toString() === targetId);
             
             // เพิ่ม Tooltip แบบ Custom
             if (targetPage) {
